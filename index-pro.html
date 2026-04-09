@@ -3705,7 +3705,7 @@ async function searchKrogerProducts() {
       const imgHtml = r.image_url
         ? `<img src="${r.image_url}" alt="" style="width:56px;height:56px;object-fit:contain;border-radius:6px;flex-shrink:0;background:white;" onerror="this.style.display='none'">`
         : `<div style="width:56px;height:56px;border-radius:6px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">🛒</div>`;
-      return `<div class="kroger-product ${isAdded ? 'already-added' : ''}" id="kroger-result-${i}" onclick="event.preventDefault();addKrogerProductToPantry(${i})">
+      return `<div class="kroger-product ${isAdded ? 'already-added' : ''}" id="kroger-result-${i}" onclick="event.preventDefault();event.stopPropagation();addKrogerProductToPantry(${i}).catch(()=>{});return false;">
         ${imgHtml}
         <div class="kroger-product-info">
           <div class="kroger-product-name">${r.name}</div>
@@ -3724,6 +3724,7 @@ async function searchKrogerProducts() {
 }
 
 async function addKrogerProductToPantry(index) {
+  try {
   // Ensure we stay on the pantry view
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('pantry-view').classList.add('active');
@@ -3778,6 +3779,7 @@ async function addKrogerProductToPantry(index) {
     const badge = card.querySelector('.add-badge');
     if (badge) badge.textContent = '✅ Added';
   }
+  } catch(err) { console.error('addKrogerProductToPantry error:', err); }
 }
 
 function openSetStoreModal() {
