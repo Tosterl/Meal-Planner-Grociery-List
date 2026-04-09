@@ -1271,13 +1271,18 @@ textarea { resize: vertical; min-height: 60px; }
       </div>
       <div class="btn-group">
         <button class="btn btn-primary btn-sm" onclick="openAddPantryItem()">+ Add Item</button>
+        <button class="btn btn-secondary btn-sm" onclick="importKrogerPantry()">🛒 Import from Kroger</button>
         <button class="btn btn-secondary btn-sm" onclick="clearPantry()">Clear All</button>
       </div>
+    </div>
+    <div id="kroger-pantry-info" style="display:none; margin-bottom:1rem; padding:0.75rem 1rem; background:var(--blue-light); border-radius:var(--radius-sm); font-size:0.84rem; color:var(--blue);">
+      <strong>Kroger Products</strong> — Items imported from Kroger are linked to real products with prices, sizes, and aisle locations. Run <code style="background:rgba(0,0,0,0.06);padding:0.1rem 0.35rem;border-radius:3px;">python kroger_api.py pantry-add "item" --zip YOUR_ZIP</code> to add from terminal.
     </div>
     <div id="pantry-grid" class="pantry-grid"></div>
     <div id="pantry-empty" style="display:none;" class="empty-state">
       <div class="empty-icon">🥫</div>
       <p>No pantry items yet. Add what you have on hand!</p>
+      <p style="font-size:0.82rem; margin-top:0.5rem;">Use the CLI to add Kroger products:<br><code style="background:var(--bg-warm);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.78rem;">python kroger_api.py pantry-add "chicken breast" --zip YOUR_ZIP</code></p>
     </div>
     <div>
       <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:0.5rem;">Quick Add Staples</div>
@@ -1418,8 +1423,9 @@ textarea { resize: vertical; min-height: 60px; }
         <h3>🥫 Pantry Tracker</h3>
         <p>Track what you already have so you only buy what you need.</p>
         <ol class="help-steps">
-          <li>Go to the <strong>Pantry</strong> tab</li>
-          <li>Add items you have at home (use quick-add buttons for staples)</li>
+          <li><strong>Quick add</strong> — Use the Pantry tab's quick-add buttons or "+ Add Item" for manual entries</li>
+          <li><strong>Kroger products</strong> — Run <code style="background:var(--bg-warm);padding:0.1rem 0.3rem;border-radius:3px;font-size:0.78rem;">python kroger_api.py pantry-add "milk" --zip YOUR_ZIP</code> to search Kroger and add real products with prices, sizes, and aisle locations</li>
+          <li><strong>Import</strong> — Click "Import from Kroger" in the Pantry tab and select your <code style="background:var(--bg-warm);padding:0.1rem 0.3rem;border-radius:3px;font-size:0.78rem;">pantry.json</code> file</li>
           <li>The <strong>Grocery List</strong> automatically subtracts pantry items — you'll see "In Pantry" for items fully covered and reduced quantities for partial matches</li>
         </ol>
       </div>
@@ -2918,21 +2924,37 @@ function generateGroceryList() {
     });
   });
 
-  // Subtract pantry items
+  // Subtract pantry items (manual + Kroger products)
   const pantry = getPantry();
-  const pantryStatus = {};  // item -> { have, need, covered }
+  const krogerPantry = getKrogerPantry();
+  const pantryStatus = {};  // item -> { have, need, covered, kroger? }
   for (const item of Object.keys(grocery)) {
-    const pantryMatch = pantry[item] || Object.entries(pantry).find(([k]) => item.includes(k) || k.includes(item))?.[1];
+    // Check manual pantry first
+    let pantryMatch = pantry[item] || Object.entries(pantry).find(([k]) => item.includes(k) || k.includes(item))?.[1];
+    let isKroger = false;
+
+    // Check Kroger pantry if no manual match
+    if (!pantryMatch) {
+      const krogerMatch = krogerPantry.find(kp => {
+        const kpName = kp.name.toLowerCase();
+        return kpName.includes(item) || item.includes(kpName.split(' ').slice(0,3).join(' '));
+      });
+      if (krogerMatch) {
+        pantryMatch = { qty: krogerMatch.qty || 1, unit: krogerMatch.size || '' };
+        isKroger = true;
+      }
+    }
+
     if (pantryMatch && pantryMatch.qty > 0) {
       const units = Object.keys(grocery[item]);
       const firstUnit = units[0] || '';
       const needed = grocery[item][firstUnit] || 0;
       const have = pantryMatch.qty;
       if (have >= needed) {
-        pantryStatus[item] = { have, needed, covered: true };
+        pantryStatus[item] = { have, needed, covered: true, kroger: isKroger };
         delete grocery[item];  // fully covered
       } else {
-        pantryStatus[item] = { have, needed, covered: false };
+        pantryStatus[item] = { have, needed, covered: false, kroger: isKroger };
         grocery[item][firstUnit] = Math.max(0, needed - have);
       }
     }
@@ -3345,22 +3367,63 @@ const PANTRY_STAPLES = ['salt','black pepper','olive oil','vegetable oil','garli
 function renderPantry() {
   const pantry = getPantry();
   const keys = Object.keys(pantry).sort();
+  const krogerItems = getKrogerPantry();
+  const hasKroger = krogerItems.length > 0;
   const grid = document.getElementById('pantry-grid');
   const empty = document.getElementById('pantry-empty');
+  const krogerInfo = document.getElementById('kroger-pantry-info');
 
-  if (!keys.length) {
+  krogerInfo.style.display = hasKroger ? 'block' : 'none';
+
+  if (!keys.length && !hasKroger) {
     grid.innerHTML = '';
     empty.style.display = 'block';
   } else {
     empty.style.display = 'none';
-    grid.innerHTML = keys.map(item => {
-      const p = pantry[item];
-      return `<div class="pantry-item">
-        <div class="pantry-item-name">${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</div>
-        <div class="pantry-item-qty">${formatQty(p.qty)} ${p.unit}</div>
-        <button class="btn btn-danger btn-xs" onclick="removePantryItem('${item.replace(/'/g,"\\'")}')">✕</button>
-      </div>`;
-    }).join('');
+    let html = '';
+
+    // Kroger-linked products first
+    if (hasKroger) {
+      html += `<div style="grid-column:1/-1;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--kroger-color);margin-top:0.5rem;">🛒 Kroger Products</div>`;
+      html += krogerItems.map((item, i) => {
+        const price = item.price ? `$${item.price.toFixed(2)}` : '';
+        const promoStr = (item.promo_price && item.regular_price && item.promo_price < item.regular_price)
+          ? `<span style="font-size:0.7rem;color:var(--green);margin-left:0.3rem;">🏷️ Sale</span>` : '';
+        const aisle = item.aisle && item.aisle.description ? `<span style="font-size:0.72rem;color:var(--ink-muted);">📍 ${item.aisle.description}</span>` : '';
+        const stock = item.stock_level === 'LOW' ? '<span style="font-size:0.7rem;color:var(--gold);">⚠️ Low</span>'
+          : item.stock_level === 'TEMPORARILY_OUT_OF_STOCK' ? '<span style="font-size:0.7rem;color:var(--red);">❌ Out</span>' : '';
+        return `<div class="pantry-item" style="border-color:var(--kroger-color);border-width:1.5px;background:linear-gradient(135deg,var(--bg-card),var(--blue-light));">
+          <div style="flex:1;min-width:0;">
+            <div class="pantry-item-name" style="font-size:0.84rem;">${item.name}</div>
+            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-top:0.15rem;">
+              <span style="font-size:0.72rem;color:var(--ink-muted);">${item.brand || ''} ${item.size || ''}</span>
+              ${aisle} ${stock}
+            </div>
+          </div>
+          <div style="text-align:right;white-space:nowrap;">
+            <div class="pantry-item-qty">${item.qty || 1}× ${price}${promoStr}</div>
+          </div>
+          <button class="btn btn-danger btn-xs" onclick="removeKrogerPantryItem(${i})">✕</button>
+        </div>`;
+      }).join('');
+    }
+
+    // Manual pantry items
+    if (keys.length) {
+      if (hasKroger) {
+        html += `<div style="grid-column:1/-1;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-top:1rem;">Manual Items</div>`;
+      }
+      html += keys.map(item => {
+        const p = pantry[item];
+        return `<div class="pantry-item">
+          <div class="pantry-item-name">${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</div>
+          <div class="pantry-item-qty">${formatQty(p.qty)} ${p.unit}</div>
+          <button class="btn btn-danger btn-xs" onclick="removePantryItem('${item.replace(/'/g,"\\'")}')">✕</button>
+        </div>`;
+      }).join('');
+    }
+
+    grid.innerHTML = html;
   }
 
   // Quick-add staples
@@ -3411,6 +3474,61 @@ function quickAddPantry(item) {
   setPantry(p);
   renderPantry();
   showToast(`Added: ${item}`);
+}
+
+// Kroger pantry (loaded from pantry.json file)
+const getKrogerPantry = () => LS.get('mp2_kroger_pantry', []);
+const setKrogerPantry = v => LS.set('mp2_kroger_pantry', v);
+
+function importKrogerPantry() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      const items = data.items || [];
+      if (!items.length) {
+        showToast('No items found in pantry.json');
+        return;
+      }
+      // Merge with existing Kroger pantry items (update by UPC, add new)
+      const existing = getKrogerPantry();
+      const existingUPCs = new Set(existing.map(i => i.upc));
+      let added = 0, updated = 0;
+      for (const item of items) {
+        if (item.upc && existingUPCs.has(item.upc)) {
+          const idx = existing.findIndex(e => e.upc === item.upc);
+          existing[idx] = item;
+          updated++;
+        } else {
+          existing.push(item);
+          added++;
+        }
+      }
+      setKrogerPantry(existing);
+      renderPantry();
+      showToast(`Imported ${added} new, ${updated} updated Kroger products`);
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to parse pantry.json');
+    }
+  };
+  input.click();
+}
+
+function removeKrogerPantryItem(index) {
+  const items = getKrogerPantry();
+  if (index >= 0 && index < items.length) {
+    const name = items[index].name;
+    items.splice(index, 1);
+    setKrogerPantry(items);
+    renderPantry();
+    showToast(`Removed: ${name}`);
+  }
 }
 
 // ═══════════════════════════════════════════════════

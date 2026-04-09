@@ -40,6 +40,7 @@ except ImportError:
 BASE_DIR = Path(__file__).parent
 CACHE_FILE = BASE_DIR / "kroger_cache.json"
 TOKEN_FILE = BASE_DIR / ".kroger_token.json"
+PANTRY_FILE = BASE_DIR / "pantry.json"
 
 # Kroger API endpoints
 KROGER_AUTH_URL = "https://api.kroger.com/v1/connect/oauth2/token"
@@ -581,6 +582,171 @@ def generate_shopping_list_by_aisle(cart_items: list):
     return by_aisle, total
 
 
+# ─── Pantry ───────────────────────────────────────────────────────────────────
+
+def load_pantry() -> dict:
+    """Load pantry from JSON file."""
+    if PANTRY_FILE.exists():
+        with open(PANTRY_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    return {"items": [], "updated": None}
+
+
+def save_pantry(pantry: dict):
+    """Save pantry to JSON file."""
+    pantry["updated"] = datetime.now().isoformat()
+    with open(PANTRY_FILE, "w", encoding="utf-8") as f:
+        json.dump(pantry, f, indent=2, ensure_ascii=False)
+
+
+def pantry_search(query: str, zip_code: str):
+    """Search Kroger for a product and let the user pick one to add to pantry."""
+    store = find_nearest_store(zip_code)
+    if not store:
+        print(f"❌ No Kroger store found near {zip_code}")
+        return
+
+    location_id = store.get("locationId")
+    store_name = store.get("name", "Unknown")
+    print(f"\n📍 Store: {store_name}")
+    print(f"🔍 Searching for: {query}\n")
+
+    results = search_product(query, location_id)
+    if not results:
+        print(f"❌ No results for '{query}'")
+        return
+
+    # Display results
+    for i, r in enumerate(results, 1):
+        price_str = f"${r['price']:.2f}" if r.get("price") else "N/A"
+        if r.get("promo_price") and r.get("regular_price") and r["promo_price"] < r["regular_price"]:
+            price_str = f"${r['promo_price']:.2f} (was ${r['regular_price']:.2f}) 🏷️"
+
+        stock = r.get("stock_level")
+        stock_str = ""
+        if stock == "HIGH": stock_str = "✅"
+        elif stock == "LOW": stock_str = "⚠️ Low"
+        elif stock == "TEMPORARILY_OUT_OF_STOCK": stock_str = "❌ Out"
+
+        aisle = r.get("aisle")
+        aisle_str = f" | 📍 {aisle['description']}" if aisle and aisle.get("description") else ""
+
+        print(f"  [{i}] {r['name']}")
+        print(f"      {r['brand']} | {r['size']} | {price_str} {stock_str}{aisle_str}")
+        print()
+
+    print(f"  [0] Cancel\n")
+
+    try:
+        choice = int(input("Pick a product to add to pantry: ").strip())
+    except (ValueError, EOFError):
+        print("❌ Cancelled")
+        return
+
+    if choice < 1 or choice > len(results):
+        print("❌ Cancelled")
+        return
+
+    product = results[choice - 1]
+
+    # Ask quantity
+    try:
+        qty_input = input(f"How many? (default: 1): ").strip()
+        qty = int(qty_input) if qty_input else 1
+    except (ValueError, EOFError):
+        qty = 1
+
+    # Build pantry item
+    pantry_item = {
+        "name": product["name"],
+        "brand": product.get("brand", ""),
+        "size": product.get("size", ""),
+        "qty": qty,
+        "price": product.get("price"),
+        "regular_price": product.get("regular_price"),
+        "promo_price": product.get("promo_price"),
+        "product_id": product.get("product_id"),
+        "upc": product.get("upc"),
+        "aisle": product.get("aisle"),
+        "stock_level": product.get("stock_level"),
+        "store": store_name,
+        "location_id": location_id,
+        "added": datetime.now().isoformat()
+    }
+
+    pantry = load_pantry()
+
+    # Check if already in pantry (by UPC)
+    existing = next((i for i, item in enumerate(pantry["items"])
+                     if item.get("upc") == pantry_item["upc"]), None)
+    if existing is not None:
+        pantry["items"][existing]["qty"] += qty
+        print(f"\n✅ Updated quantity: {pantry['items'][existing]['name']} "
+              f"(now {pantry['items'][existing]['qty']})")
+    else:
+        pantry["items"].append(pantry_item)
+        print(f"\n✅ Added to pantry: {pantry_item['name']} × {qty}")
+
+    save_pantry(pantry)
+    print(f"   Saved to: {PANTRY_FILE.name}")
+
+
+def pantry_list():
+    """Display current pantry contents."""
+    pantry = load_pantry()
+    items = pantry.get("items", [])
+
+    if not items:
+        print("\n🥫 Your pantry is empty.")
+        print("   Add items with: python kroger_api.py pantry-add \"item\" --zip YOUR_ZIP")
+        return
+
+    print(f"\n🥫 My Pantry ({len(items)} items)")
+    if pantry.get("updated"):
+        print(f"   Last updated: {pantry['updated'][:16].replace('T', ' ')}")
+    print(f"{'─' * 55}")
+
+    total_value = 0
+    for i, item in enumerate(items, 1):
+        price = item.get("price", 0) or 0
+        item_total = price * item.get("qty", 1)
+        total_value += item_total
+
+        price_str = f"${price:.2f}" if price else "N/A"
+        size_str = f" ({item['size']})" if item.get("size") else ""
+        brand_str = f" — {item['brand']}" if item.get("brand") else ""
+
+        aisle = item.get("aisle")
+        aisle_str = f"  📍 {aisle['description']}" if aisle and aisle.get("description") else ""
+
+        print(f"  [{i:2d}] {item['name'][:40]}{size_str}")
+        print(f"       {item.get('qty', 1)}× | {price_str}{brand_str}{aisle_str}")
+
+    print(f"\n{'─' * 55}")
+    print(f"  🥫 {len(items)} items | Estimated value: ${total_value:.2f}")
+
+
+def pantry_remove(index: int):
+    """Remove an item from pantry by its list number."""
+    pantry = load_pantry()
+    items = pantry.get("items", [])
+
+    if index < 1 or index > len(items):
+        print(f"❌ Invalid item number. Use 1-{len(items)}")
+        return
+
+    removed = items.pop(index - 1)
+    save_pantry(pantry)
+    print(f"✅ Removed: {removed['name']}")
+
+
+def pantry_clear():
+    """Clear entire pantry."""
+    pantry = {"items": [], "updated": datetime.now().isoformat()}
+    save_pantry(pantry)
+    print("✅ Pantry cleared.")
+
+
 # ─── CLI ──────────────────────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser(
@@ -592,6 +758,9 @@ Examples:
   python kroger_api.py search "chicken"   Search for products
   python kroger_api.py update             Update price cache
   python kroger_api.py show               Show cached prices
+  python kroger_api.py pantry-add "milk" --zip 45202  Search & add to pantry
+  python kroger_api.py pantry             Show pantry contents
+  python kroger_api.py pantry-remove 3    Remove item #3 from pantry
         """
     )
 
@@ -621,6 +790,21 @@ Examples:
     aisle_parser = subparsers.add_parser("aisles", help="Get aisle locations for grocery list")
     aisle_parser.add_argument("--zip", required=True, help="Zip code for store location")
     aisle_parser.add_argument("--export", help="Export cart JSON file for Kroger API")
+
+    # pantry-add - search Kroger and add to pantry
+    pantry_add_parser = subparsers.add_parser("pantry-add", help="Search Kroger and add product to pantry")
+    pantry_add_parser.add_argument("query", help="Product to search for")
+    pantry_add_parser.add_argument("--zip", required=True, help="Zip code for store location")
+
+    # pantry - show pantry contents
+    subparsers.add_parser("pantry", help="Show pantry contents")
+
+    # pantry-remove - remove item from pantry
+    pantry_rm_parser = subparsers.add_parser("pantry-remove", help="Remove item from pantry by number")
+    pantry_rm_parser.add_argument("number", type=int, help="Item number (from pantry list)")
+
+    # pantry-clear - clear all pantry items
+    subparsers.add_parser("pantry-clear", help="Clear entire pantry")
 
     args = parser.parse_args()
 
@@ -765,6 +949,21 @@ Examples:
         else:
             # Always save to default location
             export_cart_json(cart_items, BASE_DIR / "kroger_cart.json")
+
+    elif args.command == "pantry-add":
+        pantry_search(args.query, args.zip)
+
+    elif args.command == "pantry":
+        pantry_list()
+
+    elif args.command == "pantry-remove":
+        pantry_remove(args.number)
+
+    elif args.command == "pantry-clear":
+        if input("Clear entire pantry? (y/n): ").strip().lower() == "y":
+            pantry_clear()
+        else:
+            print("❌ Cancelled")
 
     else:
         parser.print_help()
