@@ -2203,8 +2203,45 @@ const SMART_CONFIG = {
   recencyPenalty: 1.5,     // Penalty multiplier for recent usage
   cooldownDays: 14,        // Days before recipe should repeat
   favoriteBonus: 2.0,      // Bonus for favorite recipes
-  samePlanPenalty: 50      // Heavy penalty for same-plan repeats
+  samePlanPenalty: 50,     // Heavy penalty for same-plan repeats
+  categoryPenalty: 15,     // Penalty for same category in recent meals
+  categoryCooldownMeals: 4 // How many meals back to check for category repeats
 };
+
+// Dish categories detected from tags, name, and key ingredients
+const DISH_CATEGORIES = {
+  pasta:    { tags: ['pasta','noodles','noodle','spaghetti','penne','fettuccine','linguine','macaroni','lasagna','yakisoba','ramen','lo mein','chow mein'], ingredients: ['pasta','noodles','spaghetti','penne','fettuccine','linguine','macaroni','ramen noodles','angel hair'] },
+  mexican:  { tags: ['mexican','taco','tacos','burrito','burritos','fajita','fajitas','enchilada','quesadilla','southwest','tex-mex','burrito bowl'], ingredients: ['tortilla','taco seasoning','salsa','refried beans'] },
+  stir_fry: { tags: ['stir fry','stir-fry','asian','chinese','korean','japanese','fried rice','teriyaki','wok'], ingredients: ['soy sauce','sesame oil','ginger','wok'] },
+  soup:     { tags: ['soup','stew','chili','chowder','bisque','broth-based'], ingredients: ['broth','stock'] },
+  sandwich: { tags: ['sandwich','burger','wrap','sub','panini','grilled cheese'], ingredients: ['hamburger bun','bread','hoagie','wrap'] },
+  curry:    { tags: ['curry','indian','thai curry','tikka','masala','korma'], ingredients: ['curry powder','curry paste','garam masala','turmeric'] },
+  rice:     { tags: ['rice bowl','rice dish','risotto','pilaf','biryani','fried rice'], ingredients: ['rice'] },
+  chicken:  { tags: ['chicken'], ingredients: ['chicken breast','chicken thigh','chicken'] },
+  beef:     { tags: ['beef','ground beef','steak'], ingredients: ['ground beef','steak','beef'] },
+  pizza:    { tags: ['pizza','flatbread'], ingredients: ['pizza dough','pizza sauce'] },
+};
+
+function getRecipeCategories(recipe) {
+  const cats = new Set();
+  const name = (recipe.name || '').toLowerCase();
+  const tags = (recipe.tags || []).map(t => t.toLowerCase());
+  const ings = (recipe.ingredients || []).map(i => (i.item || '').toLowerCase());
+
+  for (const [cat, rules] of Object.entries(DISH_CATEGORIES)) {
+    // Check tags
+    if (rules.tags.some(t => tags.some(rt => rt.includes(t)) || name.includes(t))) {
+      cats.add(cat);
+    }
+    // Check ingredients (only for categories that are more about the dish type than protein)
+    if (['pasta','mexican','curry','pizza','soup'].includes(cat)) {
+      if (rules.ingredients.some(ing => ings.some(ri => ri.includes(ing)))) {
+        cats.add(cat);
+      }
+    }
+  }
+  return cats;
+}
 
 function recordUsage(recipeNames) {
   const history = getUsageHistory();
@@ -2254,7 +2291,7 @@ function calculateIngredientOverlap(recipe, selectedRecipes) {
   return overlap;
 }
 
-function scoreRecipe(recipe, selectedRecipes, planUsage, favs) {
+function scoreRecipe(recipe, selectedRecipes, planUsage, favs, recentCategories) {
   let score = 0;
   const name = recipe.name;
   const slug = slugify(name);
@@ -2277,6 +2314,25 @@ function scoreRecipe(recipe, selectedRecipes, planUsage, favs) {
     score -= Math.max(SMART_CONFIG.samePlanPenalty - (mealsSince * 8), 5);
   }
 
+  // Category cooldown — penalize if same dish type was in recent meals
+  // e.g. pasta Monday dinner → don't pick pasta Tuesday lunch
+  if (recentCategories && recentCategories.length) {
+    const recipeCats = getRecipeCategories(recipe);
+    if (recipeCats.size > 0) {
+      for (let i = 0; i < recentCategories.length; i++) {
+        const pastCats = recentCategories[recentCategories.length - 1 - i];
+        const mealsAgo = i + 1;
+        for (const cat of recipeCats) {
+          if (pastCats.has(cat)) {
+            // Closer = bigger penalty; further back = smaller
+            const penalty = SMART_CONFIG.categoryPenalty * (1 - (mealsAgo - 1) / SMART_CONFIG.categoryCooldownMeals);
+            score -= Math.max(penalty, 2);
+          }
+        }
+      }
+    }
+  }
+
   // Favorite bonus
   if (favs.includes(slug)) {
     score += SMART_CONFIG.favoriteBonus;
@@ -2285,10 +2341,10 @@ function scoreRecipe(recipe, selectedRecipes, planUsage, favs) {
   return score;
 }
 
-function smartSelectRecipe(candidates, selectedRecipes, planUsage, favs) {
+function smartSelectRecipe(candidates, selectedRecipes, planUsage, favs, recentCategories) {
   if (!candidates.length) return null;
 
-  const scored = candidates.map(r => ({ recipe: r, score: scoreRecipe(r, selectedRecipes, planUsage, favs) }));
+  const scored = candidates.map(r => ({ recipe: r, score: scoreRecipe(r, selectedRecipes, planUsage, favs, recentCategories) }));
   scored.sort((a, b) => b.score - a.score);
 
   // Weighted random from top 3
@@ -2789,6 +2845,7 @@ function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
   const selectedRecipes = [];
   const planUsage = {};
   const usedInPlan = new Set();
+  const recentCategories = []; // Track categories of recent non-leftover meals
 
   // Track leftover servings available: { recipeName: servingsRemaining }
   const leftovers = {};
@@ -2828,7 +2885,7 @@ function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
       let candidates = suitable.filter(k => !usedInPlan.has(k)).map(k => recipes[k]);
       if (!candidates.length) candidates = suitable.map(k => recipes[k]);
 
-      chosen = smartSelectRecipe(candidates, selectedRecipes, planUsage, favs);
+      chosen = smartSelectRecipe(candidates, selectedRecipes, planUsage, favs, recentCategories);
       if (!chosen) chosen = recipes[suitable[Math.floor(Math.random() * suitable.length)]];
     } else {
       // Pure random (old behavior)
@@ -2839,6 +2896,12 @@ function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
     selectedRecipes.push(chosen);
     planUsage[chosen.name] = selectedRecipes.length - 1;
     usedInPlan.add(slugify(chosen.name));
+
+    // Track this recipe's categories for the cooldown window
+    recentCategories.push(getRecipeCategories(chosen));
+    if (recentCategories.length > SMART_CONFIG.categoryCooldownMeals) {
+      recentCategories.shift();
+    }
 
     // Track leftovers (servings - 1 because we're eating one now)
     if (useLeftovers && chosen.servings > 1) {
