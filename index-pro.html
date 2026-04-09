@@ -3447,10 +3447,6 @@ function renderPantry() {
   const hasKroger = krogerItems.length > 0;
   const grid = document.getElementById('pantry-grid');
   const empty = document.getElementById('pantry-empty');
-  const krogerInfo = document.getElementById('kroger-pantry-info');
-
-  krogerInfo.style.display = hasKroger ? 'block' : 'none';
-
   if (!keys.length && !hasKroger) {
     grid.innerHTML = '';
     empty.style.display = 'block';
