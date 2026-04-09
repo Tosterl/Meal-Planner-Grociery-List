@@ -4795,12 +4795,150 @@ document.querySelectorAll('#main-nav button[data-view]').forEach(btn => {
 });
 
 // ═══════════════════════════════════════════════════
+//  SYNC WITH SERVER (Git-backed data)
+// ═══════════════════════════════════════════════════
+async function syncFromServer() {
+  try {
+    // Check if server is running
+    const healthRes = await fetch(`${API_BASE}/api/health`, { signal: AbortSignal.timeout(2000) });
+    if (!healthRes.ok) return;
+
+    // Sync recipes from server (recipes/ folder on disk)
+    try {
+      const recipesRes = await fetch(`${API_BASE}/api/recipes`);
+      const recipesData = await recipesRes.json();
+      if (recipesData.recipes && recipesData.count > 0) {
+        const local = getRecipes();
+        const server = recipesData.recipes;
+        let added = 0;
+        // Merge: server recipes fill in anything local doesn't have
+        for (const [slug, recipe] of Object.entries(server)) {
+          if (!local[slug]) {
+            local[slug] = recipe;
+            added++;
+          }
+        }
+        if (added > 0) {
+          setRecipes(local);
+          renderRecipes();
+          console.log(`Synced ${added} recipes from server`);
+        }
+      }
+    } catch(e) { console.log('Recipe sync skipped:', e.message); }
+
+    // Sync plan from server (latest plan JSON)
+    try {
+      const planRes = await fetch(`${API_BASE}/api/plan`);
+      const planData = await planRes.json();
+      if (planData.plan && Object.keys(planData.plan).length > 0) {
+        const localPlan = getPlan();
+        const serverPlan = planData.plan;
+        const localKeys = Object.keys(localPlan).filter(k => localPlan[k]);
+        const serverKeys = Object.keys(serverPlan).filter(k => serverPlan[k]);
+
+        if (localKeys.length === 0 && serverKeys.length > 0) {
+          // Local is empty, load from server
+          setPlan(serverPlan);
+          renderWeeklyPlan();
+          renderCalendar();
+          showToast(`Loaded meal plan from server (${planData.source})`, 'success');
+        } else if (localKeys.length > 0 && serverKeys.length > 0) {
+          // Both have data — check if they differ
+          const differs = serverKeys.some(k => localPlan[k] !== serverPlan[k]) ||
+                          localKeys.some(k => serverPlan[k] !== localPlan[k]);
+          if (differs) {
+            // Show sync conflict dialog
+            showSyncConflict(localPlan, serverPlan, planData.source, planData.created);
+          }
+        }
+      }
+    } catch(e) { console.log('Plan sync skipped:', e.message); }
+
+  } catch {
+    // Server not running — that's fine, work offline
+    console.log('API server not available — working offline');
+  }
+}
+
+function showSyncConflict(localPlan, serverPlan, source, created) {
+  const localCount = Object.keys(localPlan).filter(k => localPlan[k]).length;
+  const serverCount = Object.keys(serverPlan).filter(k => serverPlan[k]).length;
+  const createdStr = created ? new Date(created).toLocaleDateString() : 'unknown';
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay active';
+  overlay.id = 'sync-modal';
+  overlay.innerHTML = `
+    <div class="modal-content" style="max-width:480px;">
+      <div class="modal-header">
+        <h3>Sync Conflict</h3>
+      </div>
+      <div style="padding:0 1.5rem 1.5rem;">
+        <p style="margin-bottom:1rem;font-size:0.9rem;">Your browser has a different meal plan than what's saved on the server (Git).</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+          <div style="padding:1rem;background:var(--bg-warm);border-radius:var(--radius-sm);text-align:center;">
+            <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.35rem;">Local (Browser)</div>
+            <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;">${localCount}</div>
+            <div style="font-size:0.78rem;color:var(--ink-muted);">meal slots filled</div>
+          </div>
+          <div style="padding:1rem;background:var(--blue-light);border-radius:var(--radius-sm);text-align:center;">
+            <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.35rem;">Server (Git)</div>
+            <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;">${serverCount}</div>
+            <div style="font-size:0.78rem;color:var(--ink-muted);">meal slots filled</div>
+            <div style="font-size:0.7rem;color:var(--ink-muted);margin-top:0.25rem;">from ${createdStr}</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <button class="btn btn-primary" onclick="resolveSyncConflict('server')" style="background:var(--blue);">Use Server (Git) Version</button>
+          <button class="btn btn-primary" onclick="resolveSyncConflict('local')">Keep Local (Browser) Version</button>
+          <button class="btn btn-secondary" onclick="resolveSyncConflict('merge')">Merge Both (server fills empty slots)</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  window._syncConflictData = { localPlan, serverPlan };
+}
+
+function resolveSyncConflict(choice) {
+  const { localPlan, serverPlan } = window._syncConflictData;
+
+  if (choice === 'server') {
+    setPlan(serverPlan);
+    showToast('Loaded plan from server', 'success');
+  } else if (choice === 'local') {
+    // Keep local — no change needed
+    showToast('Keeping local plan', 'success');
+  } else if (choice === 'merge') {
+    // Merge: local wins where it has data, server fills gaps
+    const merged = { ...localPlan };
+    for (const [key, val] of Object.entries(serverPlan)) {
+      if (!merged[key] || !merged[key].trim()) {
+        merged[key] = val;
+      }
+    }
+    setPlan(merged);
+    showToast('Plans merged — server filled empty slots', 'success');
+  }
+
+  renderWeeklyPlan();
+  renderCalendar();
+
+  // Remove modal
+  const modal = document.getElementById('sync-modal');
+  if (modal) modal.remove();
+  delete window._syncConflictData;
+}
+
+// ═══════════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════════
 loadBundledRecipes();
 renderRecipes();
 renderWeeklyPlan();
 renderCalendar();
+// Sync from server after initial render (non-blocking)
+syncFromServer();
 </script>
 </body>
 </html>

@@ -87,6 +87,10 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             self._handle_search(params)
         elif path == "/api/pantry":
             self._handle_pantry_get()
+        elif path == "/api/plan":
+            self._handle_plan_get()
+        elif path == "/api/recipes":
+            self._handle_recipes_get()
         elif path == "/api/store":
             self._handle_store(params)
         elif path == "/api/health":
@@ -226,6 +230,58 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             self._json_response({"ok": True, "store": CACHED_STORE_NAME})
         else:
             self._error(f"No Kroger store found near {zip_code}")
+
+    def _handle_plan_get(self):
+        """Return the latest plan converted to UI format, plus metadata."""
+        plans_dir = BASE_DIR / "plans"
+        plans = sorted(plans_dir.glob("plan_*.json"), reverse=True) if plans_dir.exists() else []
+
+        if not plans:
+            self._json_response({"plan": {}, "source": None, "message": "No plans found"})
+            return
+
+        with open(plans[0], encoding="utf-8") as f:
+            plan_data = json.load(f)
+
+        # Convert Python format to UI format { "2026-04-13-breakfast": "Recipe Name" }
+        ui_plan = {}
+        created = plan_data.get("created", "")
+        try:
+            start_date = datetime.fromisoformat(created.split("T")[0])
+        except (ValueError, IndexError):
+            start_date = datetime.now()
+
+        # Find the Monday of that week
+        days_since_monday = start_date.weekday()
+        start_monday = start_date - timedelta(days=days_since_monday)
+
+        for i, day in enumerate(plan_data.get("days", [])):
+            current_date = start_monday + timedelta(days=i)
+            date_str = current_date.strftime("%Y-%m-%d")
+            for meal, recipe_data in day.get("meals", {}).items():
+                recipe_name = recipe_data["name"] if isinstance(recipe_data, dict) else recipe_data
+                ui_plan[f"{date_str}-{meal}"] = recipe_name
+
+        self._json_response({
+            "plan": ui_plan,
+            "source": plans[0].name,
+            "created": created
+        })
+
+    def _handle_recipes_get(self):
+        """Return all recipes from the recipes folder."""
+        recipes_dir = BASE_DIR / "recipes"
+        recipes = {}
+        if recipes_dir.exists():
+            for recipe_file in recipes_dir.glob("*.json"):
+                try:
+                    with open(recipe_file, encoding="utf-8") as f:
+                        recipe = json.load(f)
+                    slug = recipe_file.stem
+                    recipes[slug] = recipe
+                except (json.JSONDecodeError, IOError):
+                    continue
+        self._json_response({"recipes": recipes, "count": len(recipes)})
 
     def _handle_publish(self, body):
         """Receive plan from UI, save as plan JSON, regenerate ICS, push to GitHub."""
