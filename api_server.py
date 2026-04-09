@@ -15,9 +15,11 @@ import sys
 import io
 import json
 import argparse
+import subprocess
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
+from datetime import datetime, timedelta
 
 # Set UTF-8 encoding for Windows console
 if sys.platform == "win32" and hasattr(sys.stdout, 'buffer') and getattr(sys.stdout, 'encoding', '') != 'utf-8':
@@ -103,6 +105,8 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             self._handle_pantry_add(body)
         elif path == "/api/store":
             self._handle_store_set(body)
+        elif path == "/api/publish":
+            self._handle_publish(body)
         else:
             self._error("Not found", 404)
 
@@ -222,6 +226,123 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             self._json_response({"ok": True, "store": CACHED_STORE_NAME})
         else:
             self._error(f"No Kroger store found near {zip_code}")
+
+    def _handle_publish(self, body):
+        """Receive plan from UI, save as plan JSON, regenerate ICS, push to GitHub."""
+        try:
+            data = json.loads(body) if body else {}
+        except json.JSONDecodeError:
+            self._error("Invalid JSON")
+            return
+
+        ui_plan = data.get("plan", {})
+        if not ui_plan:
+            self._error("No plan data provided")
+            return
+
+        # Convert UI format { "2026-04-13-breakfast": "Recipe Name" }
+        # to Python format { days: [{ day: "Monday", meals: { breakfast: { name: "..." } } }] }
+        date_meals = {}  # { "2026-04-13": { "breakfast": "Name", ... } }
+        for key, recipe_name in ui_plan.items():
+            parts = key.rsplit("-", 1)
+            if len(parts) != 2:
+                continue
+            date_str, meal = parts[0], parts[1]
+            if meal not in ("breakfast", "lunch", "dinner"):
+                continue
+            if date_str not in date_meals:
+                date_meals[date_str] = {}
+            date_meals[date_str][meal] = recipe_name
+
+        if not date_meals:
+            self._error("No valid meals found in plan")
+            return
+
+        # Sort dates and build plan
+        sorted_dates = sorted(date_meals.keys())
+        day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+        days = []
+        for date_str in sorted_dates:
+            try:
+                dt = datetime.strptime(date_str, "%Y-%m-%d")
+                day_name = day_names[dt.weekday()]
+            except ValueError:
+                day_name = "Unknown"
+
+            meals = {}
+            for meal, recipe_name in date_meals[date_str].items():
+                is_leftover = "(leftover)" in recipe_name
+                meals[meal] = {
+                    "name": recipe_name,
+                    "servings": 1 if is_leftover else 4,
+                    **({"is_leftover": True} if is_leftover else {})
+                }
+            days.append({"day": day_name, "meals": meals})
+
+        plan = {
+            "created": datetime.now().isoformat(),
+            "days": days
+        }
+
+        # Save plan JSON
+        plans_dir = BASE_DIR / "plans"
+        plans_dir.mkdir(exist_ok=True)
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+        plan_path = plans_dir / f"plan_{timestamp}.json"
+        with open(plan_path, "w", encoding="utf-8") as f:
+            json.dump(plan, f, indent=2)
+        print(f"  📋 Plan saved: {plan_path.name}")
+
+        # Generate ICS
+        try:
+            sys.path.insert(0, str(BASE_DIR))
+            from planner import export_calendar_ics
+            ics_path = BASE_DIR / "meal-plan.ics"
+            export_calendar_ics(plan, ics_path)
+            print(f"  📅 Calendar updated: {ics_path.name}")
+        except Exception as e:
+            self._error(f"Failed to generate calendar: {str(e)}", 500)
+            return
+
+        # Git add, commit, push
+        try:
+            subprocess.run(["git", "add", "meal-plan.ics", str(plan_path)],
+                           cwd=str(BASE_DIR), check=True, capture_output=True)
+            commit_msg = f"chore: Update meal plan calendar ({timestamp})"
+            subprocess.run(["git", "commit", "-m", commit_msg],
+                           cwd=str(BASE_DIR), check=True, capture_output=True)
+            result = subprocess.run(["git", "push"],
+                                    cwd=str(BASE_DIR), capture_output=True, text=True)
+            if result.returncode == 0:
+                print(f"  🚀 Pushed to GitHub!")
+                self._json_response({
+                    "ok": True,
+                    "message": "Calendar published! Skylight will update within a few hours.",
+                    "plan_file": plan_path.name,
+                    "ics_file": "meal-plan.ics"
+                })
+            else:
+                print(f"  ⚠️  Push failed: {result.stderr}")
+                self._json_response({
+                    "ok": True,
+                    "message": "Calendar generated but push failed. Run 'git push' manually.",
+                    "plan_file": plan_path.name,
+                    "push_error": result.stderr
+                })
+        except FileNotFoundError:
+            self._json_response({
+                "ok": True,
+                "message": "Calendar generated but git not found. Push manually.",
+                "plan_file": plan_path.name
+            })
+        except subprocess.CalledProcessError as e:
+            # Commit may fail if nothing changed
+            self._json_response({
+                "ok": True,
+                "message": "Calendar generated. No changes to push.",
+                "plan_file": plan_path.name
+            })
 
     def log_message(self, format, *args):
         """Quieter logging."""

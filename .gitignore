@@ -1,4 +1,5 @@
 .env
 .kroger_token.json
 kroger_cache.json
+.zip_code
 nul

@@ -1,18 +1,76 @@
 # 🍽️ Meal Planner Pro
 
-A complete meal planning toolkit: recipe scraper, dairy-free adaptation, weekly/monthly planning, store price comparison (Kroger, Whole Foods, Costco), and grocery list generation.
+A complete meal planning toolkit: recipe scraper, dairy-free adaptation, weekly/monthly planning, store price comparison (Kroger, Whole Foods, Costco), grocery list generation, macro tracking, and Skylight calendar sync.
 
-## Quick Start
+## Quick Start (Windows)
 
-```bash
-pip install requests beautifulsoup4
+### First Time Setup
 
-# Scrape a recipe + adapt for lactose intolerance + save
-python scraper.py scrape "https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/" --dairy-free --save
+1. **Install Python** from [python.org/downloads](https://www.python.org/downloads/)
+   - **Check "Add Python to PATH"** during install
+2. **Install dependencies:**
+   ```
+   pip install requests beautifulsoup4
+   ```
+3. **Create a `.env` file** in this folder with your Kroger API credentials:
+   ```
+   KROGER_CLIENT_ID=your_client_id
+   KROGER_CLIENT_SECRET=your_client_secret
+   ```
+   Get credentials at [developer.kroger.com](https://developer.kroger.com)
 
-# Open the web UI
-open index-pro.html
+### Every Time You Open the Project
+
+**Option 1 — Double-click `start.bat`** (easiest)
+
+**Option 2 — Command Prompt:**
 ```
+cd "C:\Users\Tosterloh\OneDrive - Caster Connection, Inc\Documents\Meal Planner Grocery List"
+python api_server.py --zip YOUR_ZIP
+```
+
+Then open `index-pro.html` in your browser.
+
+### What the API Server Does
+
+The server (`api_server.py`) runs locally and enables:
+- 🔍 **Kroger product search** in the Pantry tab
+- 🚀 **Publish to Skylight** — pushes your meal plan to your Skylight calendar
+- 🥫 **Pantry sync** — saves pantry items to a local file
+
+Without the server running, the app still works for planning, recipes, and grocery lists — you just can't search Kroger or publish to Skylight.
+
+## Skylight Calendar
+
+Your meal plan syncs to Skylight via this URL:
+```
+webcal://tosterl.github.io/Meal-Planner-Grociery-List/meal-plan.ics
+```
+
+**How it works:**
+1. Plan your meals in the **Plan & Calendar** tab
+2. Click **🚀 Publish to Skylight** (requires `api_server.py` running)
+3. The server regenerates the calendar and pushes to GitHub Pages
+4. Skylight auto-refreshes every few hours
+
+Each calendar event includes: recipe name, prep/cook time, nutrition, cost estimate, full ingredient list, cooking steps, and recipe image.
+
+## Features
+
+| Feature | Description |
+|---|---|
+| 📖 Recipes | Import from URL, add manually, or import JSON |
+| 🧠 Smart Fill | Auto-plans week with overlapping ingredients |
+| 💰 Budget Fill | Fills week under a target budget |
+| 🛒 Kroger Search | Live product search with prices and aisle locations |
+| 🥫 Pantry Tracker | Track what you have — grocery list auto-subtracts |
+| 📊 Macro Tracker | Daily calorie/protein/carb/fat goals with ring charts |
+| ⏱ Cooking Timers | Start from recipes or set custom timers |
+| ⭐ Recipe Ratings | 1-5 star ratings on recipes |
+| 🌙 Dark Mode | Toggle with header button or Ctrl+D |
+| 📅 Calendar Sync | Publish to Skylight, Google, Outlook, Apple |
+| 🗳️ Family Vote | Let family members vote on recipes |
+| 🍳 What Can I Make | Finds recipes matching your pantry items |
 
 ## Recipe Scraper (`scraper.py`)
 
@@ -45,11 +103,14 @@ The `--dairy-free` flag auto-detects dairy and swaps with tested alternatives:
 | Greek yogurt | Coconut yogurt | Silk or So Delicious |
 | Cream cheese | Kite Hill | Miyoko's also excellent |
 
-Handles false positives correctly (peanut butter, coconut milk, butternut squash).
+## Keyboard Shortcuts
 
-## Web UI (`index-pro.html`)
-
-Single-file HTML app. Features: recipes with images, weekly + calendar planning, Kroger/Whole Foods/Costco pricing, cost comparison, grocery lists with store pricing.
+| Shortcut | Action |
+|---|---|
+| Ctrl+1-8 | Switch tabs |
+| Ctrl+D | Toggle dark mode |
+| Ctrl+T | Open timer |
+| Esc | Close any modal |
 
 ## CLI Planner (`planner.py`)
 
@@ -58,5 +119,5 @@ Zero-dependency CLI alternative. `python planner.py --help` for usage.
 ## Tips
 
 - Create a `urls.txt` with your go-to recipe URLs, then `python scraper.py bulk urls.txt --dairy-free --save`
-- Alias for convenience: `alias scrape='python scraper.py scrape --dairy-free --save'`
 - Update prices in the Pricing tab as you shop for accurate cost tracking
+- Stock your pantry first — your grocery list shrinks dramatically

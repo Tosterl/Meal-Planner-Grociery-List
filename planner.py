@@ -549,11 +549,59 @@ def export_calendar_ics(plan: dict, filepath: Path, timezone: str = "America/New
             uid = f"mealplan-{date_str}-{meal}-{uid_counter}@mealplanner"
 
             summary = f"{emoji} {meal.capitalize()}: {recipe_name}"
-            description = f"Recipe: {clean_name}"
-            if is_leftover:
-                description += "\\n(Leftover - no cooking needed!)"
 
-            lines.extend([
+            # Build rich description with full recipe details
+            desc_parts = [f"Recipe: {clean_name}"]
+            if is_leftover:
+                desc_parts.append("(Leftover - no cooking needed!)")
+
+            recipe = load_recipe(clean_name)
+            if recipe:
+                # Servings
+                if recipe.get("servings"):
+                    desc_parts.append(f"Servings: {recipe['servings']}")
+
+                # Prep & cook times
+                times = []
+                if recipe.get("prep_time"):
+                    times.append(f"Prep: {recipe['prep_time']} min")
+                if recipe.get("cook_time"):
+                    times.append(f"Cook: {recipe['cook_time']} min")
+                total_time = (recipe.get("prep_time") or 0) + (recipe.get("cook_time") or 0)
+                if total_time:
+                    times.append(f"Total: {total_time} min")
+                if times:
+                    desc_parts.append(" | ".join(times))
+
+                # Ingredients
+                if recipe.get("ingredients") and not is_leftover:
+                    desc_parts.append("")
+                    desc_parts.append("--- Ingredients ---")
+                    for ing in recipe["ingredients"]:
+                        q = str(ing.get("qty", "")) if ing.get("qty") else ""
+                        u = f" {ing['unit']}" if ing.get("unit") else ""
+                        desc_parts.append(f"• {q}{u} {ing['item']}".strip())
+
+                # Steps
+                if recipe.get("steps") and not is_leftover:
+                    desc_parts.append("")
+                    desc_parts.append("--- Steps ---")
+                    for j, step in enumerate(recipe["steps"], 1):
+                        desc_parts.append(f"{j}. {step}")
+
+                # Notes
+                if recipe.get("notes"):
+                    desc_parts.append("")
+                    desc_parts.append(f"Tip: {recipe['notes']}")
+
+                # Source URL
+                if recipe.get("source_url"):
+                    desc_parts.append("")
+                    desc_parts.append(f"Source: {recipe['source_url']}")
+
+            description = "\\n".join(desc_parts)
+
+            event_lines = [
                 "BEGIN:VEVENT",
                 f"UID:{uid}",
                 f"DTSTAMP:{now_stamp}",
@@ -561,9 +609,16 @@ def export_calendar_ics(plan: dict, filepath: Path, timezone: str = "America/New
                 f"DTEND;TZID={timezone}:{date_str}T{end_time}00",
                 f"SUMMARY:{summary}",
                 f"DESCRIPTION:{description}",
+            ]
+            if recipe and recipe.get("image_url"):
+                event_lines.append(f"IMAGE;VALUE=URI:{recipe['image_url']}")
+            if recipe and recipe.get("source_url"):
+                event_lines.append(f"URL:{recipe['source_url']}")
+            event_lines.extend([
                 "STATUS:CONFIRMED",
                 "END:VEVENT",
             ])
+            lines.extend(event_lines)
 
     lines.append("END:VCALENDAR")
 

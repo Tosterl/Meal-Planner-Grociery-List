@@ -39,6 +39,36 @@
   --costco-color: #e31837;
 }
 
+/* ═══ DARK MODE ═══ */
+[data-theme="dark"] {
+  --bg: #1a1a2e;
+  --bg-card: #16213e;
+  --bg-warm: #1a1a2e;
+  --bg-hero: #0f0f1a;
+  --ink: #e8e8e8;
+  --ink-light: #b0b0b0;
+  --ink-muted: #888;
+  --accent: #e07a3e;
+  --accent-hover: #f09050;
+  --accent-light: #2a1f18;
+  --green: #4caf6a;
+  --green-light: #1a2e1f;
+  --green-dark: #5cc07a;
+  --blue: #4da6d4;
+  --blue-light: #1a2a3e;
+  --gold: #e0b840;
+  --gold-light: #2a2510;
+  --red: #e05545;
+  --red-light: #2e1a18;
+  --border: #2a2a3e;
+  --border-dark: #3a3a50;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+}
+[data-theme="dark"] img { opacity: 0.9; }
+[data-theme="dark"] .modal-overlay.active { background: rgba(0,0,0,0.7); }
+
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
@@ -954,6 +984,62 @@ textarea { resize: vertical; min-height: 60px; }
 }
 
 .toast.show { transform: translateX(-50%) translateY(0); }
+.toast.toast-success { background: var(--green-dark); }
+.toast.toast-error { background: var(--red); }
+.toast.toast-warning { background: var(--gold); color: #1b1710; }
+
+/* ═══ LOADING SPINNER ═══ */
+.spinner { display: inline-block; width: 18px; height: 18px; border: 2.5px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 0.4rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-loading { pointer-events: none; opacity: 0.7; }
+
+/* ═══ MACRO TRACKER ═══ */
+.macro-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.macro-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; text-align: center; }
+.macro-card h4 { font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 0.5rem; }
+.macro-ring { position: relative; width: 100px; height: 100px; margin: 0 auto 0.5rem; }
+.macro-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.macro-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+.macro-ring .ring-bg { stroke: var(--border); }
+.macro-ring .ring-fill { transition: stroke-dashoffset 0.6s ease; }
+.macro-ring .ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.macro-ring .ring-value { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; }
+.macro-ring .ring-unit { font-size: 0.65rem; color: var(--ink-muted); }
+.macro-goals-form { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: end; margin-top: 1rem; padding: 1rem; background: var(--bg-warm); border-radius: var(--radius-sm); }
+.macro-goals-form label { font-size: 0.75rem; font-weight: 600; display: flex; flex-direction: column; gap: 0.25rem; }
+.macro-goals-form input { width: 80px; padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-xs); font-size: 0.82rem; background: var(--bg-card); color: var(--ink); }
+.macro-day-breakdown { margin-top: 1rem; }
+.macro-meal-row { display: flex; align-items: center; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
+.macro-meal-row:last-child { border-bottom: none; }
+.macro-meal-name { font-weight: 600; min-width: 120px; }
+.macro-meal-stats { display: flex; gap: 1rem; flex: 1; }
+.macro-meal-stat { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; }
+
+/* ═══ COOKING TIMER ═══ */
+.timer-container { position: fixed; bottom: 5rem; right: 1.5rem; z-index: 200; display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-end; }
+.timer-pill { display: flex; align-items: center; gap: 0.5rem; background: var(--bg-hero); color: #faf8f4; padding: 0.5rem 1rem; border-radius: 50px; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; box-shadow: var(--shadow-lg); animation: fadeIn 0.25s ease; cursor: pointer; }
+.timer-pill .timer-name { font-family: 'Outfit', sans-serif; font-size: 0.75rem; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.timer-pill.timer-done { background: var(--green); animation: timerPulse 1s ease infinite; }
+@keyframes timerPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+.timer-pill button { background: none; border: none; color: #faf8f4; cursor: pointer; font-size: 1rem; padding: 0; opacity: 0.7; }
+.timer-pill button:hover { opacity: 1; }
+.timer-modal-body { display: flex; flex-direction: column; gap: 1rem; }
+.timer-presets { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.timer-preset-btn { padding: 0.4rem 0.8rem; border: 1px solid var(--border); border-radius: 50px; background: var(--bg-warm); cursor: pointer; font-size: 0.8rem; transition: all 0.15s; }
+.timer-preset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ═══ STAR RATINGS ═══ */
+.star-rating { display: inline-flex; gap: 2px; cursor: pointer; }
+.star-rating .star { font-size: 1.1rem; color: var(--border-dark); transition: color 0.12s, transform 0.12s; }
+.star-rating .star.filled { color: var(--gold); }
+.star-rating .star:hover { transform: scale(1.2); }
+.star-rating-display { display: inline-flex; gap: 1px; margin-left: 0.3rem; }
+.star-rating-display .star { font-size: 0.7rem; color: var(--border-dark); }
+.star-rating-display .star.filled { color: var(--gold); }
+
+/* ═══ THEME TOGGLE ═══ */
+.theme-toggle { background: none; border: 1px solid rgba(250,248,244,0.2); color: #faf8f4; cursor: pointer; padding: 0.35rem 0.7rem; border-radius: 50px; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.35rem; }
+.theme-toggle:hover { background: rgba(250,248,244,0.1); border-color: rgba(250,248,244,0.4); }
 
 .empty-state { text-align: center; padding: 3.5rem 2rem; color: var(--ink-muted); }
 .empty-state .empty-icon { font-size: 3rem; margin-bottom: 0.75rem; }
@@ -1213,17 +1299,28 @@ textarea { resize: vertical; min-height: 60px; }
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 768px) {
   .header-inner { padding: 0.6rem 1rem; flex-wrap: wrap; }
-  nav { width: 100%; justify-content: center; }
-  nav button { font-size: 0.75rem; padding: 0.35rem 0.6rem; }
-  main { padding: 1rem; }
-  .recipe-grid { grid-template-columns: 1fr; }
+  nav { width: 100%; justify-content: center; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+  nav button { font-size: 0.75rem; padding: 0.45rem 0.7rem; min-height: 44px; white-space: nowrap; }
+  main { padding: 0.75rem; }
+  .recipe-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
   .plan-day { grid-template-columns: 70px 1fr; }
   .plan-header { display: none; }
   .form-row, .form-row-3, .form-row-4 { grid-template-columns: 1fr; }
-  .view-header { flex-direction: column; }
+  .view-header { flex-direction: column; gap: 0.5rem; }
+  .btn-group { flex-wrap: wrap; }
   .cost-summary { grid-template-columns: 1fr; }
   .tonight-results { grid-template-columns: 1fr; }
   .pantry-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .modal-content { max-width: 95vw !important; max-height: 90vh; margin: 0.5rem; }
+  .macro-dashboard { grid-template-columns: repeat(2, 1fr); }
+  .macro-ring { width: 80px; height: 80px; }
+  .timer-container { bottom: 4rem; right: 0.75rem; }
+  .btn { min-height: 44px; }
+}
+@media (max-width: 480px) {
+  nav button { font-size: 0.68rem; padding: 0.4rem 0.5rem; }
+  .recipe-grid { grid-template-columns: 1fr; }
+  .macro-dashboard { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1238,9 +1335,13 @@ textarea { resize: vertical; min-height: 60px; }
       <button data-view="pricing">Pricing</button>
       <button data-view="grocery">Grocery List</button>
       <button data-view="pantry">Pantry</button>
+      <button data-view="macros">Macros</button>
       <button data-view="tonight">Tonight?</button>
       <button data-view="help">Help</button>
     </nav>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
+      <span id="theme-icon">🌙</span>
+    </button>
   </div>
 </header>
 
@@ -1280,7 +1381,8 @@ textarea { resize: vertical; min-height: 60px; }
         <button class="btn btn-secondary btn-sm" onclick="budgetFillWeek()" title="Fill week with cheapest recipes under budget">💰 Budget Fill</button>
         <button class="btn btn-secondary btn-sm" onclick="clearCurrentWeek()">Clear Week</button>
         <button class="btn btn-secondary btn-sm" onclick="openFamilyVote()" title="Let family vote on recipes">🗳️ Family Vote</button>
-        <button class="btn btn-primary btn-sm" onclick="exportToCalendar()" title="Export to Google/Outlook/Apple Calendar">📅 Export to Calendar</button>
+        <button class="btn btn-primary btn-sm" onclick="exportToCalendar()" title="Download .ics file">📅 Export .ics</button>
+        <button class="btn btn-primary btn-sm" id="publish-btn" onclick="publishToCalendar()" title="Push to Skylight / synced calendars" style="background:var(--green);">🚀 Publish to Skylight</button>
       </div>
     </div>
 
@@ -1363,20 +1465,59 @@ textarea { resize: vertical; min-height: 60px; }
     </div>
   </div>
 
+  <!-- ═══════════════ MACROS VIEW ═══════════════ -->
+  <div id="macros-view" class="view">
+    <div class="view-header">
+      <div>
+        <h2>Macro Tracker</h2>
+        <div class="subtitle" id="macros-subtitle">Track daily nutrition vs your goals</div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-secondary btn-sm" onclick="openMacroGoals()">Set Goals</button>
+      </div>
+    </div>
+    <div class="macro-dashboard" id="macro-dashboard"></div>
+    <div id="macro-goals-panel" style="display:none;">
+      <div class="macro-goals-form">
+        <label>Calories <input type="number" id="goal-cal" placeholder="2000"></label>
+        <label>Protein (g) <input type="number" id="goal-protein" placeholder="150"></label>
+        <label>Carbs (g) <input type="number" id="goal-carb" placeholder="250"></label>
+        <label>Fat (g) <input type="number" id="goal-fat" placeholder="65"></label>
+        <label>Goal <select id="goal-type" style="padding:0.35rem 0.5rem;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:0.82rem;background:var(--bg-card);color:var(--ink);">
+          <option value="lose">Lose Weight</option>
+          <option value="maintain">Maintain</option>
+          <option value="gain">Gain Muscle</option>
+        </select></label>
+        <button class="btn btn-primary btn-sm" onclick="saveMacroGoals()">Save Goals</button>
+      </div>
+    </div>
+    <div class="macro-day-breakdown" id="macro-day-breakdown">
+      <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:0.75rem;">Today's Meals</h3>
+      <div id="macro-meals-list"></div>
+    </div>
+    <div style="margin-top:1.5rem;">
+      <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:0.75rem;">Weekly Overview</h3>
+      <div id="macro-weekly-chart" style="display:grid;grid-template-columns:repeat(7,1fr);gap:0.5rem;"></div>
+    </div>
+  </div>
+
   <!-- ═══════════════ TONIGHT VIEW ═══════════════ -->
   <div id="tonight-view" class="view">
     <div class="view-header">
       <div>
         <h2>What Can I Make?</h2>
-        <div class="subtitle">Enter what's in your fridge to find matching recipes</div>
+        <div class="subtitle">Finds recipes you can make with what's in your pantry</div>
       </div>
     </div>
     <div style="max-width:600px;">
       <div class="form-group">
-        <label>Ingredients I have (comma-separated or one per line)</label>
+        <label>Ingredients I have (auto-filled from pantry — edit or add more)</label>
         <textarea id="tonight-ingredients" rows="4" placeholder="chicken breast, garlic, olive oil, broccoli..."></textarea>
       </div>
-      <button class="btn btn-primary" onclick="runTonightSearch()">Find Recipes</button>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="runTonightSearch()">Find Recipes</button>
+        <button class="btn btn-secondary" onclick="loadPantryIntoTonight()">🔄 Reload from Pantry</button>
+      </div>
     </div>
     <div id="tonight-results" class="tonight-results" style="margin-top:1.25rem;"></div>
   </div>
@@ -1785,6 +1926,51 @@ textarea { resize: vertical; min-height: 60px; }
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ═══ COOKING TIMERS ═══ -->
+<div class="timer-container" id="timer-container"></div>
+
+<!-- ═══ TIMER MODAL ═══ -->
+<div class="modal-overlay" id="timer-modal" onclick="if(event.target===this)closeModal('timer-modal')">
+  <div class="modal-content" style="max-width:420px;">
+    <div class="modal-header">
+      <h3>Set Cooking Timer</h3>
+      <button class="btn btn-ghost" onclick="closeModal('timer-modal')">✕</button>
+    </div>
+    <div class="timer-modal-body">
+      <div class="form-group">
+        <label>Timer name</label>
+        <input type="text" id="timer-name-input" placeholder="e.g. Chicken in oven">
+      </div>
+      <div class="form-row" style="grid-template-columns: 1fr 1fr;">
+        <div class="form-group">
+          <label>Minutes</label>
+          <input type="number" id="timer-minutes-input" value="15" min="0" max="999">
+        </div>
+        <div class="form-group">
+          <label>Seconds</label>
+          <input type="number" id="timer-seconds-input" value="0" min="0" max="59">
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:0.4rem;">Quick Presets</div>
+        <div class="timer-presets">
+          <button class="timer-preset-btn" onclick="setTimerPreset(5,0)">5 min</button>
+          <button class="timer-preset-btn" onclick="setTimerPreset(10,0)">10 min</button>
+          <button class="timer-preset-btn" onclick="setTimerPreset(15,0)">15 min</button>
+          <button class="timer-preset-btn" onclick="setTimerPreset(20,0)">20 min</button>
+          <button class="timer-preset-btn" onclick="setTimerPreset(30,0)">30 min</button>
+          <button class="timer-preset-btn" onclick="setTimerPreset(45,0)">45 min</button>
+          <button class="timer-preset-btn" onclick="setTimerPreset(60,0)">1 hr</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;justify-content:flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('timer-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="startTimerFromModal()">Start Timer</button>
+      </div>
+    </div>
+  </div>
+</div>
 <input type="file" id="file-import" accept=".json" style="display:none" onchange="handleImport(event)" multiple>
 
 <script>
@@ -2207,7 +2393,8 @@ document.getElementById('main-nav').addEventListener('click', e => {
   if (view === 'pricing') renderPricing();
   if (view === 'grocery') generateGroceryList();
   if (view === 'pantry') renderPantry();
-  if (view === 'tonight') {}  // rendered on demand
+  if (view === 'macros') renderMacros();
+  if (view === 'tonight') loadPantryIntoTonight();
 });
 
 // ═══════════════════════════════════════════════════
@@ -2255,6 +2442,10 @@ function renderRecipes() {
     const nutri = getRecipeNutrition(r);
     const nutriStr = nutri.cal > 0 ? `~${Math.round(nutri.cal/r.servings)} cal/svg` : '';
 
+    // Star rating
+    const cardRating = getRatings()[slug] || 0;
+    const cardStars = cardRating ? `<span class="star-rating-display">${[1,2,3,4,5].map(s=>`<span class="star ${s<=cardRating?'filled':''}">${s<=cardRating?'★':'☆'}</span>`).join('')}</span>` : '';
+
     // Image
     const imgHtml = r.image_url
       ? `<img class="recipe-card-img" src="${r.image_url}" alt="${r.name}" onerror="this.outerHTML='<div class=recipe-card-img-placeholder>🍲</div>'">`
@@ -2270,7 +2461,7 @@ function renderRecipes() {
       ${imgHtml}
       <div class="recipe-card-body">
         <div class="recipe-name">${r.name}</div>
-        <div class="recipe-meta">${total?`<span>⏱ ${total}min</span>`:''}  <span>🍽 ${r.servings} svg</span>${nutriStr?`<span>🔥 ${nutriStr}</span>`:''}</div>
+        <div class="recipe-meta">${total?`<span>⏱ ${total}min</span>`:''}  <span>🍽 ${r.servings} svg</span>${nutriStr?`<span>🔥 ${nutriStr}</span>`:''}${cardStars}</div>
         ${costStr?`<div class="recipe-cost">💰 ${costStr}</div>`:''}
         <div class="recipe-tags-row">${tags}</div>
       </div>
@@ -2339,12 +2530,31 @@ function showDetail(slug) {
     </div>`;
   }
 
+  // Star rating
+  const rating = getRatings()[slug] || 0;
+  const starsHtml = `<div class="modal-section" style="display:flex;align-items:center;gap:0.75rem;">
+    <span style="font-size:0.82rem;font-weight:600;">Rate:</span>
+    <div class="star-rating" id="detail-stars">${[1,2,3,4,5].map(s =>
+      `<span class="star ${s<=rating?'filled':''}" onclick="rateRecipe('${slug}',${s})" onmouseover="previewStars(${s})" onmouseout="resetStars('${slug}')">${s<=rating?'★':'☆'}</span>`
+    ).join('')}</div>
+    ${rating ? `<span style="font-size:0.78rem;color:var(--gold);font-weight:600;">${rating}/5</span>` : ''}
+  </div>`;
+
+  // Timer buttons
+  const timerBtns = (r.prep_time || r.cook_time) ? `<div class="modal-section" style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+    ${r.prep_time ? `<button class="btn btn-secondary btn-sm" onclick="startTimer('${r.name} — Prep',${r.prep_time})">⏱ Prep Timer (${r.prep_time}m)</button>` : ''}
+    ${r.cook_time ? `<button class="btn btn-secondary btn-sm" onclick="startTimer('${r.name} — Cook',${r.cook_time})">🔥 Cook Timer (${r.cook_time}m)</button>` : ''}
+    <button class="btn btn-ghost btn-sm" onclick="openTimerModal()">Custom Timer</button>
+  </div>` : `<div class="modal-section"><button class="btn btn-ghost btn-sm" onclick="openTimerModal()">⏱ Set Timer</button></div>`;
+
   document.getElementById('detail-body').innerHTML = `
     ${imgHtml}
     <div class="modal-meta">${meta.map(m=>`<span>${m}</span>`).join('')}</div>
     <div style="margin-bottom:0.75rem">${tags}</div>
+    ${starsHtml}
     <div class="modal-section"><h4>Ingredients</h4><ul class="ingredient-list">${ings}</ul></div>
     ${steps?`<div class="modal-section"><h4>Steps</h4><ol class="steps-list">${steps}</ol></div>`:''}
+    ${timerBtns}
     ${notes}
     ${costHtml}
     ${nutriHtml}
@@ -3291,17 +3501,79 @@ function exportToCalendar() {
       uidCounter++;
       const uid = `mealplan-${icsDate}-${meal}-${uidCounter}@mealplanner`;
 
-      let description = `Recipe: ${cleanName}`;
-      if (isLeftover) description += '\\n(Leftover - no cooking needed!)';
-
-      // Get ingredients if available
       const recipe = recipes[slugify(cleanName)];
-      if (recipe && recipe.ingredients && !isLeftover) {
-        description += '\\n\\nIngredients:';
-        recipe.ingredients.forEach(ing => {
-          description += `\\n• ${ing.qty || ''} ${ing.unit || ''} ${ing.item}`.trim();
-        });
+
+      // Build rich description
+      let desc = [];
+      desc.push(`Recipe: ${cleanName}`);
+      if (isLeftover) desc.push('(Leftover - no cooking needed!)');
+
+      if (recipe) {
+        // Servings
+        if (recipe.servings) desc.push(`Servings: ${recipe.servings}`);
+
+        // Prep & cook times
+        const times = [];
+        if (recipe.prep_time) times.push(`Prep: ${recipe.prep_time} min`);
+        if (recipe.cook_time) times.push(`Cook: ${recipe.cook_time} min`);
+        const total = (recipe.prep_time||0) + (recipe.cook_time||0);
+        if (total) times.push(`Total: ${total} min`);
+        if (times.length) desc.push(times.join(' | '));
+
+        // Nutrition per serving
+        const nutri = getRecipeNutrition(recipe);
+        if (nutri.cal > 0) {
+          const srv = recipe.servings || 1;
+          desc.push('');
+          desc.push(`--- Nutrition (per serving) ---`);
+          desc.push(`Calories: ${Math.round(nutri.cal/srv)}`);
+          desc.push(`Protein: ${Math.round(nutri.protein/srv)}g`);
+          desc.push(`Carbs: ${Math.round(nutri.carb/srv)}g`);
+          desc.push(`Fat: ${Math.round(nutri.fat/srv)}g`);
+        }
+
+        // Cost estimate
+        const cost = getRecipeCost(recipe, 'kroger');
+        if (cost.total > 0) {
+          desc.push('');
+          desc.push(`--- Cost Estimate ---`);
+          desc.push(`Total: $${cost.total.toFixed(2)} | Per serving: $${(cost.total/(recipe.servings||1)).toFixed(2)}`);
+        }
+
+        // Ingredients
+        if (recipe.ingredients && recipe.ingredients.length && !isLeftover) {
+          desc.push('');
+          desc.push('--- Ingredients ---');
+          recipe.ingredients.forEach(ing => {
+            const q = ing.qty ? `${ing.qty}` : '';
+            const u = ing.unit ? ` ${ing.unit}` : '';
+            desc.push(`• ${q}${u} ${ing.item}`.trim());
+          });
+        }
+
+        // Steps
+        if (recipe.steps && recipe.steps.length && !isLeftover) {
+          desc.push('');
+          desc.push('--- Steps ---');
+          recipe.steps.forEach((s, i) => {
+            desc.push(`${i+1}. ${s}`);
+          });
+        }
+
+        // Notes
+        if (recipe.notes) {
+          desc.push('');
+          desc.push(`Tip: ${recipe.notes}`);
+        }
+
+        // Source URL
+        if (recipe.source_url) {
+          desc.push('');
+          desc.push(`Source: ${recipe.source_url}`);
+        }
       }
+
+      const description = desc.join('\\n');
 
       lines.push('BEGIN:VEVENT');
       lines.push(`UID:${uid}`);
@@ -3309,6 +3581,8 @@ function exportToCalendar() {
       lines.push(`DTEND:${icsDate}T${endTime}00`);
       lines.push(`SUMMARY:${emoji} ${meal.charAt(0).toUpperCase() + meal.slice(1)}: ${recipeName}`);
       lines.push(`DESCRIPTION:${description}`);
+      if (recipe && recipe.image_url) lines.push(`IMAGE;VALUE=URI:${recipe.image_url}`);
+      if (recipe && recipe.source_url) lines.push(`URL:${recipe.source_url}`);
       lines.push('STATUS:CONFIRMED');
       lines.push('END:VEVENT');
     }
@@ -3325,14 +3599,52 @@ function exportToCalendar() {
   showToast('Calendar exported! Import into Google/Outlook/Apple Calendar');
 }
 
+async function publishToCalendar() {
+  const plan = getPlan();
+  if (Object.keys(plan).length === 0) {
+    showToast('No meals planned! Fill the week first.', 'warning');
+    return;
+  }
+
+  const btn = document.getElementById('publish-btn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner"></span> Publishing...';
+  btn.classList.add('btn-loading');
+
+  try {
+    const res = await fetch(`${API_BASE}/api/publish`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      showToast(data.message || 'Published! Skylight will update soon.', 'success');
+    } else {
+      showToast(data.error || 'Publish failed', 'error');
+    }
+  } catch (err) {
+    showToast('Could not connect to API server. Is api_server.py running?', 'error');
+  } finally {
+    btn.innerHTML = originalText;
+    btn.classList.remove('btn-loading');
+  }
+}
+
 // ═══════════════════════════════════════════════════
 //  MODAL & TOAST
 // ═══════════════════════════════════════════════════
 function openModal(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden';}
 function closeModal(id){document.getElementById(id).classList.remove('active');document.body.style.overflow='';}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+function showToast(msg, type='') {
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show' + (type ? ` toast-${type}` : '');
+  setTimeout(()=>{ t.className='toast'; },2400);
+}
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('detail-modal');closeModal('edit-modal');closeModal('url-import-modal');closeModal('pantry-modal');closePicker();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('detail-modal');closeModal('edit-modal');closeModal('url-import-modal');closeModal('pantry-modal');closeModal('timer-modal');closePicker();}});
 
 // ═══════════════════════════════════════════════════
 //  RECIPE URL IMPORT
@@ -3415,7 +3727,7 @@ async function doScrapeRecipe() {
   const status = document.getElementById('url-import-status');
   if (!url) { status.textContent = 'Please enter a URL.'; status.style.color = 'var(--red)'; return; }
 
-  status.textContent = 'Fetching recipe...';
+  status.innerHTML = '<span class="spinner"></span> Fetching recipe...';
   status.style.color = 'var(--ink-muted)';
 
   try {
@@ -3428,7 +3740,7 @@ async function doScrapeRecipe() {
     setRecipes(recipes);
     closeModal('url-import-modal');
     renderRecipes();
-    showToast(`Imported: ${recipe.name}`);
+    showToast(`Imported: ${recipe.name}`, 'success');
   } catch(err) {
     status.textContent = `Error: ${err.message}`;
     status.style.color = 'var(--red)';
@@ -3669,7 +3981,7 @@ async function searchKrogerProducts() {
   }
 
   const resultsDiv = document.getElementById('kroger-search-results');
-  resultsDiv.innerHTML = '<div style="padding:1rem;color:var(--ink-muted);font-size:0.85rem;">Searching Kroger...</div>';
+  resultsDiv.innerHTML = '<div style="padding:1rem;color:var(--ink-muted);font-size:0.85rem;"><span class="spinner"></span> Searching Kroger...</div>';
 
   try {
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(query)}`);
@@ -3772,6 +4084,12 @@ async function addKrogerProductToPantry(index) {
   renderPantry();
   showToast(`Added: ${product.name}`);
 
+  // Scroll pantry grid into view so user can see the newly added item
+  const pantryGrid = document.getElementById('pantry-grid');
+  if (pantryGrid) {
+    pantryGrid.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
   // Mark item as added in search results (keep results visible for multi-add)
   const card = document.getElementById(`kroger-result-${index}`);
   if (card) {
@@ -3818,6 +4136,25 @@ setInterval(checkKrogerServer, 30000);
 // ═══════════════════════════════════════════════════
 //  TONIGHT? — RECIPE MATCHER
 // ═══════════════════════════════════════════════════
+function loadPantryIntoTonight() {
+  const pantry = getPantry();
+  const krogerItems = getKrogerPantry();
+  const ingredients = [];
+  // Add manual pantry items
+  for (const name of Object.keys(pantry)) {
+    ingredients.push(name);
+  }
+  // Add Kroger pantry items (extract a clean ingredient name)
+  for (const item of krogerItems) {
+    const name = (item.name || '').replace(/\b(kroger|simple truth|private selection)\b/gi, '').trim();
+    if (name) ingredients.push(name);
+  }
+  const textarea = document.getElementById('tonight-ingredients');
+  if (ingredients.length) {
+    textarea.value = ingredients.join(', ');
+  }
+}
+
 function runTonightSearch() {
   const raw = document.getElementById('tonight-ingredients').value;
   if (!raw.trim()) { showToast('Enter some ingredients first'); return; }
@@ -3972,6 +4309,65 @@ const NUTRITION_DB = {
   "milk": { cal: 122, protein: 8, carb: 12, fat: 4.8, per: "cup" },
   "sugar": { cal: 49, protein: 0, carb: 12.6, fat: 0, per: "tbsp" },
   "flour": { cal: 455, protein: 13, carb: 95, fat: 1.2, per: "cup" },
+  "salmon": { cal: 208, protein: 20, carb: 0, fat: 13, per: "4oz" },
+  "shrimp": { cal: 84, protein: 20, carb: 0.2, fat: 0.5, per: "4oz" },
+  "ground turkey": { cal: 170, protein: 21, carb: 0, fat: 9, per: "4oz" },
+  "pork chop": { cal: 187, protein: 26, carb: 0, fat: 8.5, per: "4oz" },
+  "tofu": { cal: 80, protein: 9, carb: 2, fat: 4.5, per: "4oz" },
+  "potato": { cal: 161, protein: 4.3, carb: 37, fat: 0.2, per: "each" },
+  "sweet potato": { cal: 103, protein: 2.3, carb: 24, fat: 0.1, per: "each" },
+  "spinach": { cal: 7, protein: 0.9, carb: 1.1, fat: 0.1, per: "cup" },
+  "tomato": { cal: 22, protein: 1.1, carb: 4.8, fat: 0.2, per: "each" },
+  "carrot": { cal: 25, protein: 0.6, carb: 6, fat: 0.1, per: "each" },
+  "corn": { cal: 132, protein: 5, carb: 29, fat: 1.8, per: "cup" },
+  "green beans": { cal: 31, protein: 1.8, carb: 7, fat: 0.1, per: "cup" },
+  "mushroom": { cal: 15, protein: 2.2, carb: 2.3, fat: 0.2, per: "cup" },
+  "zucchini": { cal: 20, protein: 1.5, carb: 3.5, fat: 0.4, per: "cup" },
+  "celery": { cal: 14, protein: 0.7, carb: 3, fat: 0.2, per: "cup" },
+  "cucumber": { cal: 16, protein: 0.7, carb: 3.1, fat: 0.2, per: "cup" },
+  "lettuce": { cal: 5, protein: 0.5, carb: 1, fat: 0.1, per: "cup" },
+  "cabbage": { cal: 22, protein: 1.1, carb: 5.2, fat: 0.1, per: "cup" },
+  "cauliflower": { cal: 25, protein: 2, carb: 5, fat: 0.3, per: "cup" },
+  "asparagus": { cal: 27, protein: 3, carb: 5, fat: 0.2, per: "cup" },
+  "bread": { cal: 79, protein: 2.7, carb: 15, fat: 1, per: "slice" },
+  "tortilla": { cal: 140, protein: 3.6, carb: 24, fat: 3.5, per: "each" },
+  "cream cheese": { cal: 99, protein: 1.7, carb: 1.6, fat: 9.8, per: "oz" },
+  "yogurt": { cal: 100, protein: 17, carb: 6, fat: 0.7, per: "cup" },
+  "peanut butter": { cal: 94, protein: 4, carb: 3.4, fat: 8, per: "tbsp" },
+  "coconut milk": { cal: 445, protein: 4.6, carb: 6.4, fat: 48, per: "can" },
+  "lentils": { cal: 230, protein: 18, carb: 40, fat: 0.8, per: "cup" },
+  "chickpeas": { cal: 269, protein: 14.5, carb: 45, fat: 4.2, per: "can" },
+  "quinoa": { cal: 222, protein: 8, carb: 39, fat: 3.6, per: "cup" },
+  "brown rice": { cal: 216, protein: 5, carb: 45, fat: 1.8, per: "cup" },
+  "cheddar": { cal: 113, protein: 7, carb: 0.4, fat: 9.3, per: "oz" },
+  "mozzarella": { cal: 85, protein: 6.3, carb: 0.7, fat: 6.3, per: "oz" },
+  "parmesan": { cal: 110, protein: 10, carb: 0.9, fat: 7.3, per: "oz" },
+  "ground pork": { cal: 252, protein: 22, carb: 0, fat: 18, per: "4oz" },
+  "sausage": { cal: 286, protein: 16, carb: 1, fat: 24, per: "4oz" },
+  "ham": { cal: 120, protein: 18, carb: 1.5, fat: 4.5, per: "4oz" },
+  "tuna": { cal: 132, protein: 29, carb: 0, fat: 1, per: "can" },
+  "banana": { cal: 105, protein: 1.3, carb: 27, fat: 0.4, per: "each" },
+  "apple": { cal: 95, protein: 0.5, carb: 25, fat: 0.3, per: "each" },
+  "lemon": { cal: 17, protein: 0.6, carb: 5.4, fat: 0.2, per: "each" },
+  "lime": { cal: 11, protein: 0.5, carb: 3.7, fat: 0.1, per: "each" },
+  "ramen noodles": { cal: 188, protein: 5, carb: 26, fat: 7, per: "package" },
+  "worcestershire sauce": { cal: 13, protein: 0, carb: 3.3, fat: 0, per: "tbsp" },
+  "ketchup": { cal: 20, protein: 0.2, carb: 5.3, fat: 0, per: "tbsp" },
+  "sriracha": { cal: 5, protein: 0.1, carb: 1, fat: 0.1, per: "tsp" },
+  "vegetable oil": { cal: 120, protein: 0, carb: 0, fat: 14, per: "tbsp" },
+  "sesame oil": { cal: 40, protein: 0, carb: 0, fat: 4.5, per: "tsp" },
+  "broth": { cal: 10, protein: 1, carb: 1, fat: 0.5, per: "cup" },
+  "tomato sauce": { cal: 59, protein: 3.2, carb: 13, fat: 0.4, per: "cup" },
+  "salsa": { cal: 36, protein: 1.8, carb: 7.6, fat: 0.2, per: "cup" },
+  "cumin": { cal: 8, protein: 0.4, carb: 0.9, fat: 0.5, per: "tsp" },
+  "chili powder": { cal: 8, protein: 0.4, carb: 1.3, fat: 0.4, per: "tsp" },
+  "paprika": { cal: 6, protein: 0.3, carb: 1.2, fat: 0.3, per: "tsp" },
+  "ginger": { cal: 2, protein: 0, carb: 0.4, fat: 0, per: "tsp" },
+  "curry powder": { cal: 7, protein: 0.3, carb: 1.2, fat: 0.3, per: "tsp" },
+  "cornstarch": { cal: 31, protein: 0, carb: 7.3, fat: 0, per: "tbsp" },
+  "brown sugar": { cal: 52, protein: 0, carb: 13.5, fat: 0, per: "tbsp" },
+  "cilantro": { cal: 1, protein: 0.1, carb: 0.1, fat: 0, per: "tbsp" },
+  "green onion": { cal: 5, protein: 0.3, carb: 1.1, fat: 0, per: "each" },
 };
 
 function getRecipeNutrition(recipe) {
@@ -4066,6 +4462,337 @@ function loadBundledRecipes(){
   Object.keys(saved).forEach(k=>{merged[k]=saved[k];});
   setRecipes(merged);
 }
+
+// ═══════════════════════════════════════════════════
+//  DARK MODE
+// ═══════════════════════════════════════════════════
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-icon').textContent = isDark ? '🌙' : '☀️';
+  LS.set('mp2_theme', isDark ? 'light' : 'dark');
+}
+(function initTheme() {
+  const saved = LS.get('mp2_theme', null);
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    setTimeout(() => { const icon = document.getElementById('theme-icon'); if (icon) icon.textContent = '☀️'; }, 0);
+  }
+})();
+
+// ═══════════════════════════════════════════════════
+//  STAR RATINGS
+// ═══════════════════════════════════════════════════
+const getRatings = () => LS.get('mp2_ratings', {});
+const setRatings = v => LS.set('mp2_ratings', v);
+
+function rateRecipe(slug, stars) {
+  const r = getRatings();
+  r[slug] = stars;
+  setRatings(r);
+  renderRecipes();
+  // Update stars in detail modal
+  const container = document.getElementById('detail-stars');
+  if (container) {
+    container.innerHTML = [1,2,3,4,5].map(s =>
+      `<span class="star ${s<=stars?'filled':''}" onclick="rateRecipe('${slug}',${s})" onmouseover="previewStars(${s})" onmouseout="resetStars('${slug}')">${s<=stars?'★':'☆'}</span>`
+    ).join('');
+  }
+  showToast(`Rated ${stars}/5 ★`, 'success');
+}
+
+function previewStars(n) {
+  const container = document.getElementById('detail-stars');
+  if (!container) return;
+  container.querySelectorAll('.star').forEach((s, i) => {
+    s.textContent = i < n ? '★' : '☆';
+    s.classList.toggle('filled', i < n);
+  });
+}
+
+function resetStars(slug) {
+  const rating = getRatings()[slug] || 0;
+  const container = document.getElementById('detail-stars');
+  if (!container) return;
+  container.querySelectorAll('.star').forEach((s, i) => {
+    s.textContent = i < rating ? '★' : '☆';
+    s.classList.toggle('filled', i < rating);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+//  COOKING TIMERS
+// ═══════════════════════════════════════════════════
+let activeTimers = [];
+let timerInterval = null;
+
+function startTimer(name, minutes, seconds = 0) {
+  const totalSeconds = minutes * 60 + seconds;
+  activeTimers.push({
+    id: Date.now(),
+    name: name || 'Timer',
+    total: totalSeconds,
+    remaining: totalSeconds,
+    done: false
+  });
+  if (!timerInterval) {
+    timerInterval = setInterval(tickTimers, 1000);
+  }
+  renderTimers();
+  showToast(`Timer started: ${name}`, 'success');
+}
+
+function tickTimers() {
+  let anyActive = false;
+  for (const timer of activeTimers) {
+    if (!timer.done) {
+      timer.remaining--;
+      if (timer.remaining <= 0) {
+        timer.remaining = 0;
+        timer.done = true;
+        timerAlarm(timer);
+      } else {
+        anyActive = true;
+      }
+    }
+  }
+  renderTimers();
+  if (!anyActive && activeTimers.every(t => t.done)) {
+    // Keep interval running for done pulse animation
+  }
+}
+
+function timerAlarm(timer) {
+  showToast(`⏰ ${timer.name} is done!`, 'success');
+  // Try to play a sound or vibrate
+  if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]);
+  // Try notification
+  if (Notification.permission === 'granted') {
+    new Notification('Timer Done!', { body: `${timer.name} is ready!`, icon: '🍽️' });
+  } else if (Notification.permission !== 'denied') {
+    Notification.requestPermission();
+  }
+}
+
+function removeTimer(id) {
+  activeTimers = activeTimers.filter(t => t.id !== id);
+  if (!activeTimers.length) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  renderTimers();
+}
+
+function renderTimers() {
+  const container = document.getElementById('timer-container');
+  if (!activeTimers.length) { container.innerHTML = ''; return; }
+  container.innerHTML = activeTimers.map(t => {
+    const m = Math.floor(t.remaining / 60);
+    const s = t.remaining % 60;
+    const timeStr = `${m}:${s.toString().padStart(2,'0')}`;
+    const pct = t.total > 0 ? Math.round((1 - t.remaining / t.total) * 100) : 100;
+    return `<div class="timer-pill ${t.done ? 'timer-done' : ''}">
+      <span class="timer-name">${t.name}</span>
+      <span>${t.done ? '✅ Done!' : timeStr}</span>
+      <button onclick="removeTimer(${t.id})" title="Dismiss">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function openTimerModal() {
+  document.getElementById('timer-name-input').value = '';
+  document.getElementById('timer-minutes-input').value = '15';
+  document.getElementById('timer-seconds-input').value = '0';
+  openModal('timer-modal');
+}
+
+function setTimerPreset(min, sec) {
+  document.getElementById('timer-minutes-input').value = min;
+  document.getElementById('timer-seconds-input').value = sec;
+}
+
+function startTimerFromModal() {
+  const name = document.getElementById('timer-name-input').value.trim() || 'Timer';
+  const min = parseInt(document.getElementById('timer-minutes-input').value) || 0;
+  const sec = parseInt(document.getElementById('timer-seconds-input').value) || 0;
+  if (min === 0 && sec === 0) { showToast('Set a time first', 'warning'); return; }
+  startTimer(name, min, sec);
+  closeModal('timer-modal');
+}
+
+// ═══════════════════════════════════════════════════
+//  MACRO TRACKER
+// ═══════════════════════════════════════════════════
+const getMacroGoals = () => LS.get('mp2_macro_goals', { cal: 2000, protein: 150, carb: 250, fat: 65, type: 'maintain' });
+const setMacroGoals = v => LS.set('mp2_macro_goals', v);
+
+function openMacroGoals() {
+  const panel = document.getElementById('macro-goals-panel');
+  const goals = getMacroGoals();
+  document.getElementById('goal-cal').value = goals.cal;
+  document.getElementById('goal-protein').value = goals.protein;
+  document.getElementById('goal-carb').value = goals.carb;
+  document.getElementById('goal-fat').value = goals.fat;
+  document.getElementById('goal-type').value = goals.type || 'maintain';
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function saveMacroGoals() {
+  const goals = {
+    cal: parseInt(document.getElementById('goal-cal').value) || 2000,
+    protein: parseInt(document.getElementById('goal-protein').value) || 150,
+    carb: parseInt(document.getElementById('goal-carb').value) || 250,
+    fat: parseInt(document.getElementById('goal-fat').value) || 65,
+    type: document.getElementById('goal-type').value
+  };
+  setMacroGoals(goals);
+  document.getElementById('macro-goals-panel').style.display = 'none';
+  renderMacros();
+  showToast('Macro goals saved!', 'success');
+}
+
+function getDayMacros(dateStr) {
+  const plan = getPlan();
+  const recipes = getRecipes();
+  const totals = { cal: 0, protein: 0, carb: 0, fat: 0, meals: [] };
+
+  MEALS.forEach(meal => {
+    const key = `${dateStr}-${meal}`;
+    const recipeName = plan[key];
+    if (!recipeName) return;
+
+    const slug = Object.keys(recipes).find(k => recipes[k].name === recipeName);
+    if (!slug) return;
+
+    const r = recipes[slug];
+    const nutri = getRecipeNutrition(r);
+    const servings = r.servings || 1;
+    // Assume 1 serving per person
+    const perServing = {
+      cal: Math.round(nutri.cal / servings),
+      protein: Math.round(nutri.protein / servings),
+      carb: Math.round(nutri.carb / servings),
+      fat: Math.round(nutri.fat / servings)
+    };
+    totals.cal += perServing.cal;
+    totals.protein += perServing.protein;
+    totals.carb += perServing.carb;
+    totals.fat += perServing.fat;
+    totals.meals.push({ name: recipeName, meal, ...perServing });
+  });
+  return totals;
+}
+
+function renderMacroRing(value, goal, color, label, unit) {
+  const pct = goal > 0 ? Math.min(value / goal, 1.5) : 0;
+  const displayPct = Math.min(pct, 1);
+  const circumference = 2 * Math.PI * 42;
+  const offset = circumference * (1 - displayPct);
+  const overColor = pct > 1 ? 'var(--red)' : color;
+
+  return `<div class="macro-card">
+    <h4>${label}</h4>
+    <div class="macro-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="42"></circle>
+        <circle class="ring-fill" cx="50" cy="50" r="42" stroke="${overColor}" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"></circle>
+      </svg>
+      <div class="ring-label">
+        <span class="ring-value" style="color:${overColor}">${value}</span>
+        <span class="ring-unit">/ ${goal}${unit}</span>
+      </div>
+    </div>
+    <div style="font-size:0.72rem;color:var(--ink-muted);">${Math.round(pct*100)}% of goal</div>
+  </div>`;
+}
+
+function renderMacros() {
+  const goals = getMacroGoals();
+  const today = formatDate(new Date());
+  const todayMacros = getDayMacros(today);
+
+  // Goal type label
+  const typeLabels = { lose: 'Weight Loss', maintain: 'Maintenance', gain: 'Muscle Gain' };
+  document.getElementById('macros-subtitle').textContent =
+    `${typeLabels[goals.type] || 'Custom'} plan — ${goals.cal} cal target`;
+
+  // Render rings
+  const dashboard = document.getElementById('macro-dashboard');
+  dashboard.innerHTML =
+    renderMacroRing(todayMacros.cal, goals.cal, 'var(--accent)', 'Calories', '') +
+    renderMacroRing(todayMacros.protein, goals.protein, 'var(--blue)', 'Protein', 'g') +
+    renderMacroRing(todayMacros.carb, goals.carb, 'var(--gold)', 'Carbs', 'g') +
+    renderMacroRing(todayMacros.fat, goals.fat, 'var(--red)', 'Fat', 'g');
+
+  // Today's meal breakdown
+  const mealsList = document.getElementById('macro-meals-list');
+  if (todayMacros.meals.length) {
+    mealsList.innerHTML = todayMacros.meals.map(m =>
+      `<div class="macro-meal-row">
+        <span class="macro-meal-name">${m.meal.charAt(0).toUpperCase()+m.meal.slice(1)}: ${m.name}</span>
+        <div class="macro-meal-stats">
+          <span class="macro-meal-stat" style="color:var(--accent);">${m.cal} cal</span>
+          <span class="macro-meal-stat" style="color:var(--blue);">${m.protein}g P</span>
+          <span class="macro-meal-stat" style="color:var(--gold);">${m.carb}g C</span>
+          <span class="macro-meal-stat" style="color:var(--red);">${m.fat}g F</span>
+        </div>
+      </div>`
+    ).join('');
+  } else {
+    mealsList.innerHTML = '<div style="color:var(--ink-muted);font-size:0.85rem;padding:0.5rem 0;">No meals planned for today. Add meals in the Planner tab.</div>';
+  }
+
+  // Weekly chart
+  const weekChart = document.getElementById('macro-weekly-chart');
+  const ws = currentWeekStart;
+  weekChart.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(ws.getTime() + i * 86400000);
+    const dateStr = formatDate(d);
+    const dayMacros = getDayMacros(dateStr);
+    const isToday = dateStr === today;
+    const calPct = goals.cal > 0 ? Math.min(dayMacros.cal / goals.cal, 1) : 0;
+    const dayName = DAYS_SHORT[d.getDay()];
+
+    weekChart.innerHTML += `<div style="text-align:center;${isToday?'background:var(--accent-light);border-radius:var(--radius-sm);padding:0.5rem 0.25rem;':'padding:0.5rem 0.25rem;'}">
+      <div style="font-size:0.68rem;font-weight:700;color:${isToday?'var(--accent)':'var(--ink-muted)'};margin-bottom:0.35rem;">${dayName}</div>
+      <div style="height:60px;background:var(--border);border-radius:4px;position:relative;overflow:hidden;">
+        <div style="position:absolute;bottom:0;width:100%;height:${calPct*100}%;background:${calPct>1?'var(--red)':'var(--green)'};border-radius:4px;transition:height 0.3s;"></div>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;margin-top:0.25rem;color:var(--ink-light);">${dayMacros.cal}</div>
+    </div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  KEYBOARD ACCESSIBILITY
+// ═══════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  // Ctrl+1-8 to switch tabs
+  if (e.ctrlKey && e.key >= '1' && e.key <= '8') {
+    e.preventDefault();
+    const btns = document.querySelectorAll('#main-nav button[data-view]');
+    const idx = parseInt(e.key) - 1;
+    if (btns[idx]) btns[idx].click();
+  }
+  // Ctrl+D for dark mode
+  if (e.ctrlKey && e.key === 'd') {
+    e.preventDefault();
+    toggleTheme();
+  }
+  // Ctrl+T for timer
+  if (e.ctrlKey && e.key === 't') {
+    e.preventDefault();
+    openTimerModal();
+  }
+});
+
+// Add aria-labels to nav buttons
+document.querySelectorAll('#main-nav button[data-view]').forEach(btn => {
+  btn.setAttribute('aria-label', `Navigate to ${btn.textContent} view`);
+  btn.setAttribute('role', 'tab');
+});
 
 // ═══════════════════════════════════════════════════
 //  INIT
