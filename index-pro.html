@@ -1063,6 +1063,8 @@ textarea { resize: vertical; min-height: 60px; }
   transition: opacity 0.15s;
 }
 .kroger-product:hover .add-badge { opacity: 1; }
+.kroger-product.already-added { border-color: var(--green); background: var(--green-light); opacity: 0.75; }
+.kroger-product.already-added .add-badge { opacity: 1; color: var(--green); }
 
 /* ═══ HELP VIEW ═══ */
 .help-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
@@ -3674,13 +3676,15 @@ async function searchKrogerProducts() {
       const aisle = r.aisle && r.aisle.description ? `📍 ${r.aisle.description}` : '';
       const details = [r.brand, r.size, aisle, stock].filter(Boolean).join(' · ');
 
-      return `<div class="kroger-product" onclick="addKrogerProductToPantry(${i})">
+      const addedUPCs = new Set(getKrogerPantry().map(p => p.upc));
+      const isAdded = addedUPCs.has(r.upc);
+      return `<div class="kroger-product ${isAdded ? 'already-added' : ''}" id="kroger-result-${i}" onclick="addKrogerProductToPantry(${i})">
         <div class="kroger-product-info">
           <div class="kroger-product-name">${r.name}</div>
           <div class="kroger-product-detail">${details}</div>
         </div>
         ${priceHtml}
-        <div class="add-badge">+ Add</div>
+        <div class="add-badge">${isAdded ? '✅ Added' : '+ Add'}</div>
       </div>`;
     }).join('');
 
@@ -3732,9 +3736,13 @@ async function addKrogerProductToPantry(index) {
   renderPantry();
   showToast(`Added: ${product.name}`);
 
-  // Clear search results
-  document.getElementById('kroger-search-results').innerHTML = '';
-  document.getElementById('kroger-search-input').value = '';
+  // Mark item as added in search results (keep results visible for multi-add)
+  const card = document.getElementById(`kroger-result-${index}`);
+  if (card) {
+    card.classList.add('already-added');
+    const badge = card.querySelector('.add-badge');
+    if (badge) badge.textContent = '✅ Added';
+  }
 }
 
 function openSetStoreModal() {
