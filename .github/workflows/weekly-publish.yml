@@ -1,0 +1,40 @@
+name: Weekly Meal Plan Publish
+
+on:
+  schedule:
+    - cron: '0 23 * * 0'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Generate meal plan and export ICS
+        run: python publish.py --no-push
+
+      - name: Commit and push updated files
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add meal-plan.ics plans/
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore: Weekly meal plan update (automated)"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

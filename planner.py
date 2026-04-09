@@ -26,6 +26,7 @@ RECIPES_DIR = BASE_DIR / "recipes"
 PLANS_DIR = BASE_DIR / "plans"
 FAVORITES_FILE = BASE_DIR / "favorites.json"
 HISTORY_FILE = BASE_DIR / "usage_history.json"
+BLOCKED_FILE = BASE_DIR / "blocked.json"
 
 RECIPES_DIR.mkdir(exist_ok=True)
 PLANS_DIR.mkdir(exist_ok=True)
@@ -220,6 +221,11 @@ def generate_plan(days: int = 7, meals: list[str] = None, strategy: str = "rando
     """
     meals = meals or MEAL_SLOTS
     all_recipes = list_recipes()
+
+    # Remove any recipes the user has blocked ("never again")
+    blocked = load_blocked()
+    if blocked:
+        all_recipes = [r for r in all_recipes if slugify(r["name"]) not in blocked]
 
     if not all_recipes:
         print("❌ No recipes found. Add some first with: planner.py add")
@@ -655,6 +661,22 @@ def load_favorites() -> list:
     return []
 
 
+# ─── Blocked Recipes ("Never Again") ─────────────────────────────────────────
+
+def load_blocked() -> list:
+    """Load list of blocked recipe slugs."""
+    if BLOCKED_FILE.exists():
+        with open(BLOCKED_FILE) as f:
+            return json.load(f)
+    return []
+
+
+def save_blocked(blocked: list):
+    """Save blocked recipe slugs to disk."""
+    with open(BLOCKED_FILE, "w", encoding="utf-8") as f:
+        json.dump(blocked, f)
+
+
 # ─── Usage History & Smart Planning ───────────────────────────────────────────
 
 def load_usage_history() -> dict:
@@ -939,6 +961,15 @@ Examples:
     fav_parser = subparsers.add_parser("fav", help="Toggle favorite")
     fav_parser.add_argument("name", help="Recipe name")
 
+    # block / unblock / blocked
+    block_parser = subparsers.add_parser("block", help="Block a recipe (never suggest it again)")
+    block_parser.add_argument("name", help="Recipe name")
+
+    unblock_parser = subparsers.add_parser("unblock", help="Remove a recipe from the blocked list")
+    unblock_parser.add_argument("name", help="Recipe name")
+
+    subparsers.add_parser("blocked", help="List all blocked recipes")
+
     # import (from JSON)
     import_parser = subparsers.add_parser("import", help="Import recipe from a JSON file")
     import_parser.add_argument("filepath", help="Path to JSON file")
@@ -991,6 +1022,38 @@ Examples:
 
     elif args.command == "fav":
         toggle_favorite(args.name)
+
+    elif args.command == "block":
+        slug = slugify(args.name)
+        blocked = load_blocked()
+        if slug in blocked:
+            print(f"⛔ Already blocked: {args.name}")
+        elif not load_recipe(args.name):
+            print(f"❌ Recipe not found: {args.name}")
+        else:
+            blocked.append(slug)
+            save_blocked(blocked)
+            print(f"⛔ Blocked: {args.name}")
+
+    elif args.command == "unblock":
+        slug = slugify(args.name)
+        blocked = load_blocked()
+        if slug in blocked:
+            blocked.remove(slug)
+            save_blocked(blocked)
+            print(f"✅ Unblocked: {args.name}")
+        else:
+            print(f"❌ Not in blocked list: {args.name}")
+
+    elif args.command == "blocked":
+        blocked = load_blocked()
+        if not blocked:
+            print("No recipes are blocked.")
+        else:
+            print(f"\n⛔ Blocked Recipes ({len(blocked)}):")
+            for slug in blocked:
+                print(f"   • {slug.replace('-', ' ').title()}")
+            print()
 
     elif args.command == "import":
         try:

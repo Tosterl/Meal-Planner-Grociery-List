@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Vote — Meal Planner Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf8f4;
+  --bg-card: #ffffff;
+  --bg-warm: #f5f1eb;
+  --bg-hero: #1b1710;
+  --ink: #1b1710;
+  --ink-light: #5c5347;
+  --ink-muted: #9a8f82;
+  --accent: #d4622b;
+  --accent-hover: #b8511f;
+  --accent-light: #fdeee6;
+  --green: #3d7a4f;
+  --green-light: #e5f2e8;
+  --green-dark: #2d5e3b;
+  --red: #c0392b;
+  --red-light: #fce8e6;
+  --border: #e8e2d9;
+  --shadow-sm: 0 1px 3px rgba(27,23,16,0.06);
+  --shadow: 0 4px 12px rgba(27,23,16,0.08);
+  --shadow-lg: 0 12px 40px rgba(27,23,16,0.12);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+header {
+  background: var(--bg-hero);
+  color: #faf8f4;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ═══ VOTING CARD ═══ */
+.vote-wrapper {
+  position: relative;
+  min-height: 400px;
+}
+
+.vote-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  animation: cardIn 0.25s ease-out;
+}
+
+@keyframes cardIn { from { opacity:0; transform: scale(0.96) translateY(12px); } to { opacity:1; transform: scale(1) translateY(0); } }
+
+.vote-card-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: var(--bg-warm);
+  display: block;
+}
+
+.vote-card-img-placeholder {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, var(--bg-warm), #ede7dc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  opacity: 0.5;
+}
+
+.vote-card-body { padding: 1.1rem 1.25rem 0.75rem; }
+
+.vote-recipe-name {
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.vote-meta {
+  display: flex;
+  gap: 0.75rem;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  margin-bottom: 0.5rem;
+}
+
+.vote-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.75rem; }
+.tag {
+  display: inline-block;
+  background: var(--bg-warm);
+  color: var(--ink-light);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.18rem 0.5rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.tag-meal { background: #e0eff6; color: #2e6b8a; }
+
+.vote-actions {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.vote-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.vote-btn:hover { transform: scale(1.18); box-shadow: var(--shadow); }
+.vote-btn:active { transform: scale(0.95); }
+.vote-yes { background: var(--green-light); }
+.vote-no { background: var(--red-light); }
+
+.vote-skip {
+  background: var(--bg-warm);
+  width: 52px;
+  height: 52px;
+  font-size: 1.3rem;
+}
+
+/* ═══ PROGRESS ═══ */
+.vote-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.vote-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.vote-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+.vote-progress-label {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+/* ═══ RESULTS ═══ */
+.results-list { display: grid; gap: 0.6rem; margin-top: 1rem; }
+
+.result-item {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.result-item:first-child { border-color: var(--green); background: var(--green-light); }
+
+.result-rank {
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  min-width: 2rem;
+  text-align: center;
+  color: var(--ink-muted);
+}
+
+.result-item:first-child .result-rank { color: var(--green-dark); }
+
+.result-name { font-weight: 600; font-size: 0.95rem; flex: 1; }
+
+.result-votes {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--green);
+  font-weight: 700;
+}
+
+.result-yes { color: var(--green); }
+.result-no { color: var(--red); }
+
+/* ═══ BUTTONS ═══ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--bg-card); color: var(--ink); border: 1.5px solid var(--border); }
+.btn-secondary:hover { border-color: var(--ink-muted); }
+
+.center { text-align: center; }
+.mt-1 { margin-top: 1rem; }
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--ink-muted);
+}
+
+.empty-state .empty-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-hero);
+  color: #faf8f4;
+  padding: 0.65rem 1.3rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  z-index: 300;
+  transition: transform 0.25s ease;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span>🍽️</span> Meal Planner Pro</div>
+  <a href="index-pro.html" style="color:rgba(255,255,255,0.65);font-size:0.82rem;text-decoration:none;">← Back to Planner</a>
+</header>
+
+<main>
+  <h2>Family Vote</h2>
+  <p class="subtitle">Swipe or tap to vote on this week's meals</p>
+
+  <div id="app"></div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════
+const LS = {
+  get: (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch { return d; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
+};
+
+const getVotes = () => LS.get('mp2_votes', {});
+const setVotes = v => LS.set('mp2_votes', v);
+const getRecipes = () => LS.get('mp2_recipes', {});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function formatQty(q) {
+  if (!q || q === 0) return '0';
+  if (q === Math.floor(q)) return String(Math.floor(q));
+  return q.toFixed(1);
+}
+
+// ═══════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════
+let recipeQueue = [];  // slugs to vote on
+let currentIndex = 0;
+let sessionVotes = {};  // slug -> true/false/null(skip)
+
+function init() {
+  // Get recipes from URL param or all from localStorage
+  const params = new URLSearchParams(window.location.search);
+  const recipesParam = params.get('recipes');
+  const allRecipes = getRecipes();
+
+  if (recipesParam) {
+    recipeQueue = recipesParam.split(',').filter(s => allRecipes[s]);
+  } else {
+    recipeQueue = Object.keys(allRecipes);
+  }
+
+  if (!recipeQueue.length) {
+    document.getElementById('app').innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📖</div>
+      <p>No recipes found. Add some recipes in the Meal Planner first!</p>
+      <a href="index-pro.html" class="btn btn-primary" style="margin-top:1rem;display:inline-flex;">Go to Meal Planner</a>
+    </div>`;
+    return;
+  }
+
+  // Check if already voted on all
+  const votes = getVotes();
+  const unvoted = recipeQueue.filter(s => votes[s] === undefined);
+  if (!unvoted.length) {
+    showResults();
+    return;
+  }
+
+  currentIndex = 0;
+  // Reset session to only unvoted
+  recipeQueue = unvoted;
+  renderCard();
+}
+
+function renderCard() {
+  const app = document.getElementById('app');
+  const recipes = getRecipes();
+
+  if (currentIndex >= recipeQueue.length) {
+    // Save session votes to localStorage
+    const votes = getVotes();
+    Object.assign(votes, sessionVotes);
+    setVotes(votes);
+    showResults();
+    return;
+  }
+
+  const slug = recipeQueue[currentIndex];
+  const recipe = recipes[slug];
+  if (!recipe) { currentIndex++; renderCard(); return; }
+
+  const total = (recipe.prep_time || 0) + (recipe.cook_time || 0);
+  const tags = [...(recipe.meal_types || []).map(m => `<span class="tag tag-meal">${m}</span>`),
+    ...(recipe.tags || []).map(t => `<span class="tag">${t}</span>`)].join(' ');
+
+  const imgHtml = recipe.image_url
+    ? `<img class="vote-card-img" src="${recipe.image_url}" alt="${recipe.name}" onerror="this.outerHTML='<div class=vote-card-img-placeholder>🍲</div>'">`
+    : `<div class="vote-card-img-placeholder">🍲</div>`;
+
+  const pct = Math.round(currentIndex / recipeQueue.length * 100);
+
+  app.innerHTML = `
+    <div class="vote-progress">
+      <div class="vote-progress-bar"><div class="vote-progress-fill" style="width:${pct}%"></div></div>
+      <div class="vote-progress-label">${currentIndex + 1} / ${recipeQueue.length}</div>
+    </div>
+    <div class="vote-card">
+      ${imgHtml}
+      <div class="vote-card-body">
+        <div class="vote-recipe-name">${recipe.name}</div>
+        <div class="vote-meta">
+          ${total ? `<span>⏱ ${total}min</span>` : ''}
+          <span>🍽 ${recipe.servings || 4} servings</span>
+        </div>
+        <div class="vote-tags">${tags}</div>
+        ${recipe.notes ? `<div style="font-size:0.82rem;color:var(--ink-light);font-style:italic;">${recipe.notes}</div>` : ''}
+      </div>
+      <div class="vote-actions">
+        <button class="vote-btn vote-no" onclick="castVote(false)" title="No thanks">👎</button>
+        <button class="vote-btn vote-skip" onclick="castVote(null)" title="Skip">➡️</button>
+        <button class="vote-btn vote-yes" onclick="castVote(true)" title="Yes!">👍</button>
+      </div>
+    </div>
+    <div class="center mt-1">
+      <button class="btn btn-secondary" onclick="finishEarly()">See Results</button>
+    </div>
+  `;
+}
+
+function castVote(value) {
+  const slug = recipeQueue[currentIndex];
+  if (value !== null) {
+    sessionVotes[slug] = value;
+  }
+  currentIndex++;
+  renderCard();
+}
+
+function finishEarly() {
+  const votes = getVotes();
+  Object.assign(votes, sessionVotes);
+  setVotes(votes);
+  showResults();
+}
+
+function showResults() {
+  const app = document.getElementById('app');
+  const votes = getVotes();
+  const recipes = getRecipes();
+
+  // Count yes/no for each recipe
+  const results = Object.entries(votes).map(([slug, vote]) => {
+    const recipe = recipes[slug];
+    if (!recipe) return null;
+    return { slug, recipe, vote };
+  }).filter(Boolean);
+
+  const yesRecipes = results.filter(r => r.vote === true).sort((a, b) => a.recipe.name.localeCompare(b.recipe.name));
+  const noRecipes = results.filter(r => r.vote === false);
+
+  if (!results.length) {
+    app.innerHTML = `<div class="empty-state"><div class="empty-icon">🗳️</div><p>No votes yet. Start voting!</p></div>`;
+    return;
+  }
+
+  app.innerHTML = `
+    <h3 style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.75rem;">
+      Voting Results <span style="font-size:0.82rem;font-weight:400;color:var(--ink-muted);">(${results.length} voted)</span>
+    </h3>
+    ${yesRecipes.length ? `
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);margin-bottom:0.4rem;">👍 Yes! (${yesRecipes.length})</div>
+      <div class="results-list">
+        ${yesRecipes.map((r, i) => `
+          <div class="result-item">
+            <div class="result-rank">${i === 0 ? '🏆' : i + 1}</div>
+            <div class="result-name">${r.recipe.name}</div>
+            <span class="result-yes">✓ YES</span>
+          </div>
+        `).join('')}
+      </div>
+    ` : ''}
+    ${noRecipes.length ? `
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);margin-top:1rem;margin-bottom:0.4rem;">👎 No thanks (${noRecipes.length})</div>
+      <div class="results-list">
+        ${noRecipes.map(r => `
+          <div class="result-item" style="opacity:0.6;">
+            <div class="result-rank">✕</div>
+            <div class="result-name">${r.recipe.name}</div>
+            <span class="result-no">✗ NO</span>
+          </div>
+        `).join('')}
+      </div>
+    ` : ''}
+    <div style="margin-top:1.5rem;display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="resetVotes()">Reset Votes</button>
+      <a href="index-pro.html" class="btn btn-primary">Back to Planner</a>
+    </div>
+  `;
+}
+
+function resetVotes() {
+  if (!confirm('Reset all votes?')) return;
+  setVotes({});
+  sessionVotes = {};
+  currentIndex = 0;
+  init();
+}
+
+// Start
+init();
+</script>
+</body>
+</html>

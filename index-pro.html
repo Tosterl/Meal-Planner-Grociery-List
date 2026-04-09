@@ -959,6 +959,122 @@ textarea { resize: vertical; min-height: 60px; }
 .empty-state .empty-icon { font-size: 3rem; margin-bottom: 0.75rem; }
 .empty-state p { margin-bottom: 0.75rem; }
 
+/* ═══ PANTRY VIEW ═══ */
+.pantry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+.pantry-item {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.pantry-item-name { font-weight: 600; font-size: 0.88rem; flex: 1; }
+.pantry-item-qty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--green);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.pantry-quick-add { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.75rem; }
+.pantry-quick-btn {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.pantry-quick-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-light); }
+
+/* ═══ TONIGHT VIEW ═══ */
+.tonight-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.tonight-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  transition: all 0.2s;
+}
+.tonight-card:hover { box-shadow: var(--shadow); border-color: var(--border-dark); }
+.tonight-match-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-warm);
+  margin: 0.5rem 0;
+  overflow: hidden;
+}
+.tonight-match-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
+.tonight-pct { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.88rem; }
+.tonight-ings { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.5rem; }
+.tonight-ing-chip {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.tonight-ing-have { background: var(--green-light); color: var(--green-dark); }
+.tonight-ing-need { background: var(--red-light); color: var(--red); }
+
+/* ═══ NUTRITION ═══ */
+.nutrition-bar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  background: var(--bg-warm);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  margin-top: 0.5rem;
+}
+.nutrition-stat { text-align: center; }
+.nutrition-stat .n-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.nutrition-stat .n-lbl { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted); }
+
+/* ═══ BLOCKED RECIPE ═══ */
+.recipe-card.blocked { opacity: 0.45; }
+.recipe-card.blocked .recipe-name { text-decoration: line-through; }
+.recipe-card.blocked { border-color: var(--red); }
+
+/* ═══ VOTE PAGE STYLES (used in vote.html) ═══ */
+.vote-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-width: 420px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-lg);
+}
+.vote-actions { display: flex; gap: 1rem; justify-content: center; padding: 1.25rem; }
+.vote-btn {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+.vote-btn:hover { transform: scale(1.15); box-shadow: var(--shadow); }
+.vote-yes { background: var(--green-light); }
+.vote-no { background: var(--red-light); }
+
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 768px) {
   .header-inner { padding: 0.6rem 1rem; flex-wrap: wrap; }
@@ -971,6 +1087,8 @@ textarea { resize: vertical; min-height: 60px; }
   .form-row, .form-row-3, .form-row-4 { grid-template-columns: 1fr; }
   .view-header { flex-direction: column; }
   .cost-summary { grid-template-columns: 1fr; }
+  .tonight-results { grid-template-columns: 1fr; }
+  .pantry-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 }
 </style>
 </head>
@@ -984,6 +1102,8 @@ textarea { resize: vertical; min-height: 60px; }
       <button data-view="planner">Plan & Calendar</button>
       <button data-view="pricing">Pricing</button>
       <button data-view="grocery">Grocery List</button>
+      <button data-view="pantry">Pantry</button>
+      <button data-view="tonight">Tonight?</button>
     </nav>
   </div>
 </header>
@@ -998,6 +1118,7 @@ textarea { resize: vertical; min-height: 60px; }
       </div>
       <div class="btn-group">
         <button class="btn btn-secondary btn-sm" onclick="importRecipes()" title="Select JSON files from recipes/ folder">📁 Import Recipes</button>
+        <button class="btn btn-secondary btn-sm" onclick="openUrlImportModal()">🔗 Import from URL</button>
         <button class="btn btn-secondary btn-sm" onclick="exportRecipes()">⬇ Export</button>
         <button class="btn btn-primary" onclick="openAddRecipe()">+ Add Recipe</button>
       </div>
@@ -1020,7 +1141,9 @@ textarea { resize: vertical; min-height: 60px; }
       </div>
       <div class="btn-group">
         <button class="btn btn-secondary btn-sm" onclick="autoFillWeek()" title="Uses smart planning to optimize grocery list">🧠 Smart Fill Week</button>
+        <button class="btn btn-secondary btn-sm" onclick="budgetFillWeek()" title="Fill week with cheapest recipes under budget">💰 Budget Fill</button>
         <button class="btn btn-secondary btn-sm" onclick="clearCurrentWeek()">Clear Week</button>
+        <button class="btn btn-secondary btn-sm" onclick="openFamilyVote()" title="Let family vote on recipes">🗳️ Family Vote</button>
         <button class="btn btn-primary btn-sm" onclick="exportToCalendar()" title="Export to Google/Outlook/Apple Calendar">📅 Export to Calendar</button>
       </div>
     </div>
@@ -1072,6 +1195,47 @@ textarea { resize: vertical; min-height: 60px; }
     <div id="pricing-content"></div>
   </div>
 
+  <!-- ═══════════════ PANTRY VIEW ═══════════════ -->
+  <div id="pantry-view" class="view">
+    <div class="view-header">
+      <div>
+        <h2>My Pantry</h2>
+        <div class="subtitle">Track what you have — grocery list subtracts these automatically</div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm" onclick="openAddPantryItem()">+ Add Item</button>
+        <button class="btn btn-secondary btn-sm" onclick="clearPantry()">Clear All</button>
+      </div>
+    </div>
+    <div id="pantry-grid" class="pantry-grid"></div>
+    <div id="pantry-empty" style="display:none;" class="empty-state">
+      <div class="empty-icon">🥫</div>
+      <p>No pantry items yet. Add what you have on hand!</p>
+    </div>
+    <div>
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:0.5rem;">Quick Add Staples</div>
+      <div class="pantry-quick-add" id="pantry-quick-add"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TONIGHT VIEW ═══════════════ -->
+  <div id="tonight-view" class="view">
+    <div class="view-header">
+      <div>
+        <h2>What Can I Make?</h2>
+        <div class="subtitle">Enter what's in your fridge to find matching recipes</div>
+      </div>
+    </div>
+    <div style="max-width:600px;">
+      <div class="form-group">
+        <label>Ingredients I have (comma-separated or one per line)</label>
+        <textarea id="tonight-ingredients" rows="4" placeholder="chicken breast, garlic, olive oil, broccoli..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="runTonightSearch()">Find Recipes</button>
+    </div>
+    <div id="tonight-results" class="tonight-results" style="margin-top:1.25rem;"></div>
+  </div>
+
   <!-- ═══════════════ GROCERY VIEW ═══════════════ -->
   <div id="grocery-view" class="view">
     <div class="view-header">
@@ -1094,6 +1258,7 @@ textarea { resize: vertical; min-height: 60px; }
         </label>
         <button class="btn btn-secondary btn-sm" onclick="copyGroceryList()">📋 Copy</button>
         <button class="btn btn-secondary btn-sm" onclick="emailGroceryList()">📧 Email</button>
+        <button class="btn btn-secondary btn-sm" onclick="textGroceryList()">📱 Text</button>
         <button class="btn btn-primary btn-sm" onclick="generateGroceryList()">🔄 Refresh</button>
       </div>
     </div>
@@ -1166,6 +1331,57 @@ textarea { resize: vertical; min-height: 60px; }
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('edit-modal')">Cancel</button>
       <button class="btn btn-primary" onclick="saveRecipe()">Save Recipe</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ URL IMPORT MODAL ═══ -->
+<div class="modal-overlay" id="url-import-modal" onclick="if(event.target===this)closeModal('url-import-modal')">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <h3>Import Recipe from URL</h3>
+      <button class="btn btn-ghost" onclick="closeModal('url-import-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Recipe URL</label>
+        <input type="url" id="url-import-input" placeholder="Paste recipe URL from any website..." oninput="document.getElementById('url-import-status').textContent=''">
+      </div>
+      <div id="url-import-status" style="font-size:0.85rem;color:var(--ink-muted);min-height:1.5em;margin-bottom:0.5rem;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('url-import-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="doScrapeRecipe()">🔍 Scrape Recipe</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADD PANTRY ITEM MODAL ═══ -->
+<div class="modal-overlay" id="pantry-modal" onclick="if(event.target===this)closeModal('pantry-modal')">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h3>Add Pantry Item</h3>
+      <button class="btn btn-ghost" onclick="closeModal('pantry-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Item Name</label>
+        <input type="text" id="pantry-item-name" placeholder="e.g. olive oil">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Quantity</label>
+          <input type="number" id="pantry-item-qty" value="1" min="0" step="0.5">
+        </div>
+        <div class="form-group">
+          <label>Unit</label>
+          <input type="text" id="pantry-item-unit" placeholder="bottle, cup, oz...">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('pantry-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="savePantryItem()">Add to Pantry</button>
     </div>
   </div>
 </div>
@@ -1395,6 +1611,12 @@ const getPrices = () => LS.get('mp2_prices', DEFAULT_PRICES);
 const setPrices = v => LS.set('mp2_prices', v);
 const getUsageHistory = () => LS.get('mp2_usage_history', {});
 const setUsageHistory = v => LS.set('mp2_usage_history', v);
+const getPantry = () => LS.get('mp2_pantry', {});
+const setPantry = v => LS.set('mp2_pantry', v);
+const getBlocked = () => LS.get('mp2_blocked', []);
+const setBlocked = v => LS.set('mp2_blocked', v);
+const getVotes = () => LS.get('mp2_votes', {});
+const setVotes = v => LS.set('mp2_votes', v);
 
 // ═══════════════════════════════════════════════════
 //  SMART PLANNING ENGINE
@@ -1593,6 +1815,8 @@ document.getElementById('main-nav').addEventListener('click', e => {
   if (view === 'planner') { renderWeeklyPlan(); renderCalendar(); }
   if (view === 'pricing') renderPricing();
   if (view === 'grocery') generateGroceryList();
+  if (view === 'pantry') renderPantry();
+  if (view === 'tonight') {}  // rendered on demand
 });
 
 // ═══════════════════════════════════════════════════
@@ -1623,9 +1847,11 @@ function renderRecipes() {
   if (!filtered.length) { grid.innerHTML=''; empty.style.display='block'; return; }
   empty.style.display = 'none';
 
+  const blocked = getBlocked();
   grid.innerHTML = filtered.map(slug => {
     const r = recipes[slug];
     const isFav = favs.includes(slug);
+    const isBlocked = blocked.includes(slug);
     const total = (r.prep_time||0)+(r.cook_time||0);
     const tags = (r.meal_types||[]).map(m=>`<span class="tag tag-meal">${m}</span>`).join('')
       + (r.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
@@ -1634,21 +1860,26 @@ function renderRecipes() {
     const cost = getRecipeCost(r, 'kroger');
     const costStr = cost.total > 0 ? `~$${cost.total.toFixed(2)} total · $${(cost.total/r.servings).toFixed(2)}/serving` : '';
 
+    // Nutrition estimate
+    const nutri = getRecipeNutrition(r);
+    const nutriStr = nutri.cal > 0 ? `~${Math.round(nutri.cal/r.servings)} cal/svg` : '';
+
     // Image
     const imgHtml = r.image_url
       ? `<img class="recipe-card-img" src="${r.image_url}" alt="${r.name}" onerror="this.outerHTML='<div class=recipe-card-img-placeholder>🍲</div>'">`
       : `<div class="recipe-card-img-placeholder">🍲</div>`;
 
-    return `<div class="card recipe-card" onclick="showDetail('${slug}')">
+    return `<div class="card recipe-card ${isBlocked?'blocked':''}" onclick="showDetail('${slug}')">
       <div class="card-actions">
         <button class="card-action-btn ${isFav?'fav-active':''}" onclick="event.stopPropagation();toggleFav('${slug}')">${isFav?'❤️':'🤍'}</button>
         <button class="card-action-btn" onclick="event.stopPropagation();openEditRecipe('${slug}')">✏️</button>
+        <button class="card-action-btn" onclick="event.stopPropagation();toggleBlocked('${slug}')" title="${isBlocked?'Unblock':'Block from auto-fill'}">${isBlocked?'🔓':'🚫'}</button>
         <button class="card-action-btn" onclick="event.stopPropagation();deleteRecipe('${slug}')">🗑️</button>
       </div>
       ${imgHtml}
       <div class="recipe-card-body">
         <div class="recipe-name">${r.name}</div>
-        <div class="recipe-meta">${total?`<span>⏱ ${total}min</span>`:''}  <span>🍽 ${r.servings} svg</span></div>
+        <div class="recipe-meta">${total?`<span>⏱ ${total}min</span>`:''}  <span>🍽 ${r.servings} svg</span>${nutriStr?`<span>🔥 ${nutriStr}</span>`:''}</div>
         ${costStr?`<div class="recipe-cost">💰 ${costStr}</div>`:''}
         <div class="recipe-tags-row">${tags}</div>
       </div>
@@ -1694,6 +1925,29 @@ function showDetail(slug) {
 
   const imgHtml = r.image_url ? `<img class="detail-image" src="${r.image_url}" onerror="this.style.display='none'">` : '';
 
+  // Nutrition
+  const nutri = getRecipeNutrition(r);
+  let nutriHtml = '';
+  if (nutri.cal > 0) {
+    const srv = r.servings || 1;
+    nutriHtml = `<div class="modal-section"><h4>Estimated Nutrition (${nutri.matched}/${nutri.total} ingredients matched)</h4>
+      <div style="margin-bottom:0.35rem;font-size:0.75rem;color:var(--ink-muted);">Per recipe total:</div>
+      <div class="nutrition-bar">
+        <div class="nutrition-stat"><div class="n-val">${Math.round(nutri.cal)}</div><div class="n-lbl">Calories</div></div>
+        <div class="nutrition-stat"><div class="n-val">${Math.round(nutri.protein)}g</div><div class="n-lbl">Protein</div></div>
+        <div class="nutrition-stat"><div class="n-val">${Math.round(nutri.carb)}g</div><div class="n-lbl">Carbs</div></div>
+        <div class="nutrition-stat"><div class="n-val">${Math.round(nutri.fat)}g</div><div class="n-lbl">Fat</div></div>
+      </div>
+      <div style="margin-top:0.35rem;font-size:0.75rem;color:var(--ink-muted);">Per serving (÷${srv}):</div>
+      <div class="nutrition-bar">
+        <div class="nutrition-stat"><div class="n-val">${Math.round(nutri.cal/srv)}</div><div class="n-lbl">Calories</div></div>
+        <div class="nutrition-stat"><div class="n-val">${Math.round(nutri.protein/srv)}g</div><div class="n-lbl">Protein</div></div>
+        <div class="nutrition-stat"><div class="n-val">${Math.round(nutri.carb/srv)}g</div><div class="n-lbl">Carbs</div></div>
+        <div class="nutrition-stat"><div class="n-val">${Math.round(nutri.fat/srv)}g</div><div class="n-lbl">Fat</div></div>
+      </div>
+    </div>`;
+  }
+
   document.getElementById('detail-body').innerHTML = `
     ${imgHtml}
     <div class="modal-meta">${meta.map(m=>`<span>${m}</span>`).join('')}</div>
@@ -1702,6 +1956,7 @@ function showDetail(slug) {
     ${steps?`<div class="modal-section"><h4>Steps</h4><ol class="steps-list">${steps}</ol></div>`:''}
     ${notes}
     ${costHtml}
+    ${nutriHtml}
   `;
   openModal('detail-modal');
 }
@@ -1929,6 +2184,7 @@ function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
 
   const plan = getPlan(), ws = currentWeekStart;
   const favs = getFavs();
+  const blocked = getBlocked();
   const selectedRecipes = [];
   const planUsage = {};
   const usedInPlan = new Set();
@@ -1960,8 +2216,9 @@ function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
       }
     }
 
-    // Filter suitable recipes for this meal type
-    let suitable = keys.filter(k => (recipes[k].meal_types || ['dinner']).includes(meal));
+    // Filter suitable recipes for this meal type (exclude blocked)
+    let suitable = keys.filter(k => !blocked.includes(k) && (recipes[k].meal_types || ['dinner']).includes(meal));
+    if (!suitable.length) suitable = keys.filter(k => !blocked.includes(k));
     if (!suitable.length) suitable = keys;
 
     let chosen;
@@ -2352,6 +2609,26 @@ function generateGroceryList() {
     });
   });
 
+  // Subtract pantry items
+  const pantry = getPantry();
+  const pantryStatus = {};  // item -> { have, need, covered }
+  for (const item of Object.keys(grocery)) {
+    const pantryMatch = pantry[item] || Object.entries(pantry).find(([k]) => item.includes(k) || k.includes(item))?.[1];
+    if (pantryMatch && pantryMatch.qty > 0) {
+      const units = Object.keys(grocery[item]);
+      const firstUnit = units[0] || '';
+      const needed = grocery[item][firstUnit] || 0;
+      const have = pantryMatch.qty;
+      if (have >= needed) {
+        pantryStatus[item] = { have, needed, covered: true };
+        delete grocery[item];  // fully covered
+      } else {
+        pantryStatus[item] = { have, needed, covered: false };
+        grocery[item][firstUnit] = Math.max(0, needed - have);
+      }
+    }
+  }
+
   // Categorize
   const sections={};
   for(const item of Object.keys(grocery)){
@@ -2363,13 +2640,16 @@ function generateGroceryList() {
   }
 
   const totalItems=Object.keys(grocery).length;
+  const coveredItems = Object.keys(pantryStatus).filter(k => pantryStatus[k].covered);
   let totalCost=0;
 
-  document.getElementById('grocery-subtitle').textContent=`${totalItems} items · ${planEntries.length} meals this week${scale!==1?` · ${scale}× scaled`:''}`;
+  document.getElementById('grocery-subtitle').textContent=`${totalItems} items to buy · ${planEntries.length} meals this week${scale!==1?` · ${scale}× scaled`:''}${coveredItems.length?` · ${coveredItems.length} covered by pantry`:''}`;
 
-  content.innerHTML = Object.keys(sections).sort().map(section=>{
+  const sectionHtml = Object.keys(sections).sort().map(section=>{
     const items=sections[section].sort().map(item=>{
       const parts=Object.entries(grocery[item]).map(([u,q])=>{const qs=formatQty(q);return u?`${qs} ${u}`:qs;});
+      const ps = pantryStatus[item];
+      const pantryNote = ps && !ps.covered ? `<span style="font-size:0.7rem;color:var(--green);margin-left:0.35rem;">(have ${formatQty(ps.have)}, need ${formatQty(ps.needed)})</span>` : '';
 
       // Calculate price for this item
       let price = 0;
@@ -2383,10 +2663,17 @@ function generateGroceryList() {
       }
       totalCost += price;
 
-      return `<div class="grocery-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span class="item-qty">${parts.join(' + ')}</span><span>${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</span><span class="item-price">${price>0?'$'+price.toFixed(2):'—'}</span></div>`;
+      return `<div class="grocery-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span class="item-qty">${parts.join(' + ')}</span><span>${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}${pantryNote}</span><span class="item-price">${price>0?'$'+price.toFixed(2):'—'}</span></div>`;
     }).join('');
     return `<div class="grocery-section"><h3>${section}</h3>${items}</div>`;
-  }).join('') + `<div style="text-align:right;margin-top:1rem;padding:1rem;background:var(--bg-warm);border-radius:var(--radius);font-family:'Fraunces',serif;">
+  }).join('');
+
+  const coveredHtml = coveredItems.length ? `<div class="grocery-section" style="opacity:0.5;">
+    <h3>✅ In Pantry — No Need to Buy</h3>
+    ${coveredItems.sort().map(item=>`<div class="grocery-item checked"><input type="checkbox" checked disabled><span class="item-qty" style="color:var(--green);">✓ have it</span><span style="text-decoration:line-through;">${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</span></div>`).join('')}
+  </div>` : '';
+
+  content.innerHTML = sectionHtml + coveredHtml + `<div style="text-align:right;margin-top:1rem;padding:1rem;background:var(--bg-warm);border-radius:var(--radius);font-family:'Fraunces',serif;">
     <span style="font-size:0.82rem;color:var(--ink-muted);">Estimated Total (${store==='cheapest'?'Best Mix':STORE_LABELS[store]}):</span><br>
     <span style="font-size:1.8rem;font-weight:700;color:var(--green-dark);">$${totalCost.toFixed(2)}</span>
     <span style="font-size:0.85rem;color:var(--ink-muted);margin-left:0.5rem;">· $${(totalCost/planEntries.length).toFixed(2)}/meal</span>
@@ -2638,7 +2925,393 @@ function openModal(id){document.getElementById(id).classList.add('active');docum
 function closeModal(id){document.getElementById(id).classList.remove('active');document.body.style.overflow='';}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('detail-modal');closeModal('edit-modal');closePicker();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('detail-modal');closeModal('edit-modal');closeModal('url-import-modal');closeModal('pantry-modal');closePicker();}});
+
+// ═══════════════════════════════════════════════════
+//  RECIPE URL IMPORT
+// ═══════════════════════════════════════════════════
+function openUrlImportModal() {
+  document.getElementById('url-import-input').value = '';
+  document.getElementById('url-import-status').textContent = '';
+  openModal('url-import-modal');
+}
+
+async function scrapeRecipeFromURL(url) {
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+  const response = await fetch(proxyUrl);
+  const html = await response.text();
+
+  const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
+  if (!jsonLdMatch) throw new Error('No structured recipe data found');
+
+  for (const match of jsonLdMatch) {
+    const jsonText = match.replace(/<script[^>]*>/, '').replace(/<\/script>/, '');
+    try {
+      let data = JSON.parse(jsonText);
+      if (data['@graph']) data = data['@graph'];
+      if (Array.isArray(data)) data = data.find(d => d['@type'] === 'Recipe' || (Array.isArray(d['@type']) && d['@type'].includes('Recipe')));
+      if (!data || (data['@type'] !== 'Recipe' && !(Array.isArray(data['@type']) && data['@type'].includes('Recipe')))) continue;
+
+      const ingredients = (data.recipeIngredient || []).map(text => {
+        const m = text.match(/^([\d\/\.\s½¼¾⅓⅔⅛]+)?\s*(tbsp|tsp|cup|cups|oz|lb|lbs|pound|pounds|tablespoon|tablespoons|teaspoon|teaspoons|ounce|ounces|clove|cloves|can|cans|bunch|head|piece|pieces|slice|slices)?\s*(.+)/i);
+        if (m) {
+          let qty = m[1] ? m[1].trim() : '1';
+          qty = qty.replace('½','.5').replace('¼','.25').replace('¾','.75').replace('⅓','.33').replace('⅔','.67').replace('⅛','.125');
+          qty = qty.replace(/(\d+)\s+(\d+)\/(\d+)/, (mt,w,n,d) => String(parseInt(w)+parseInt(n)/parseInt(d)));
+          qty = qty.replace(/(\d+)\/(\d+)/, (mt,n,d) => String(parseInt(n)/parseInt(d)));
+          return { qty: parseFloat(qty) || 1, unit: (m[2] || '').toLowerCase(), item: m[3].trim() };
+        }
+        return { qty: 1, unit: '', item: text.trim() };
+      });
+
+      const steps = (data.recipeInstructions || []).map(s => {
+        if (typeof s === 'string') return s;
+        if (s.text) return s.text;
+        if (s['@type'] === 'HowToSection') return (s.itemListElement || []).map(i => i.text || i).join(' ');
+        return '';
+      }).filter(Boolean);
+
+      const parseDuration = d => {
+        if (!d) return null;
+        const h = d.match(/(\d+)H/); const m = d.match(/(\d+)M/);
+        return (h ? parseInt(h[1]) * 60 : 0) + (m ? parseInt(m[1]) : 0) || null;
+      };
+
+      let imageUrl = null;
+      if (data.image) {
+        if (typeof data.image === 'string') imageUrl = data.image;
+        else if (Array.isArray(data.image)) imageUrl = data.image[0];
+        else if (data.image.url) imageUrl = data.image.url;
+      }
+
+      return {
+        name: data.name,
+        servings: parseInt(data.recipeYield) || 4,
+        prep_time: parseDuration(data.prepTime),
+        cook_time: parseDuration(data.cookTime),
+        tags: (data.recipeCategory || []).concat(data.recipeCuisine || []).map(t => t.toLowerCase()),
+        meal_types: ['dinner'],
+        ingredients,
+        steps,
+        notes: data.description || null,
+        image_url: imageUrl,
+        source_url: url,
+        created: new Date().toISOString()
+      };
+    } catch(e) { continue; }
+  }
+  throw new Error('Could not parse recipe from this page');
+}
+
+async function doScrapeRecipe() {
+  const url = document.getElementById('url-import-input').value.trim();
+  const status = document.getElementById('url-import-status');
+  if (!url) { status.textContent = 'Please enter a URL.'; status.style.color = 'var(--red)'; return; }
+
+  status.textContent = 'Fetching recipe...';
+  status.style.color = 'var(--ink-muted)';
+
+  try {
+    const recipe = await scrapeRecipeFromURL(url);
+    if (!recipe || !recipe.name) throw new Error('No recipe name found');
+
+    const recipes = getRecipes();
+    const slug = slugify(recipe.name);
+    recipes[slug] = recipe;
+    setRecipes(recipes);
+    closeModal('url-import-modal');
+    renderRecipes();
+    showToast(`Imported: ${recipe.name}`);
+  } catch(err) {
+    status.textContent = `Error: ${err.message}`;
+    status.style.color = 'var(--red)';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  PANTRY TRACKER
+// ═══════════════════════════════════════════════════
+const PANTRY_STAPLES = ['salt','black pepper','olive oil','vegetable oil','garlic','onion yellow','rice','pasta','flour','sugar','eggs','butter','soy sauce','honey','chicken broth','canned tomatoes','black beans','oats','bread'];
+
+function renderPantry() {
+  const pantry = getPantry();
+  const keys = Object.keys(pantry).sort();
+  const grid = document.getElementById('pantry-grid');
+  const empty = document.getElementById('pantry-empty');
+
+  if (!keys.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+    grid.innerHTML = keys.map(item => {
+      const p = pantry[item];
+      return `<div class="pantry-item">
+        <div class="pantry-item-name">${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</div>
+        <div class="pantry-item-qty">${formatQty(p.qty)} ${p.unit}</div>
+        <button class="btn btn-danger btn-xs" onclick="removePantryItem('${item.replace(/'/g,"\\'")}')">✕</button>
+      </div>`;
+    }).join('');
+  }
+
+  // Quick-add staples
+  const qa = document.getElementById('pantry-quick-add');
+  qa.innerHTML = PANTRY_STAPLES.filter(s => !pantry[s]).map(s =>
+    `<button class="pantry-quick-btn" onclick="quickAddPantry('${s}')">${s.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</button>`
+  ).join('');
+}
+
+function openAddPantryItem() {
+  document.getElementById('pantry-item-name').value = '';
+  document.getElementById('pantry-item-qty').value = '1';
+  document.getElementById('pantry-item-unit').value = '';
+  openModal('pantry-modal');
+  setTimeout(() => document.getElementById('pantry-item-name').focus(), 100);
+}
+
+function savePantryItem() {
+  const name = document.getElementById('pantry-item-name').value.trim().toLowerCase();
+  const qty = parseFloat(document.getElementById('pantry-item-qty').value) || 1;
+  const unit = document.getElementById('pantry-item-unit').value.trim();
+  if (!name) { showToast('Item name required'); return; }
+  const p = getPantry();
+  p[name] = { qty, unit };
+  setPantry(p);
+  closeModal('pantry-modal');
+  renderPantry();
+  showToast(`Added: ${name}`);
+}
+
+function removePantryItem(item) {
+  const p = getPantry();
+  delete p[item];
+  setPantry(p);
+  renderPantry();
+}
+
+function clearPantry() {
+  if (!confirm('Clear all pantry items?')) return;
+  setPantry({});
+  renderPantry();
+  showToast('Pantry cleared');
+}
+
+function quickAddPantry(item) {
+  const p = getPantry();
+  p[item] = { qty: 1, unit: 'each' };
+  setPantry(p);
+  renderPantry();
+  showToast(`Added: ${item}`);
+}
+
+// ═══════════════════════════════════════════════════
+//  TONIGHT? — RECIPE MATCHER
+// ═══════════════════════════════════════════════════
+function runTonightSearch() {
+  const raw = document.getElementById('tonight-ingredients').value;
+  if (!raw.trim()) { showToast('Enter some ingredients first'); return; }
+
+  const lines = raw.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+  const results = findMatchingRecipes(lines);
+  const container = document.getElementById('tonight-results');
+
+  if (!results.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🤷</div><p>No matches found. Try different ingredients or add more recipes!</p></div>';
+    return;
+  }
+
+  container.innerHTML = results.map(({ slug, recipe, matched, missing, percentage }) => {
+    const barColor = percentage >= 75 ? 'var(--green)' : percentage >= 50 ? 'var(--gold)' : 'var(--accent)';
+    const matchedChips = matched.map(i => `<span class="tonight-ing-chip tonight-ing-have">${i}</span>`).join('');
+    const missingChips = missing.slice(0, 5).map(i => `<span class="tonight-ing-chip tonight-ing-need">${i}</span>`).join('');
+    const moreMissing = missing.length > 5 ? `<span style="font-size:0.68rem;color:var(--ink-muted);">+${missing.length-5} more</span>` : '';
+
+    return `<div class="tonight-card" onclick="showDetail('${slug}')">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">
+        <div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;">${recipe.name}</div>
+        <span class="tonight-pct" style="color:${barColor}">${percentage}%</span>
+      </div>
+      <div class="tonight-match-bar"><div class="tonight-match-fill" style="width:${percentage}%;background:${barColor};"></div></div>
+      <div style="font-size:0.72rem;color:var(--ink-muted);margin-bottom:0.35rem;">${matched.length} of ${matched.length+missing.length} ingredients matched</div>
+      <div class="tonight-ings">${matchedChips}${missingChips}${moreMissing}</div>
+    </div>`;
+  }).join('');
+}
+
+function findMatchingRecipes(availableIngredients) {
+  const available = new Set(availableIngredients.map(i => i.toLowerCase().trim()));
+  const recipes = getRecipes();
+  const results = [];
+
+  for (const [slug, recipe] of Object.entries(recipes)) {
+    const recipeIngs = (recipe.ingredients || []).map(i => i.item.toLowerCase().trim());
+    const matched = recipeIngs.filter(i =>
+      available.has(i) || [...available].some(a => i.includes(a) || a.includes(i))
+    );
+    const percentage = recipeIngs.length ? Math.round(matched.length / recipeIngs.length * 100) : 0;
+    const missing = recipeIngs.filter(i => !matched.includes(i));
+
+    if (matched.length > 0) {
+      results.push({ slug, recipe, matched, missing, percentage });
+    }
+  }
+
+  return results.sort((a, b) => b.percentage - a.percentage);
+}
+
+// ═══════════════════════════════════════════════════
+//  BUDGET FILL WEEK
+// ═══════════════════════════════════════════════════
+function budgetFillWeek() {
+  const budget = parseFloat(prompt('Weekly budget target ($):', '75'));
+  if (!budget || isNaN(budget)) return;
+
+  const recipes = getRecipes(), keys = Object.keys(recipes);
+  if (!keys.length) { showToast('Add recipes first!'); return; }
+
+  const blocked = getBlocked();
+  const store = document.getElementById('grocery-store')?.value || 'kroger';
+  const costed = keys
+    .filter(k => !blocked.includes(k))
+    .map(k => {
+      const r = recipes[k];
+      const cost = getRecipeCost(r, store);
+      return { slug: k, recipe: r, costPerServing: cost.total / (r.servings || 1), totalCost: cost.total };
+    }).sort((a, b) => a.costPerServing - b.costPerServing);
+
+  const plan = getPlan(), ws = currentWeekStart;
+  let totalSpent = 0;
+
+  for (let i = 0; i < 7; i++) {
+    const dateStr = formatDate(new Date(ws.getTime() + i * 86400000));
+    MEALS.forEach(meal => {
+      const suitable = costed.filter(c =>
+        (c.recipe.meal_types || ['dinner']).includes(meal) &&
+        (totalSpent + c.costPerServing) <= budget
+      );
+
+      if (suitable.length) {
+        const chosen = suitable[0];
+        plan[`${dateStr}-${meal}`] = chosen.recipe.name;
+        totalSpent += chosen.costPerServing;
+      }
+    });
+  }
+
+  setPlan(plan);
+  renderWeeklyPlan();
+  showToast(`Budget fill: $${totalSpent.toFixed(2)} of $${budget.toFixed(2)} budget`);
+}
+
+// ═══════════════════════════════════════════════════
+//  SMS GROCERY LIST
+// ═══════════════════════════════════════════════════
+function textGroceryList() {
+  const plan=getPlan(), recipes=getRecipes(), scale=parseFloat(document.getElementById('grocery-scale').value)||1;
+  const ws=currentWeekStart;
+  const grocery={};
+  for(let i=0;i<7;i++){
+    const ds=formatDate(new Date(ws.getTime()+i*86400000));
+    MEALS.forEach(m=>{
+      const n=plan[`${ds}-${m}`]; if(!n)return;
+      const r=recipes[slugify(n)]; if(!r)return;
+      (r.ingredients||[]).forEach(ing=>{
+        const item=ing.item.toLowerCase().trim(),unit=normalizeUnit(ing.unit||'');
+        if(!grocery[item])grocery[item]={};
+        grocery[item][unit]=(grocery[item][unit]||0)+(ing.qty||0)*scale;
+      });
+    });
+  }
+
+  let text='🛒 Grocery List\n';
+  Object.keys(grocery).sort().forEach(item=>{
+    const parts=Object.entries(grocery[item]).map(([u,q])=>u?`${formatQty(q)} ${u}`:formatQty(q));
+    const name=item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+    text+=`• ${name} - ${parts.join('+')}\n`;
+  });
+
+  window.open(`sms:?body=${encodeURIComponent(text)}`, '_blank');
+  showToast('Opening messages...');
+}
+
+// ═══════════════════════════════════════════════════
+//  NUTRITION TRACKER
+// ═══════════════════════════════════════════════════
+const NUTRITION_DB = {
+  "chicken breast": { cal: 165, protein: 31, carb: 0, fat: 3.6, per: "4oz" },
+  "ground beef": { cal: 250, protein: 26, carb: 0, fat: 15, per: "4oz" },
+  "rice": { cal: 206, protein: 4.3, carb: 45, fat: 0.4, per: "cup" },
+  "pasta": { cal: 220, protein: 8, carb: 43, fat: 1.3, per: "cup" },
+  "eggs": { cal: 72, protein: 6.3, carb: 0.4, fat: 5, per: "each" },
+  "butter": { cal: 102, protein: 0.1, carb: 0, fat: 11.5, per: "tbsp" },
+  "olive oil": { cal: 119, protein: 0, carb: 0, fat: 13.5, per: "tbsp" },
+  "broccoli": { cal: 31, protein: 2.6, carb: 6, fat: 0.3, per: "cup" },
+  "onion yellow": { cal: 44, protein: 1.2, carb: 10, fat: 0.1, per: "each" },
+  "garlic": { cal: 4, protein: 0.2, carb: 1, fat: 0, per: "clove" },
+  "soy sauce": { cal: 8, protein: 1.3, carb: 0.8, fat: 0, per: "tbsp" },
+  "tortillas flour": { cal: 140, protein: 3.6, carb: 24, fat: 3.5, per: "each" },
+  "cheese cheddar": { cal: 113, protein: 7, carb: 0.4, fat: 9.3, per: "oz" },
+  "oats": { cal: 154, protein: 5.3, carb: 27, fat: 2.6, per: "cup" },
+  "honey": { cal: 64, protein: 0, carb: 17, fat: 0, per: "tbsp" },
+  "black beans": { cal: 227, protein: 15, carb: 41, fat: 0.9, per: "can" },
+  "avocado": { cal: 234, protein: 2.9, carb: 12, fat: 21, per: "each" },
+  "bell pepper": { cal: 24, protein: 1, carb: 5, fat: 0.2, per: "each" },
+  "sour cream": { cal: 23, protein: 0.3, carb: 0.5, fat: 2.3, per: "tbsp" },
+  "bacon": { cal: 43, protein: 3, carb: 0.1, fat: 3.3, per: "slice" },
+  "milk": { cal: 122, protein: 8, carb: 12, fat: 4.8, per: "cup" },
+  "sugar": { cal: 49, protein: 0, carb: 12.6, fat: 0, per: "tbsp" },
+  "flour": { cal: 455, protein: 13, carb: 95, fat: 1.2, per: "cup" },
+};
+
+function getRecipeNutrition(recipe) {
+  let totals = { cal: 0, protein: 0, carb: 0, fat: 0, matched: 0, total: 0 };
+  for (const ing of (recipe.ingredients || [])) {
+    totals.total++;
+    const itemLower = ing.item.toLowerCase().trim();
+    let nutri = NUTRITION_DB[itemLower];
+    if (!nutri) {
+      for (const [key, val] of Object.entries(NUTRITION_DB)) {
+        if (itemLower.includes(key) || key.includes(itemLower)) { nutri = val; break; }
+      }
+    }
+    if (nutri) {
+      totals.matched++;
+      const scale = ing.qty || 1;
+      totals.cal += nutri.cal * scale;
+      totals.protein += nutri.protein * scale;
+      totals.carb += nutri.carb * scale;
+      totals.fat += nutri.fat * scale;
+    }
+  }
+  return totals;
+}
+
+// ═══════════════════════════════════════════════════
+//  BLOCKED RECIPES
+// ═══════════════════════════════════════════════════
+function toggleBlocked(slug) {
+  const b = getBlocked();
+  const i = b.indexOf(slug);
+  if (i >= 0) b.splice(i, 1);
+  else b.push(slug);
+  setBlocked(b);
+  renderRecipes();
+  showToast(i >= 0 ? 'Unblocked' : 'Blocked — won\'t appear in auto-fill');
+}
+
+// ═══════════════════════════════════════════════════
+//  FAMILY VOTE
+// ═══════════════════════════════════════════════════
+function openFamilyVote() {
+  const recipes = getRecipes();
+  const keys = Object.keys(recipes);
+  if (!keys.length) { showToast('Add recipes first!'); return; }
+  // Encode recipe slugs in URL for vote.html
+  const slugList = keys.join(',');
+  const voteUrl = `vote.html?recipes=${encodeURIComponent(slugList)}`;
+  window.open(voteUrl, '_blank');
+  showToast('Opening family vote page...');
+}
 
 // ═══════════════════════════════════════════════════
 //  SEED DATA

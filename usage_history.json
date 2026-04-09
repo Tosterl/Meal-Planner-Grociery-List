@@ -1,18 +1,22 @@
 {
   "ground-beef-tacos": [
-    "2026-02-06"
+    "2026-02-06",
+    "2026-04-08"
   ],
   "chicken-stir-fry": [
-    "2026-02-06"
+    "2026-02-06",
+    "2026-04-08"
   ],
   "garlic-butter-pasta": [
-    "2026-02-06"
+    "2026-02-06",
+    "2026-04-08"
   ],
   "creamy-garlic-chicken-recipe": [
     "2026-02-06"
   ],
   "honey-garlic-chicken": [
-    "2026-02-06"
+    "2026-02-06",
+    "2026-04-08"
   ],
   "crockpot-beef-stew-recipe": [
     "2026-02-06"
@@ -24,13 +28,15 @@
     "2026-02-06"
   ],
   "sheet-pan-chicken-fajitas": [
-    "2026-02-06"
+    "2026-02-06",
+    "2026-04-08"
   ],
   "cilantro-lime-rice": [
     "2026-02-06"
   ],
   "overnight-oats": [
-    "2026-02-06"
+    "2026-02-06",
+    "2026-04-08"
   ],
   "curried-chickpeas-with-spinach": [
     "2026-02-06"
@@ -39,7 +45,8 @@
     "2026-02-06"
   ],
   "savory-oatmeal": [
-    "2026-02-06"
+    "2026-02-06",
+    "2026-04-08"
   ],
   "spicy-sriracha-noodles": [
     "2026-02-06"
@@ -48,12 +55,34 @@
     "2026-02-06"
   ],
   "breakfast-burrito": [
-    "2026-02-06"
+    "2026-02-06",
+    "2026-04-08"
   ],
   "poor-mans-burrito-bowls": [
     "2026-02-06"
   ],
   "homemade-chicken-yakisoba": [
     "2026-02-06"
+  ],
+  "kimchi-fried-rice": [
+    "2026-04-08"
+  ],
+  "easy-sesame-chicken": [
+    "2026-04-08"
+  ],
+  "chicken-stir-fry-recipe": [
+    "2026-04-08"
+  ],
+  "instant-pot-beef-stew-recipe": [
+    "2026-04-08"
+  ],
+  "peanut-noodles-with-chicken": [
+    "2026-04-08"
+  ],
+  "coconut-rice": [
+    "2026-04-08"
+  ],
+  "one-pot-chili-mac": [
+    "2026-04-08"
   ]
 }
