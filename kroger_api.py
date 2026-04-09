@@ -26,7 +26,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 
 # Fix Windows console encoding
-if sys.platform == "win32":
+if sys.platform == "win32" and hasattr(sys.stdout, 'buffer') and getattr(sys.stdout, 'encoding', '') != 'utf-8':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 

@@ -997,6 +997,73 @@ textarea { resize: vertical; min-height: 60px; }
 }
 .pantry-quick-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-light); }
 
+/* Kroger search in pantry */
+.kroger-search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+.kroger-search-bar input {
+  flex: 1;
+  max-width: 400px;
+}
+.kroger-search-bar .status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.kroger-search-bar .status-dot.online { background: var(--green); }
+.kroger-search-bar .status-dot.offline { background: var(--red); }
+.kroger-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.kroger-product {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.kroger-product:hover { border-color: var(--kroger-color); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.kroger-product-info { flex: 1; min-width: 0; }
+.kroger-product-name { font-weight: 600; font-size: 0.88rem; margin-bottom: 0.15rem; }
+.kroger-product-detail { font-size: 0.78rem; color: var(--ink-muted); }
+.kroger-product-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--green-dark);
+  white-space: nowrap;
+}
+.kroger-product-price .sale {
+  font-size: 0.72rem;
+  color: var(--green);
+  display: block;
+}
+.kroger-product-price .was {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  text-decoration: line-through;
+}
+.kroger-product .add-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--kroger-color);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.kroger-product:hover .add-badge { opacity: 1; }
+
 /* ═══ HELP VIEW ═══ */
 .help-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
 .help-card {
@@ -1270,19 +1337,23 @@ textarea { resize: vertical; min-height: 60px; }
         <div class="subtitle">Track what you have — grocery list subtracts these automatically</div>
       </div>
       <div class="btn-group">
-        <button class="btn btn-primary btn-sm" onclick="openAddPantryItem()">+ Add Item</button>
-        <button class="btn btn-secondary btn-sm" onclick="importKrogerPantry()">🛒 Import from Kroger</button>
+        <button class="btn btn-primary btn-sm" onclick="openAddPantryItem()">+ Add Manual</button>
+        <button class="btn btn-secondary btn-sm" onclick="importKrogerPantry()">📁 Import File</button>
         <button class="btn btn-secondary btn-sm" onclick="clearPantry()">Clear All</button>
       </div>
     </div>
-    <div id="kroger-pantry-info" style="display:none; margin-bottom:1rem; padding:0.75rem 1rem; background:var(--blue-light); border-radius:var(--radius-sm); font-size:0.84rem; color:var(--blue);">
-      <strong>Kroger Products</strong> — Items imported from Kroger are linked to real products with prices, sizes, and aisle locations. Run <code style="background:rgba(0,0,0,0.06);padding:0.1rem 0.35rem;border-radius:3px;">python kroger_api.py pantry-add "item" --zip YOUR_ZIP</code> to add from terminal.
+    <div class="kroger-search-bar">
+      <span class="status-dot offline" id="kroger-status-dot" title="API server status"></span>
+      <input type="text" id="kroger-search-input" placeholder="Search Kroger products... (run python api_server.py first)" onkeydown="if(event.key==='Enter')searchKrogerProducts()">
+      <button class="btn btn-primary btn-sm" onclick="searchKrogerProducts()" style="background:var(--kroger-color);">🔍 Search Kroger</button>
+      <button class="btn btn-secondary btn-sm" onclick="openSetStoreModal()">📍 Set Store</button>
     </div>
+    <div id="kroger-search-results" class="kroger-results"></div>
     <div id="pantry-grid" class="pantry-grid"></div>
     <div id="pantry-empty" style="display:none;" class="empty-state">
       <div class="empty-icon">🥫</div>
-      <p>No pantry items yet. Add what you have on hand!</p>
-      <p style="font-size:0.82rem; margin-top:0.5rem;">Use the CLI to add Kroger products:<br><code style="background:var(--bg-warm);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.78rem;">python kroger_api.py pantry-add "chicken breast" --zip YOUR_ZIP</code></p>
+      <p>No pantry items yet.</p>
+      <p style="font-size:0.82rem; margin-top:0.5rem;">Search Kroger above to add real products, or use "+ Add Manual" for quick entries.</p>
     </div>
     <div>
       <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:0.5rem;">Quick Add Staples</div>
@@ -1420,14 +1491,16 @@ textarea { resize: vertical; min-height: 60px; }
       </div>
 
       <div class="help-card">
-        <h3>🥫 Pantry Tracker</h3>
-        <p>Track what you already have so you only buy what you need.</p>
+        <h3>🥫 Pantry Tracker + Kroger Search</h3>
+        <p>Track what you have using real Kroger products — with prices, sizes, and aisle locations.</p>
         <ol class="help-steps">
-          <li><strong>Quick add</strong> — Use the Pantry tab's quick-add buttons or "+ Add Item" for manual entries</li>
-          <li><strong>Kroger products</strong> — Run <code style="background:var(--bg-warm);padding:0.1rem 0.3rem;border-radius:3px;font-size:0.78rem;">python kroger_api.py pantry-add "milk" --zip YOUR_ZIP</code> to search Kroger and add real products with prices, sizes, and aisle locations</li>
-          <li><strong>Import</strong> — Click "Import from Kroger" in the Pantry tab and select your <code style="background:var(--bg-warm);padding:0.1rem 0.3rem;border-radius:3px;font-size:0.78rem;">pantry.json</code> file</li>
-          <li>The <strong>Grocery List</strong> automatically subtracts pantry items — you'll see "In Pantry" for items fully covered and reduced quantities for partial matches</li>
+          <li><strong>Start the server:</strong> Run <code style="background:var(--bg-warm);padding:0.1rem 0.3rem;border-radius:3px;font-size:0.78rem;">python api_server.py --zip YOUR_ZIP</code> in terminal</li>
+          <li><strong>Search Kroger:</strong> In the Pantry tab, type any product (e.g. "whole milk") and hit Search. Real Kroger products appear with prices, brands, and aisle locations.</li>
+          <li><strong>Click to add:</strong> Click any product to add it to your pantry. It saves with all Kroger details.</li>
+          <li><strong>Set your store:</strong> Click "📍 Set Store" to change zip code. The green dot shows when the server is connected.</li>
+          <li>The <strong>Grocery List</strong> automatically subtracts pantry items — Kroger products match intelligently against recipe ingredients.</li>
         </ol>
+        <p style="margin-top:0.5rem;font-size:0.82rem;color:var(--ink-muted);">You can also use <code style="font-size:0.78rem;">python kroger_api.py pantry-add "item" --zip ZIP</code> from the terminal, or "+ Add Manual" for quick non-Kroger entries.</p>
       </div>
 
       <div class="help-card">
@@ -1512,7 +1585,8 @@ textarea { resize: vertical; min-height: 60px; }
               <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python planner.py blocked</span></td><td style="padding:0.45rem 0.75rem;">See all blocked recipes</td></tr>
               <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python scraper.py "URL"</span></td><td style="padding:0.45rem 0.75rem;">Scrape a recipe from any website</td></tr>
               <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python kroger_api.py search "item"</span></td><td style="padding:0.45rem 0.75rem;">Search Kroger for product + price</td></tr>
-              <tr><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python kroger_api.py aisles --zip 45202</span></td><td style="padding:0.45rem 0.75rem;">Get aisle locations for your grocery list</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python kroger_api.py aisles --zip 45202</span></td><td style="padding:0.45rem 0.75rem;">Get aisle locations for your grocery list</td></tr>
+              <tr><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python api_server.py --zip 45202</span></td><td style="padding:0.45rem 0.75rem;">Start Kroger API server for live pantry search in browser</td></tr>
             </tbody>
           </table>
         </div>
@@ -3530,6 +3604,171 @@ function removeKrogerPantryItem(index) {
     showToast(`Removed: ${name}`);
   }
 }
+
+// ═══════════════════════════════════════════════════
+//  KROGER LIVE SEARCH (via api_server.py)
+// ═══════════════════════════════════════════════════
+const API_BASE = 'http://localhost:8099';
+let krogerServerOnline = false;
+
+async function checkKrogerServer() {
+  try {
+    const res = await fetch(`${API_BASE}/api/health`, { signal: AbortSignal.timeout(2000) });
+    const data = await res.json();
+    krogerServerOnline = data.status === 'ok';
+    const dot = document.getElementById('kroger-status-dot');
+    if (dot) {
+      dot.classList.toggle('online', krogerServerOnline);
+      dot.classList.toggle('offline', !krogerServerOnline);
+      dot.title = krogerServerOnline ? `Connected — ${data.store || 'No store set'}` : 'Offline — run python api_server.py --zip YOUR_ZIP';
+    }
+    const input = document.getElementById('kroger-search-input');
+    if (input && krogerServerOnline) {
+      input.placeholder = `Search Kroger for products${data.store ? ` at ${data.store}` : ''}...`;
+    }
+  } catch {
+    krogerServerOnline = false;
+    const dot = document.getElementById('kroger-status-dot');
+    if (dot) { dot.classList.remove('online'); dot.classList.add('offline'); dot.title = 'Offline — run: python api_server.py --zip YOUR_ZIP'; }
+  }
+}
+
+async function searchKrogerProducts() {
+  const query = document.getElementById('kroger-search-input').value.trim();
+  if (!query) { showToast('Type a product to search'); return; }
+
+  if (!krogerServerOnline) {
+    showToast('Start the API server first: python api_server.py --zip YOUR_ZIP');
+    return;
+  }
+
+  const resultsDiv = document.getElementById('kroger-search-results');
+  resultsDiv.innerHTML = '<div style="padding:1rem;color:var(--ink-muted);font-size:0.85rem;">Searching Kroger...</div>';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+
+    if (data.error) {
+      resultsDiv.innerHTML = `<div style="padding:1rem;color:var(--red);font-size:0.85rem;">Error: ${data.error}</div>`;
+      return;
+    }
+
+    const results = data.results || [];
+    if (!results.length) {
+      resultsDiv.innerHTML = `<div style="padding:1rem;color:var(--ink-muted);font-size:0.85rem;">No results for "${query}"</div>`;
+      return;
+    }
+
+    resultsDiv.innerHTML = results.map((r, i) => {
+      const price = r.price ? `$${r.price.toFixed(2)}` : 'N/A';
+      const isOnSale = r.promo_price && r.regular_price && r.promo_price < r.regular_price;
+      const priceHtml = isOnSale
+        ? `<div class="kroger-product-price">${price}<span class="sale">🏷️ Sale</span><span class="was">$${r.regular_price.toFixed(2)}</span></div>`
+        : `<div class="kroger-product-price">${price}</div>`;
+
+      const stock = r.stock_level === 'HIGH' ? '✅ In Stock'
+        : r.stock_level === 'LOW' ? '⚠️ Low Stock'
+        : r.stock_level === 'TEMPORARILY_OUT_OF_STOCK' ? '❌ Out of Stock' : '';
+
+      const aisle = r.aisle && r.aisle.description ? `📍 ${r.aisle.description}` : '';
+      const details = [r.brand, r.size, aisle, stock].filter(Boolean).join(' · ');
+
+      return `<div class="kroger-product" onclick="addKrogerProductToPantry(${i})">
+        <div class="kroger-product-info">
+          <div class="kroger-product-name">${r.name}</div>
+          <div class="kroger-product-detail">${details}</div>
+        </div>
+        ${priceHtml}
+        <div class="add-badge">+ Add</div>
+      </div>`;
+    }).join('');
+
+    // Stash results for the click handler
+    window._krogerSearchResults = results;
+  } catch (err) {
+    resultsDiv.innerHTML = `<div style="padding:1rem;color:var(--red);font-size:0.85rem;">Connection failed — is api_server.py running?</div>`;
+  }
+}
+
+async function addKrogerProductToPantry(index) {
+  const results = window._krogerSearchResults;
+  if (!results || !results[index]) return;
+
+  const product = results[index];
+  const item = {
+    name: product.name,
+    brand: product.brand || '',
+    size: product.size || '',
+    qty: 1,
+    price: product.price,
+    regular_price: product.regular_price,
+    promo_price: product.promo_price,
+    product_id: product.product_id,
+    upc: product.upc,
+    aisle: product.aisle,
+    stock_level: product.stock_level
+  };
+
+  try {
+    await fetch(`${API_BASE}/api/pantry`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    });
+  } catch {
+    // Server save failed, still save locally
+  }
+
+  // Also save to local Kroger pantry
+  const existing = getKrogerPantry();
+  const existingIdx = existing.findIndex(e => e.upc === item.upc);
+  if (existingIdx >= 0) {
+    existing[existingIdx].qty = (existing[existingIdx].qty || 1) + 1;
+  } else {
+    existing.push(item);
+  }
+  setKrogerPantry(existing);
+  renderPantry();
+  showToast(`Added: ${product.name}`);
+
+  // Clear search results
+  document.getElementById('kroger-search-results').innerHTML = '';
+  document.getElementById('kroger-search-input').value = '';
+}
+
+function openSetStoreModal() {
+  const zip = prompt('Enter your zip code for Kroger store:');
+  if (!zip) return;
+  setKrogerStore(zip);
+}
+
+async function setKrogerStore(zip) {
+  if (!krogerServerOnline) {
+    showToast('Start the API server first: python api_server.py --zip ' + zip);
+    return;
+  }
+  try {
+    const res = await fetch(`${API_BASE}/api/store`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ zip })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      showToast(`Store set: ${data.store}`);
+      checkKrogerServer();
+    } else {
+      showToast(data.error || 'Could not find store');
+    }
+  } catch {
+    showToast('Connection failed');
+  }
+}
+
+// Check server status on load and periodically
+checkKrogerServer();
+setInterval(checkKrogerServer, 30000);
 
 // ═══════════════════════════════════════════════════
 //  TONIGHT? — RECIPE MATCHER
