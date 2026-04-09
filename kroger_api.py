@@ -225,6 +225,20 @@ def search_product(query: str, location_id: str = None):
                 "shiptohome": fulfill.get("shiptohome", False)
             }
 
+        # Get product image
+        image_url = None
+        images = product.get("images", [])
+        for img in images:
+            if img.get("perspective") == "front":
+                sizes = img.get("sizes", [])
+                # Prefer medium, fall back to small or thumbnail
+                for preferred in ["medium", "small", "thumbnail", "large"]:
+                    match = next((s for s in sizes if s.get("size") == preferred), None)
+                    if match:
+                        image_url = match.get("url")
+                        break
+                break
+
         results.append({
             "name": name,
             "brand": brand,
@@ -236,7 +250,8 @@ def search_product(query: str, location_id: str = None):
             "upc": product.get("upc"),
             "aisle": aisle_info,
             "stock_level": stock_level,
-            "fulfillment": fulfillment
+            "fulfillment": fulfillment,
+            "image_url": image_url
         })
 
     return results
