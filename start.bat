@@ -23,6 +23,7 @@ if errorlevel 1 (
 :: Check if .env exists
 if not exist ".env" (
     echo  [WARNING] No .env file found!
+    echo  Kroger search and some features won't work without it.
     echo  Create a file called .env in this folder with:
     echo.
     echo    KROGER_CLIENT_ID=your_client_id
@@ -30,19 +31,20 @@ if not exist ".env" (
     echo.
     echo  Get credentials at: https://developer.kroger.com
     echo.
-    echo  Starting without Kroger features...
-    echo.
-    timeout /t 3 >nul
 )
 
 :: Use saved zip or ask for one
+set "ZIP="
 if exist ".zip_code" (
     set /p ZIP=<.zip_code
-    echo  Using saved zip code: %ZIP%
-) else (
+)
+
+if not defined ZIP (
     set /p ZIP="  Enter your zip code (for Kroger store): "
-    echo %ZIP%> .zip_code
-    echo  Zip code saved for next time!
+    if defined ZIP (
+        echo|set /p="%ZIP%"> .zip_code
+        echo  Zip code saved for next time!
+    )
 )
 
 echo.
@@ -62,6 +64,10 @@ echo.
 echo  ======================================
 echo.
 
-python api_server.py --zip %ZIP%
+if defined ZIP (
+    python api_server.py --zip %ZIP%
+) else (
+    python api_server.py
+)
 
 pause

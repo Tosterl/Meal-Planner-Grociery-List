@@ -416,15 +416,15 @@ def main():
     global DEFAULT_ZIP
     DEFAULT_ZIP = args.zip
 
-    # Pre-check Kroger credentials
+    # Pre-check Kroger credentials (optional — server works without them for sync/publish)
     token = get_access_token()
     if not token:
-        print("\n❌ Cannot start — Kroger API credentials missing.")
-        print("   Run: python kroger_api.py setup")
-        sys.exit(1)
+        print("\n⚠️  Kroger API credentials not found — Kroger search disabled.")
+        print("   To enable: create .env with KROGER_CLIENT_ID and KROGER_CLIENT_SECRET")
+        print("   Plan sync, publishing, and recipes still work!\n")
 
     # Pre-load store if zip provided
-    if args.zip:
+    if args.zip and token:
         lid = get_location_id(args.zip)
         if lid:
             print(f"  📍 Store: {CACHED_STORE_NAME}")
