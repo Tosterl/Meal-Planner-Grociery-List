@@ -1,0 +1,109 @@
+{
+  "name": "Chicken Stir Fry Recipe",
+  "servings": 6,
+  "prep_time": 15,
+  "cook_time": 20,
+  "tags": [
+    "dinner",
+    "lunch",
+    "american",
+    "asian",
+    "chicken stir fry",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "lunch",
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 0.33,
+      "unit": "cup",
+      "item": "soy sauce"
+    },
+    {
+      "qty": 3.0,
+      "unit": "tbsp",
+      "item": "brown sugar"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tsp",
+      "item": "toasted sesame oil"
+    },
+    {
+      "qty": 2.0,
+      "unit": "clove",
+      "item": "garlic, minced"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tsp",
+      "item": "grated fresh ginger"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "\u00bd Tbsp cornstarch"
+    },
+    {
+      "qty": 0.33,
+      "unit": "cup",
+      "item": "water"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "sriracha"
+    },
+    {
+      "qty": 0.75,
+      "unit": "lb",
+      "item": "broccoli"
+    },
+    {
+      "qty": 2.0,
+      "unit": "",
+      "item": "carrots"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "red bell pepper"
+    },
+    {
+      "qty": 1.0,
+      "unit": "small",
+      "item": "onion"
+    },
+    {
+      "qty": 2.0,
+      "unit": "",
+      "item": "green onions"
+    },
+    {
+      "qty": 2.0,
+      "unit": "",
+      "item": "boneless, skinless chicken breasts"
+    },
+    {
+      "qty": 3.0,
+      "unit": "tbsp",
+      "item": "cooking oil, divided"
+    }
+  ],
+  "steps": [
+    "Start by making the stir fry sauce. Combine the soy sauce, brown sugar, toasted sesame oil, garlic, ginger, sriracha, cornstarch and water in a small bowl. Set the sauce aside.",
+    "Chop the broccoli into small florets. Slice the red bell pepper, onion, and carrots into similar sized pieces. Slice the green onions. Set all the vegetables aside.",
+    "Next, cut the chicken breasts into small \u00bd inch sized pieces.",
+    "Heat a very large skillet or wok over medium-high heat. Once hot add 2 Tbsp of cooking oil and swirl to coat the surface of the skillet. Add the chicken and cook until browned on all sides. Be careful not to overcook the chicken. Once the chicken is browned, remove it from the skillet onto a separate plate and set aside.",
+    "In the same skillet, add the remaining 1 Tbsp of cooking oil along with the carrots and broccoli. Cook and stir for one minute, or just until the broccoli begins to turn bright green.",
+    "Next, add the red bell pepper and onion to the skillet. Continue to cook and stir for 1-2 more minutes.",
+    "Give the stir fry sauce another brief stir. Now add the cooked chicken back to the skillet, then pour the stir fry sauce over the chicken and vegetables. Give everything a stir and allow the sauce to come up to a simmer, at which point it will start to thicken and turn glossy. Continue to cook for 1-2 more minutes or until it has reached your desired doneness.",
+    "Remove it from the heat, top with green onions and sesame seeds (optional) and serve!"
+  ],
+  "notes": "This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg",
+  "created": "2026-02-06T22:23:48.679658",
+  "source_url": "https://www.budgetbytes.com/chicken-stir-fry/"
+}

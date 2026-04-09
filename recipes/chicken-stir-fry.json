@@ -1,0 +1,31 @@
+{
+  "name": "Chicken Stir Fry",
+  "servings": 4,
+  "prep_time": 15,
+  "cook_time": 10,
+  "tags": ["quick", "asian", "chicken", "healthy"],
+  "meal_types": ["lunch", "dinner"],
+  "ingredients": [
+    {"qty": 1.5, "unit": "lb", "item": "chicken breast"},
+    {"qty": 2, "unit": "tbsp", "item": "soy sauce"},
+    {"qty": 1, "unit": "tbsp", "item": "sesame oil"},
+    {"qty": 1, "unit": "tbsp", "item": "cornstarch"},
+    {"qty": 2, "unit": "cup", "item": "broccoli florets"},
+    {"qty": 1, "unit": "", "item": "red bell pepper"},
+    {"qty": 2, "unit": "clove", "item": "garlic"},
+    {"qty": 1, "unit": "tbsp", "item": "fresh ginger"},
+    {"qty": 2, "unit": "cup", "item": "rice"},
+    {"qty": 1, "unit": "tbsp", "item": "vegetable oil"}
+  ],
+  "steps": [
+    "Slice chicken breast into thin strips and toss with cornstarch, 1 tbsp soy sauce, and sesame oil.",
+    "Cook rice according to package directions.",
+    "Heat vegetable oil in a wok or large skillet over high heat.",
+    "Add chicken and cook 4-5 minutes until golden. Remove and set aside.",
+    "Add garlic, ginger, broccoli, and bell pepper. Stir fry 3-4 minutes.",
+    "Return chicken to wok, add remaining soy sauce, toss to combine.",
+    "Serve over rice."
+  ],
+  "notes": "Works great with any vegetables you have on hand. Snap peas and carrots are good swaps.",
+  "created": "2025-02-06T12:00:00"
+}

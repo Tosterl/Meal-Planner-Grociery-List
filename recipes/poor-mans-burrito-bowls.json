@@ -1,0 +1,70 @@
+{
+  "name": "Poor Man's Burrito Bowls",
+  "servings": 6,
+  "prep_time": 5,
+  "cook_time": 20,
+  "tags": [
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 2.0,
+      "unit": "cup",
+      "item": "uncooked long grain white rice"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "salt"
+    },
+    {
+      "qty": 2.0,
+      "unit": "",
+      "item": "15oz. cans black beans"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "ground cumin"
+    },
+    {
+      "qty": 0.25,
+      "unit": "tsp",
+      "item": "garlic powder"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "16oz. jar salsa"
+    },
+    {
+      "qty": 6.0,
+      "unit": "oz",
+      "item": "dairy-free cheese",
+      "original": "shredded cheese*"
+    },
+    {
+      "qty": 1.0,
+      "unit": "bunch",
+      "item": "green onions"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "jalape\u00f1o"
+    }
+  ],
+  "steps": [
+    "Add the rice, salt, and 3 cups water to a medium sauce pot. Place a lid on top, turn the heat on to high, and allow the water to come up to a full boil. Once boiling, turn the heat down to low and let it continue to simmer for 15 minutes. After 15 minutes, turn the heat off and let it sit, with the lid in place, for an additional five minutes. Fluff just before serving.",
+    "While the rice is cooking, make the beans. Add both cans of black beans (undrained) to a small sauce pot, along with the cumin, and garlic powder. Heat over medium, stirring often, until heated through.",
+    "Slice the green onions and jalape\u00f1o (if using).",
+    "Once the rice is cooked, build the bowls. Add one cup cooked rice, 1/2 cup warm black beans, 1/3 cup salsa, and 1 oz. shredded cheese (about 1/4 cup) to each bowl. Top with a few sliced green onions and jalape\u00f1os, then serve."
+  ],
+  "notes": "\ud83e\udd5b DAIRY-FREE SWAPS: shredded cheese* \u2192 dairy-free cheese. These easy no-frills burrito bowls are super fast and affordable. They&#x27;re the perfect satisfying weeknight meal for times when money is tight!",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2015/09/Poor-Mans-Burrito-Bowls-close.jpg",
+  "created": "2026-02-06T22:24:02.493470",
+  "source_url": "https://www.budgetbytes.com/poor-mans-burrito-bowls/"
+}

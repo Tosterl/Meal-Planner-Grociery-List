@@ -1,0 +1,115 @@
+{
+  "name": "Sheet Pan Chicken Fajitas",
+  "servings": 4,
+  "prep_time": 15,
+  "cook_time": 40,
+  "tags": [
+    "dinner",
+    "main course",
+    "southwest",
+    "easy recipe",
+    "fajita recipe",
+    "sheet pan dinner",
+    "sheet pan fajitas",
+    "sheet pan meal",
+    "weeknight dinner",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "chili powder"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tbsp",
+      "item": "paprika"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "onion powder"
+    },
+    {
+      "qty": 0.25,
+      "unit": "tsp",
+      "item": "garlic powder"
+    },
+    {
+      "qty": 0.25,
+      "unit": "tsp",
+      "item": "cumin"
+    },
+    {
+      "qty": 0.125,
+      "unit": "tsp",
+      "item": "cayenne pepper"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "sugar"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "salt"
+    },
+    {
+      "qty": 2.0,
+      "unit": "small",
+      "item": "yellow onions"
+    },
+    {
+      "qty": 3.0,
+      "unit": "",
+      "item": "bell peppers, any color"
+    },
+    {
+      "qty": 1.0,
+      "unit": "lb",
+      "item": "chicken breast"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "cooking oil"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "lime"
+    },
+    {
+      "qty": 8.0,
+      "unit": "",
+      "item": "6-inch tortillas"
+    },
+    {
+      "qty": 0.5,
+      "unit": "cup",
+      "item": "dairy-free sour cream (Tofutti)",
+      "original": "sour cream"
+    },
+    {
+      "qty": 0.25,
+      "unit": "bunch",
+      "item": "cilantro"
+    }
+  ],
+  "steps": [
+    "Preheat the oven to 400\u00baF. Mix all of the spices for the fajita seasoning in a small bowl and set aside (chili powder, paprika, onion powder, garlic powder, cumin, cayenne pepper, sugar, and salt).",
+    "Cut the onion and bell peppers into 1/4-inch wide strips. Slice the chicken breast into thin strips. Add the chicken and vegetables to a large baking sheet or casserole dish.",
+    "Drizzle the cooking oil over the chicken and vegetables, then sprinkle the fajita seasoning mix over top. Use your hands to toss the ingredients until everything is well coated in oil and seasoning. Spread the chicken and vegetables out over the baking sheet evenly.",
+    "Bake the chicken and vegetables in the preheated oven for 35-40 minutes, stirring once halfway through. Squeeze the juice from half of the lime over top of the meat and vegetables after they come out of the oven.",
+    "To serve, scoop a small amount of meat and vegetables into the center of each tortilla. Top with a few sprigs of cilantro, a dollop of sour cream, and an extra squeeze of lime if desired."
+  ],
+  "notes": "\ud83e\udd5b DAIRY-FREE SWAPS: sour cream \u2192 dairy-free sour cream (Tofutti). These easy Sheet Pan Chicken Fajitas are a simple hands-off way to get that smoky-sweet flavor of traditional griddle fajitas.",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2022/03/Sheet-Pan-Chicken-Fajitas-done.jpg",
+  "created": "2026-02-06T22:24:35.026000",
+  "source_url": "https://www.budgetbytes.com/oven-fajitas/"
+}

@@ -1,0 +1,1700 @@
+{
+  "recipes": [
+    {
+      "name": "Breakfast Burrito",
+      "servings": 2,
+      "prep_time": 5,
+      "cook_time": 10,
+      "tags": [
+        "quick",
+        "breakfast",
+        "protein"
+      ],
+      "meal_types": [
+        "breakfast",
+        "lunch"
+      ],
+      "ingredients": [
+        {
+          "qty": 4,
+          "unit": "",
+          "item": "eggs"
+        },
+        {
+          "qty": 2,
+          "unit": "",
+          "item": "large flour tortillas"
+        },
+        {
+          "qty": 4,
+          "unit": "slice",
+          "item": "bacon"
+        },
+        {
+          "qty": 0.5,
+          "unit": "cup",
+          "item": "shredded cheddar cheese"
+        },
+        {
+          "qty": 0.25,
+          "unit": "cup",
+          "item": "salsa"
+        },
+        {
+          "qty": 1,
+          "unit": "tbsp",
+          "item": "butter"
+        },
+        {
+          "qty": 1,
+          "unit": "",
+          "item": "avocado"
+        }
+      ],
+      "steps": [
+        "Cook bacon in a skillet until crispy. Remove and chop.",
+        "Whisk eggs, melt butter in the same skillet, and scramble eggs over medium heat.",
+        "Warm tortillas in microwave for 15 seconds.",
+        "Fill each tortilla with eggs, bacon, cheese, sliced avocado, and salsa.",
+        "Fold and roll into burritos. Optional: toast seam-side down in a dry pan for 1 minute."
+      ],
+      "notes": "Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.",
+      "created": "2025-02-06T12:00:00"
+    },
+    {
+      "name": "Chicken Stir Fry",
+      "servings": 4,
+      "prep_time": 15,
+      "cook_time": 10,
+      "tags": [
+        "quick",
+        "asian",
+        "chicken",
+        "healthy"
+      ],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 1.5,
+          "unit": "lb",
+          "item": "chicken breast"
+        },
+        {
+          "qty": 2,
+          "unit": "tbsp",
+          "item": "soy sauce"
+        },
+        {
+          "qty": 1,
+          "unit": "tbsp",
+          "item": "sesame oil"
+        },
+        {
+          "qty": 1,
+          "unit": "tbsp",
+          "item": "cornstarch"
+        },
+        {
+          "qty": 2,
+          "unit": "cup",
+          "item": "broccoli florets"
+        },
+        {
+          "qty": 1,
+          "unit": "",
+          "item": "red bell pepper"
+        },
+        {
+          "qty": 2,
+          "unit": "clove",
+          "item": "garlic"
+        },
+        {
+          "qty": 1,
+          "unit": "tbsp",
+          "item": "fresh ginger"
+        },
+        {
+          "qty": 2,
+          "unit": "cup",
+          "item": "rice"
+        },
+        {
+          "qty": 1,
+          "unit": "tbsp",
+          "item": "vegetable oil"
+        }
+      ],
+      "steps": [
+        "Slice chicken breast into thin strips and toss with cornstarch, 1 tbsp soy sauce, and sesame oil.",
+        "Cook rice according to package directions.",
+        "Heat vegetable oil in a wok or large skillet over high heat.",
+        "Add chicken and cook 4-5 minutes until golden. Remove and set aside.",
+        "Add garlic, ginger, broccoli, and bell pepper. Stir fry 3-4 minutes.",
+        "Return chicken to wok, add remaining soy sauce, toss to combine.",
+        "Serve over rice."
+      ],
+      "notes": "Works great with any vegetables you have on hand. Snap peas and carrots are good swaps.",
+      "created": "2025-02-06T12:00:00"
+    },
+    {
+      "name": "Cilantro Lime Rice",
+      "servings": 6,
+      "prep_time": 10,
+      "cook_time": 20,
+      "tags": [
+        "dinner",
+        "side dish",
+        "southwest",
+        "cilantro rice",
+        "flavored rice"
+      ],
+      "meal_types": [
+        "side"
+      ],
+      "ingredients": [
+        {
+          "qty": 2.0,
+          "unit": "cup",
+          "item": "long grain white rice"
+        },
+        {
+          "qty": 3.0,
+          "unit": "cup",
+          "item": "chicken broth"
+        },
+        {
+          "qty": 0.5,
+          "unit": "bunch",
+          "item": "fresh cilantro"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "lime"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "olive oil"
+        }
+      ],
+      "steps": [
+        "Rinse the rice in cool water then let it drain well. Add the rice and chicken broth to a sauce pot, place a lid on top, and bring it to a full boil over high heat without removing the lid or stirring.",
+        "Once it reaches a full boil, turn the heat down to low, or just above low, and let the rice simmer for 15 minutes (no stirring or removing the lid). After 15 minutes, turn off the heat and let the pot rest for an additional five minutes.",
+        "While the rice is cooking, zest and juice the lime, and finely chop the cilantro. Add 3 tablespoons of the lime juice, \u00bd teaspoon of the lime zest, and 1 cup of finely chopped cilantro to a bowl with the olive oil and stir to combine.",
+        "Once the rice has rested off of the heat for five minutes, remove the lid and fluff with a fork. Drizzle the cilantro lime mixture over the rice, then gently fold to combine. Make sure not to stir the rice vigorously, or that can cause it to become mushy and sticky.",
+        "Taste the rice and adjust the lime or salt to your liking, then serve with your favorite meal."
+      ],
+      "notes": "This Cilantro Lime Rice recipe is bright, flavorful, easy to make with just a few ingredients, and will make any meal more delicious!",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2024/01/Cilantro-Lime-Rice-Pot.jpg",
+      "created": "2026-02-06T19:59:15.114666",
+      "source_url": "https://www.budgetbytes.com/cilantro-lime-rice/"
+    },
+    {
+      "name": "Creamy Garlic Chicken Recipe",
+      "servings": 4,
+      "prep_time": 10,
+      "cook_time": 30,
+      "tags": [
+        "dinner",
+        "american",
+        "creamy garlic chicken"
+      ],
+      "meal_types": [
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 2.0,
+          "unit": "",
+          "item": "boneless, skinless chicken breasts *"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "Italian seasoning"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "salt"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "freshly cracked black pepper"
+        },
+        {
+          "qty": 0.25,
+          "unit": "cup",
+          "item": "all-purpose flour"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "olive oil"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "butter, divided"
+        },
+        {
+          "qty": 1.0,
+          "unit": "whole",
+          "item": "garlic bulb **"
+        },
+        {
+          "qty": 1.0,
+          "unit": "cup",
+          "item": "chicken broth"
+        },
+        {
+          "qty": 0.75,
+          "unit": "cup",
+          "item": "heavy cream"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "garlic powder"
+        },
+        {
+          "qty": 1,
+          "unit": "",
+          "item": "Salt and Pepper to taste ($0.04)"
+        }
+      ],
+      "steps": [
+        "Using a sharp knife, carefully fillet each chicken breast into two thinner cutlets (or use thin-cut chicken breasts).",
+        "Season each breast with Italian seasoning, salt, and black pepper. Then sprinkle the flour over both sides of the chicken breasts and rub it in until the chicken is evenly coated.",
+        "Heat a large skillet over medium heat and add the olive oil and 1 Tbsp of butter. Once the skillet is hot, add the chicken and cook on each side until golden brown and cooked through (about 4 minutes per side). Remove the cooked chicken to a clean plate and cover to keep warm.",
+        "While the chicken is cooking, peel the garlic cloves and then carefully smash them with the side of a large chef&#39;s knife by pressing down on the side of the knife with the heel of your hand.",
+        "Once the chicken is removed, to the same skillet add the remaining 1 Tbsp of butter, then add the garlic cloves. Turn the heat down to medium-low and saut\u00e9 the garlic for 3 minutes or until lightly browned and fragrant. Make sure to stir the garlic frequently to prevent it from burning.",
+        "Next pour the chicken broth and heavy cream into the skillet, then add the garlic powder. Stir and scrape up any brown bits from the bottom of the skillet. Allow the sauce to simmer in the skillet for 8-10 minutes, or until it has reduced and thickened by about 50%. Taste the sauce at this point and add salt and pepper if needed (I added about \u215b tsp of salt and \u215b tsp of black pepper).",
+        "Finally, return the cooked chicken breasts to the skillet and spoon the creamy sauce over top. Allow the chicken to heat through. Serve with fresh chopped parsley (optional), and enjoy!"
+      ],
+      "notes": "This mouthwatering Creamy Garlic Chicken will leave you speechless! It\u2019s made with a luscious, garlic-infused sauce and it&#039;s perfect for an easy weeknight meal. This is one of our very favorite chicken recipes.",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2024/02/Creamy-Garlic-Chicken-Pan.jpg",
+      "created": "2026-02-06T20:00:03.041236",
+      "source_url": "https://www.budgetbytes.com/creamy-garlic-chicken/"
+    },
+    {
+      "name": "Crockpot Beef Stew Recipe",
+      "servings": 8,
+      "prep_time": 15,
+      "cook_time": 255,
+      "tags": [
+        "dinner",
+        "main course",
+        "american",
+        "beef stew recipe",
+        "crock pot",
+        "crock pot stew",
+        "slow cooker",
+        "slow cooker stew"
+      ],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 2.0,
+          "unit": "lb",
+          "item": "red potatoes"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "yellow onion"
+        },
+        {
+          "qty": 3.0,
+          "unit": "",
+          "item": "carrots"
+        },
+        {
+          "qty": 4.0,
+          "unit": "stalk",
+          "item": "celery"
+        },
+        {
+          "qty": 4.0,
+          "unit": "clove",
+          "item": "garlic"
+        },
+        {
+          "qty": 1.5,
+          "unit": "lb",
+          "item": "beef stew meat"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "all-purpose flour"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "salt"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "Freshly cracked black pepper"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "cooking oil"
+        },
+        {
+          "qty": 2.0,
+          "unit": "cup",
+          "item": "beef broth"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "Dijon mustard"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "Worcestershire sauce"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "soy sauce"
+        },
+        {
+          "qty": 1.5,
+          "unit": "tsp",
+          "item": "brown sugar"
+        },
+        {
+          "qty": 1.5,
+          "unit": "tsp",
+          "item": "dried rosemary"
+        },
+        {
+          "qty": 1.5,
+          "unit": "tsp",
+          "item": "dried thyme"
+        }
+      ],
+      "steps": [
+        "Dice the onion and red potatoes. Slice the carrots and celery. Mince the garlic. Place the prepared vegetables in a four or five quart slow cooker.",
+        "Place the stew meat in a bowl and sprinkle the flour, salt, and pepper over top. Toss the meat until it&#39;s evenly coated in flour.",
+        "Heat a large skillet over medium-high. Once very hot, add the cooking oil and swirl to coat the surface of the skillet. Add the stew meat and cook, without stirring, until browned on the bottom. Stir and then allow the beef to brown on a second side. Transfer the meat to the slow cooker.",
+        "Turn the heat under the skillet down to medium-low. Add the broth, Dijon, Worcestershire sauce, soy sauce, brown sugar, rosemary, and thyme to the skillet. Stir and cook over medium-low until all the browned bits have dissolved off the bottom of the skillet.",
+        "Pour the broth over the ingredients in the slow cooker and everything a good stir.",
+        "Place the lid on the slow cooker and cook on high for four hours or low for eight hours.",
+        "After cooking the meat and vegetables should both be tender. Stir the stew well to allow the potatoes to slightly break down and thicken the gravy. Taste the stew and adjust the salt or other seasonings to your liking. Serve hot!"
+      ],
+      "notes": "This Crockpot Beef Stew is the perfect cozy meal for a cold winter day with tender pieces of beef, vegetables, and a flavorful gravy.",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2023/02/Slow-Cooker-Beef-Stew-inbowl.jpeg",
+      "created": "2026-02-06T20:00:58.254523",
+      "source_url": "https://www.budgetbytes.com/slow-cooker-beef-stew/"
+    },
+    {
+      "name": "Curried Chickpeas with Spinach",
+      "servings": 4,
+      "prep_time": 5,
+      "cook_time": 20,
+      "tags": [
+        "main course",
+        "indian",
+        "curried chickpeas with spinach",
+        "easy",
+        "gluten free",
+        "quick",
+        "vegan",
+        "vegetarian"
+      ],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "olive oil"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "yellow onion"
+        },
+        {
+          "qty": 2.0,
+          "unit": "",
+          "item": "garlic cloves"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "inch fresh ginger"
+        },
+        {
+          "qty": 1.5,
+          "unit": "tbsp",
+          "item": "curry powder"
+        },
+        {
+          "qty": 8.0,
+          "unit": "oz",
+          "item": "fresh spinach"
+        },
+        {
+          "qty": 15.0,
+          "unit": "oz",
+          "item": "can tomato sauce"
+        },
+        {
+          "qty": 2.0,
+          "unit": "",
+          "item": "15 oz. cans chickpeas"
+        }
+      ],
+      "steps": [
+        "Dice the onion, mince the garlic, and grate the ginger on a small holed cheese grater. Saut\u00e9 the onion, garlic, and ginger in a large skillet with the olive oil over medium heat until the onions have softened (3-5 minutes).",
+        "Add the curry powder and continue to saut\u00e9 with the onion mixture for one minute more. Add about 1/4 cup of water to the skillet along with the fresh spinach and continue to saut\u00e9 until the spinach has wilted. The water will help steam and wilt the spinach (no water needed if using frozen spinach).",
+        "Drain and rinse the chickpeas. Add them to the skillet along with the tomato sauce. Stir well to distribute the spices in the sauce and heat through (5 minutes). Serve over rice or with bread."
+      ],
+      "notes": "These super fast Curried Chickpeas with spinach are packed with flavor and nutrients, vegan, gluten-free, and filling! Plus they freeze great!",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2013/12/Curried-Cickpeas-with-Spinach-Finished.jpg",
+      "created": "2026-02-06T20:05:05.071984",
+      "source_url": "https://www.budgetbytes.com/curried-chickpeas-spinach/"
+    },
+    {
+      "name": "Garlic Butter Pasta",
+      "servings": 4,
+      "prep_time": 5,
+      "cook_time": 15,
+      "tags": [
+        "quick",
+        "italian",
+        "vegetarian",
+        "budget"
+      ],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 1,
+          "unit": "lb",
+          "item": "spaghetti"
+        },
+        {
+          "qty": 4,
+          "unit": "tbsp",
+          "item": "butter"
+        },
+        {
+          "qty": 6,
+          "unit": "clove",
+          "item": "garlic"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "red pepper flakes"
+        },
+        {
+          "qty": 0.5,
+          "unit": "cup",
+          "item": "parmesan cheese"
+        },
+        {
+          "qty": 0.25,
+          "unit": "cup",
+          "item": "fresh parsley"
+        },
+        {
+          "qty": 1,
+          "unit": "tbsp",
+          "item": "olive oil"
+        },
+        {
+          "qty": 1,
+          "unit": "",
+          "item": "lemon"
+        }
+      ],
+      "steps": [
+        "Cook spaghetti in salted water according to package. Reserve 1 cup pasta water before draining.",
+        "Mince garlic. Melt butter with olive oil in a large pan over medium heat.",
+        "Add garlic and red pepper flakes, cook 1-2 minutes until fragrant (don't burn).",
+        "Add drained pasta and 1/2 cup reserved pasta water. Toss to coat.",
+        "Add parmesan, squeeze of lemon juice, and parsley. Toss again, adding more pasta water if needed."
+      ],
+      "notes": "Add grilled chicken or shrimp for protein. Works with any pasta shape.",
+      "created": "2025-02-06T12:00:00"
+    },
+    {
+      "name": "Ground Beef Tacos",
+      "servings": 4,
+      "prep_time": 10,
+      "cook_time": 15,
+      "tags": [
+        "quick",
+        "mexican",
+        "beef",
+        "family"
+      ],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 1,
+          "unit": "lb",
+          "item": "ground beef"
+        },
+        {
+          "qty": 8,
+          "unit": "",
+          "item": "small flour tortillas"
+        },
+        {
+          "qty": 1,
+          "unit": "tbsp",
+          "item": "chili powder"
+        },
+        {
+          "qty": 1,
+          "unit": "tsp",
+          "item": "cumin"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "garlic powder"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "onion powder"
+        },
+        {
+          "qty": 0.25,
+          "unit": "cup",
+          "item": "water"
+        },
+        {
+          "qty": 1,
+          "unit": "cup",
+          "item": "shredded cheddar cheese"
+        },
+        {
+          "qty": 1,
+          "unit": "cup",
+          "item": "lettuce"
+        },
+        {
+          "qty": 2,
+          "unit": "",
+          "item": "tomato"
+        },
+        {
+          "qty": 0.5,
+          "unit": "cup",
+          "item": "sour cream"
+        },
+        {
+          "qty": 1,
+          "unit": "",
+          "item": "lime"
+        }
+      ],
+      "steps": [
+        "Brown ground beef in a skillet over medium-high heat, breaking it up as it cooks.",
+        "Drain excess fat. Add chili powder, cumin, garlic powder, onion powder, and water.",
+        "Simmer 5 minutes until sauce thickens.",
+        "Warm tortillas in a dry skillet or microwave.",
+        "Assemble tacos with beef, cheese, lettuce, diced tomato, sour cream, and lime juice."
+      ],
+      "notes": "Works great with ground turkey too. Add jalape\u00c3\u00b1o for heat.",
+      "created": "2025-02-06T12:00:00"
+    },
+    {
+      "name": "Homemade Chicken Yakisoba",
+      "servings": 6,
+      "prep_time": 15,
+      "cook_time": 15,
+      "tags": [
+        "easy",
+        "stir fry noodles",
+        "stir fry recipes",
+        "yakisoba recipe"
+      ],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 0.5,
+          "unit": "head",
+          "item": "green cabbage"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "yellow onion"
+        },
+        {
+          "qty": 2.0,
+          "unit": "",
+          "item": "carrots"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "crown broccoli"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "inch fresh ginger"
+        },
+        {
+          "qty": 1.0,
+          "unit": "large",
+          "item": "chicken breast"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "vegetable oil"
+        },
+        {
+          "qty": 2.0,
+          "unit": "",
+          "item": "3oz. packages ramen noodles"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "sesame oil, optional"
+        },
+        {
+          "qty": 0.25,
+          "unit": "cup",
+          "item": "soy sauce"
+        },
+        {
+          "qty": 0.25,
+          "unit": "cup",
+          "item": "worcestershire sauce"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "ketchup"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "sriracha"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "sugar"
+        }
+      ],
+      "steps": [
+        "Before you begin, prepare the meat and vegetables for stir frying. Peel the ginger with either a vegetable peeler or the side of a spoon and then grate it with a cheese grater. Peel and grate the carrots with a large holed cheese grater. Remove the core from the cabbage and cut into thin strips. Slice the onion into thin strips. Cut the broccoli into bite-sized pieces. Slice the chicken into thin strips.",
+        "Begin boiling a medium pot full of water for the noodles. Heat the vegetable oil in a large skillet over medium-high heat. When the oil is hot, add the grated ginger, saute for about 30 seconds to one minute (its okay if it sticks to the pan but don\u2019t let it burn). Add the chicken strips and cook until they are no longer pink (about five minutes).",
+        "Once the chicken is cooked through, add all of the vegetables. Stir and cook until wilted (about 5-10 minutes). Meanwhile, once the water boils, add the noodles and cook just until tender (2-3 minutes). Drain, return to the pot (with the heat turned off) and toss with the sesame oil to keep from sticking.",
+        "In a small bowl, combine the soy sauce, worcestershire sauce, ketchup, sriracha, and sugar. Use only 1/2 tsp of sriracha if you don\u2019t want it spicy, use up to 1 Tbsp if you like it hot. Stir until the ketchup and sugar are dissolved. Pour the sauce into the skillet with the chicken and vegetables with the heat still on medium high. Add the noodles, stir to coat everything in the sauce, and heat through (just a few minutes)."
+      ],
+      "notes": "Skip take out and make these easy and addictive Chicken Yakisoba noodles that are full of chicken and vegetables, and drenched in a sweet and tangy sauce!&nbsp;",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2012/03/Chicken-Yakisoba-fork-bowl.jpg",
+      "created": "2026-02-06T19:58:56.888412",
+      "source_url": "https://www.budgetbytes.com/chicken-yakisoba/"
+    },
+    {
+      "name": "Honey Garlic Chicken",
+      "servings": 4,
+      "prep_time": 10,
+      "cook_time": 18,
+      "tags": [
+        "dinner",
+        "lunch",
+        "american",
+        "honey garlic chicken"
+      ],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 0.333,
+          "unit": "cup",
+          "item": "honey"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "soy sauce"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "rice vinegar"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "sriracha"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tsp",
+          "item": "toasted sesame oil"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "cornstarch"
+        },
+        {
+          "qty": 2.0,
+          "unit": "",
+          "item": "boneless, skinless chicken breasts"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "salt"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "black pepper"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "garlic powder"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "all-purpose flour"
+        },
+        {
+          "qty": 3.0,
+          "unit": "tbsp",
+          "item": "olive oil"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "butter"
+        },
+        {
+          "qty": 4.0,
+          "unit": "clove",
+          "item": "of garlic, minced"
+        },
+        {
+          "qty": 2.0,
+          "unit": "",
+          "item": "green onions, sliced"
+        }
+      ],
+      "steps": [
+        "Start by making the sauce. Combine the honey, soy sauce, rice vinegar, sriracha, toasted sesame oil, and cornstarch together in a small bowl. Set the sauce aside.",
+        "Cut the chicken breasts into small 1/2 inch sized pieces. Season with salt, black pepper and garlic powder. Then toss the chicken pieces in the flour until each piece is evenly coated.",
+        "Heat a large skillet over medium-high heat and add 2 Tbsp of oil. Swirl to coat the surface of the skillet. Once the skillet is hot, add half of the chicken and cook until browned on all sides and cooked through. Remove the chicken from the skillet onto a separate plate and set aside. Add the remaining 1 Tbsp of oil and repeat with cooking the 2nd batch of chicken until cooked through. Set all of the chicken aside.",
+        "In the same skillet add the butter and lower the heat down to medium-low heat. Add the minced garlic cloves and saute for 30-60 seconds until fragrant.",
+        "Next give the sauce another brief stir, then pour the sauce into the skillet with the garlic. Stir the sauce and scrape up any browned bits that are stuck at the bottom of the skillet. Let the sauce simmer for about 2 minutes to allow the cornstarch to activate and thicken the sauce.",
+        "Now add the cooked chicken back to the skillet and stir with the sauce until all of the pieces are evenly coated. Continue to cook for 1-2 more minutes to allow the chicken to heat through.",
+        "Remove the skillet from the heat, top with sliced green onions, and enjoy!"
+      ],
+      "notes": "This saucy Honey Garlic Chicken is a quick &amp; easy recipe with lots of chicken and an irresistible sweet &amp; tangy honey garlic sauce.",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg",
+      "created": "2026-02-06T19:59:11.166992",
+      "source_url": "https://www.budgetbytes.com/honey-garlic-chicken/"
+    },
+    {
+      "name": "One Pot Creamy Cajun Chicken Pasta",
+      "servings": 4,
+      "prep_time": 10,
+      "cook_time": 20,
+      "tags": [
+        "dinner",
+        "main course",
+        "american",
+        "one pot",
+        "quick",
+        "spicy"
+      ],
+      "meal_types": [
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 2.0,
+          "unit": "tsp",
+          "item": "smoked paprika"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "oregano"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "thyme"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "garlic powder"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "onion powder"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "cayenne pepper"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "black pepper"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "salt"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "olive oil"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "butter"
+        },
+        {
+          "qty": 1.0,
+          "unit": "lb",
+          "item": "boneless, skinless chicken breast"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "yellow onion, diced"
+        },
+        {
+          "qty": 0.5,
+          "unit": "lb",
+          "item": "penne pasta"
+        },
+        {
+          "qty": 15.0,
+          "unit": "oz",
+          "item": "fire roasted diced tomatoes"
+        },
+        {
+          "qty": 2.0,
+          "unit": "cup",
+          "item": "chicken broth"
+        },
+        {
+          "qty": 2.0,
+          "unit": "oz",
+          "item": "cream cheese"
+        },
+        {
+          "qty": 3.0,
+          "unit": "",
+          "item": "green onions, sliced"
+        }
+      ],
+      "steps": [
+        "Combine the ingredients for the Cajun seasoning in a small bowl. Cut the chicken into 1/2 to 3/4-inch cubes. Place the cubed chicken in a bowl, pour the Cajun seasoning over top, and stir to coat the chicken in spices.",
+        "Add the olive oil and butter to a large deep skillet. Heat the oil and butter over medium-high until the skillet is very hot and the butter is melted and foamy. Add the seasoned chicken to the skillet and cook for a couple minutes on each side, or just until the outside gets some color. The chicken does not need to be cooked through at this point.",
+        "Add the diced yellow onion to the skillet and continue to saut\u00e9 for about 2 minutes more, or just until the onion begins to soften. Allow the moisture from the onion to dissolve any browned bits from the bottom of the skillet.",
+        "Next, add the pasta, fire roasted diced tomatoes (with the juices), and chicken broth to the skillet. Stir just until everything is evenly combined, then place a lid on top and allow the broth to come up to a boil.",
+        "Once boiling, turn the heat down to medium-low and let the pasta simmer for about ten minutes, stirring every couple of minutes, until the pasta is tender and the liquid is thick and saucy.",
+        "Add the cream cheese to the skillet in chunks, then stir until it has melted into the sauce. Top the pasta with sliced green onions and serve."
+      ],
+      "notes": "Cook a complete dinner in one pot with this Creamy Cajun Chicken Pasta, using mostly pantry-stable items. Perfect for busy weeknights!&nbsp;",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2018/10/One-Pot-Creamy-Cajun-Chicken-Pasta-pan.jpg",
+      "created": "2026-02-06T19:58:53.431764",
+      "source_url": "https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/"
+    },
+    {
+      "name": "One Pot Lemon Pepper Chicken with Orzo",
+      "servings": 4,
+      "prep_time": 10,
+      "cook_time": 35,
+      "tags": [
+        "dinner",
+        "main course",
+        "american",
+        "chicken and orzo",
+        "lemon pepper chicken",
+        "one pot meal"
+      ],
+      "meal_types": [
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 4.0,
+          "unit": "",
+          "item": "chicken thighs*"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "lemon pepper seasoning"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "cooking oil"
+        },
+        {
+          "qty": 2.0,
+          "unit": "clove",
+          "item": "garlic"
+        },
+        {
+          "qty": 2.0,
+          "unit": "cup",
+          "item": "chicken broth"
+        },
+        {
+          "qty": 0.25,
+          "unit": "cup",
+          "item": "chopped parsley"
+        },
+        {
+          "qty": 1.5,
+          "unit": "cup",
+          "item": "orzo"
+        },
+        {
+          "qty": 2.0,
+          "unit": "oz",
+          "item": "feta, crumbled"
+        }
+      ],
+      "steps": [
+        "Blot the chicken thighs dry with a paper towel, then season both sides liberally with lemon pepper seasoning (about 2 Tbsp lemon pepper total).",
+        "Heat a large deep skillet over medium. Once hot, add the cooking oil. Add the seasoned chicken thighs, skin side down, and let them cook undisturbed until browned (about 6-8 minutes for bone-in skin-on thighs). Flip the chicken thighs and cook until browned on the second side. The chicken will be cooked most of the way through at this point but will finish cooking when simmered with the orzo. Remove the chicken to a clean plate.",
+        "While the chicken is browning, roughly chop about 1/4 bunch of parsley and mince two cloves of garlic. After removing the chicken from the skillet, turn the heat down to low, add the minced garlic, and saut\u00e9 the garlic in the residual fat for about a minute.",
+        "Add 2 cups of chicken broth to the skillet and stir to dissolve the crispy browned bits from the bottom of the pan.",
+        "Add the orzo and half of the chopped parsley. Stir to combine. Finally, return the chicken to the skillet, skin side up.",
+        "Place a lid on the skillet, turn the heat up to high, and let the broth come to a full boil. Once it reaches a boil, turn the heat down to low. Let the skillet simmer on low for about 15 minutes, or until most of the broth has been absorbed. Make sure it\u2019s simmering the whole time. If it stops simmering, increase the heat slightly until it just starts to simmer again.",
+        "After about 15 minutes the orzo should be tender and most of the broth absorbed but there will still be a little sauce in the skillet.",
+        "Fluff the orzo around the chicken a bit with a fork, then top with the remaining parsley and the crumbled feta. Serve and enjoy!"
+      ],
+      "notes": "Lemon Pepper Chicken with Orzo is a zesty one-pot meal featuring juicy chicken thighs, orzo, feta, and lemon pepper for tons of flavor!",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2022/07/One-Pot-Lemon-Pepper-Chicken-and-Orzo-H.jpg",
+      "created": "2026-02-06T20:01:58.195936",
+      "source_url": "https://www.budgetbytes.com/lemon-pepper-chicken/"
+    },
+    {
+      "name": "Overnight Oats",
+      "servings": 2,
+      "prep_time": 5,
+      "cook_time": 0,
+      "tags": [
+        "quick",
+        "breakfast",
+        "meal-prep",
+        "healthy"
+      ],
+      "meal_types": [
+        "breakfast"
+      ],
+      "ingredients": [
+        {
+          "qty": 1,
+          "unit": "cup",
+          "item": "rolled oats"
+        },
+        {
+          "qty": 1,
+          "unit": "cup",
+          "item": "milk"
+        },
+        {
+          "qty": 0.5,
+          "unit": "cup",
+          "item": "greek yogurt"
+        },
+        {
+          "qty": 2,
+          "unit": "tbsp",
+          "item": "honey"
+        },
+        {
+          "qty": 0.5,
+          "unit": "cup",
+          "item": "blueberries"
+        },
+        {
+          "qty": 2,
+          "unit": "tbsp",
+          "item": "chia seeds"
+        }
+      ],
+      "steps": [
+        "Combine oats, milk, yogurt, honey, and chia seeds in a jar or container.",
+        "Stir well, cover, and refrigerate overnight (or at least 4 hours).",
+        "Top with blueberries before serving. Eat cold or microwave 1-2 min."
+      ],
+      "notes": "Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.",
+      "created": "2025-02-06T12:00:00"
+    },
+    {
+      "name": "Poor Man's Burrito Bowls",
+      "servings": 6,
+      "prep_time": 5,
+      "cook_time": 20,
+      "tags": [],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 2.0,
+          "unit": "cup",
+          "item": "uncooked long grain white rice"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "salt"
+        },
+        {
+          "qty": 2.0,
+          "unit": "",
+          "item": "15oz. cans black beans"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "ground cumin"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "garlic powder"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "16oz. jar salsa"
+        },
+        {
+          "qty": 6.0,
+          "unit": "oz",
+          "item": "shredded cheese*"
+        },
+        {
+          "qty": 1.0,
+          "unit": "bunch",
+          "item": "green onions"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "jalape\u00f1o"
+        }
+      ],
+      "steps": [
+        "Add the rice, salt, and 3 cups water to a medium sauce pot. Place a lid on top, turn the heat on to high, and allow the water to come up to a full boil. Once boiling, turn the heat down to low and let it continue to simmer for 15 minutes. After 15 minutes, turn the heat off and let it sit, with the lid in place, for an additional five minutes. Fluff just before serving.",
+        "While the rice is cooking, make the beans. Add both cans of black beans (undrained) to a small sauce pot, along with the cumin, and garlic powder. Heat over medium, stirring often, until heated through.",
+        "Slice the green onions and jalape\u00f1o (if using).",
+        "Once the rice is cooked, build the bowls. Add one cup cooked rice, 1/2 cup warm black beans, 1/3 cup salsa, and 1 oz. shredded cheese (about 1/4 cup) to each bowl. Top with a few sliced green onions and jalape\u00f1os, then serve."
+      ],
+      "notes": "These easy no-frills burrito bowls are super fast and affordable. They&#x27;re the perfect satisfying weeknight meal for times when money is tight!",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2015/09/Poor-Mans-Burrito-Bowls-close.jpg",
+      "created": "2026-02-06T20:04:56.726928",
+      "source_url": "https://www.budgetbytes.com/poor-mans-burrito/"
+    },
+    {
+      "name": "Quick &amp; Easy Garlic Noodles",
+      "servings": 4,
+      "prep_time": 10,
+      "cook_time": 15,
+      "tags": [
+        "dinner",
+        "main course",
+        "side dish",
+        "asian",
+        "garlic noodles",
+        "noodles"
+      ],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "oyster sauce*"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "brown sugar**"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tsp",
+          "item": "soy sauce"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "toasted sesame oil"
+        },
+        {
+          "qty": 8.0,
+          "unit": "oz",
+          "item": "angel hair pasta***"
+        },
+        {
+          "qty": 4.0,
+          "unit": "clove",
+          "item": "garlic"
+        },
+        {
+          "qty": 0.5,
+          "unit": "bunch",
+          "item": "green onions"
+        },
+        {
+          "qty": 4.0,
+          "unit": "tbsp",
+          "item": "butter"
+        }
+      ],
+      "steps": [
+        "Add the oyster sauce, brown sugar, soy sauce and sesame oil to a bowl and stir until combined.",
+        "Bring a large pot of water to a boil and cook the noodles according to the package directions (boil for 7-10 minutes). Drain the cooked noodles in a colander, then set aside.",
+        "While the pasta cooks, mince the garlic and slice the green onions. Melt the butter in a large skillet over medium-low heat. Once the butter is melted and bubbly, add the garlic and onions (save a few for garnish) and saut\u00e9 until they are soft and fragrant (1-2 minutes).",
+        "Remove the skillet from the heat. Add the drained pasta and oyster sauce mixture to the skillet, and stir well to coat the pasta. If your pasta is stiff or sticky making it hard to stir, sprinkle a small amount of hot water over the pasta to loosen it up. Garnish the pasta with any reserved sliced green onions, then serve."
+      ],
+      "notes": "Garlic Noodles are sweet, rich, and savory with a strong garlic punch. They make the perfect side dish to any Asian inspired meal.",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2015/07/Garlic-Noodles-Overhead.jpg",
+      "created": "2026-02-06T20:01:18.152046",
+      "source_url": "https://www.budgetbytes.com/garlic-noodles/"
+    },
+    {
+      "name": "Savory Oatmeal",
+      "servings": 1,
+      "prep_time": 5,
+      "cook_time": 10,
+      "tags": [
+        "breakfast",
+        "dinner",
+        "lunch",
+        "main course",
+        "american",
+        "asian",
+        "breakfast recipes",
+        "healthy breakfast",
+        "oatmeal recipe"
+      ],
+      "meal_types": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 1.0,
+          "unit": "clove",
+          "item": "garlic, minced"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "grated fresh ginger"
+        },
+        {
+          "qty": 4.0,
+          "unit": "",
+          "item": "mushrooms"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "butter"
+        },
+        {
+          "qty": 1.0,
+          "unit": "cup",
+          "item": "vegetable broth"
+        },
+        {
+          "qty": 0.5,
+          "unit": "cup",
+          "item": "old-fashioned rolled oats"
+        },
+        {
+          "qty": 0.5,
+          "unit": "cup",
+          "item": "spinach"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "toasted sesame oil"
+        }
+      ],
+      "steps": [
+        "Mince the garlic, grate the ginger, and slice the mushrooms.",
+        "Add the butter, garlic, and ginger to a small saucepot. Saut\u00e9 over medium heat for 1-2 minutes.",
+        "Add the mushrooms and continue to saut\u00e9 for a few minutes more, or until the mushrooms have wilted a bit.",
+        "Add the vegetable broth to the saucepot, turn the heat up to medium-high, and bring the broth up to a boil.",
+        "When the broth reaches a boil, add the rolled oats and stir to combine. Allow it to return to a boil, then reduce the heat to medium low. Let the oats simmer for about 5 minutes, or until thickened.",
+        "While the oats are simmering, roughly chop the spinach. Stir the spinach into the thickened oats, along with the toasted sesame oil.",
+        "Taste and add salt to your liking, if needed, then top it off with your favorite toppings. Serve hot!"
+      ],
+      "notes": "Savory oatmeal is a delicious, hearty, and inexpensive meal that can be customized to use ingredients you have on hand.",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2021/09/Savory-Oatmeal-above.jpg",
+      "created": "2026-02-06T20:04:09.936444",
+      "source_url": "https://www.budgetbytes.com/savory-oatmeal/"
+    },
+    {
+      "name": "Sheet Pan Chicken Fajitas",
+      "servings": 4,
+      "prep_time": 15,
+      "cook_time": 40,
+      "tags": [
+        "dinner",
+        "main course",
+        "southwest",
+        "easy recipe",
+        "fajita recipe",
+        "sheet pan dinner",
+        "sheet pan fajitas",
+        "sheet pan meal",
+        "weeknight dinner"
+      ],
+      "meal_types": [
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "chili powder"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tbsp",
+          "item": "paprika"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "onion powder"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "garlic powder"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "cumin"
+        },
+        {
+          "qty": 0.125,
+          "unit": "tsp",
+          "item": "cayenne pepper"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "sugar"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "salt"
+        },
+        {
+          "qty": 2.0,
+          "unit": "small",
+          "item": "yellow onions"
+        },
+        {
+          "qty": 3.0,
+          "unit": "",
+          "item": "bell peppers, any color"
+        },
+        {
+          "qty": 1.0,
+          "unit": "lb",
+          "item": "chicken breast"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "cooking oil"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "lime"
+        },
+        {
+          "qty": 8.0,
+          "unit": "",
+          "item": "6-inch tortillas"
+        },
+        {
+          "qty": 0.5,
+          "unit": "cup",
+          "item": "sour cream"
+        },
+        {
+          "qty": 0.25,
+          "unit": "bunch",
+          "item": "cilantro"
+        }
+      ],
+      "steps": [
+        "Preheat the oven to 400\u00baF. Mix all of the spices for the fajita seasoning in a small bowl and set aside (chili powder, paprika, onion powder, garlic powder, cumin, cayenne pepper, sugar, and salt).",
+        "Cut the onion and bell peppers into 1/4-inch wide strips. Slice the chicken breast into thin strips. Add the chicken and vegetables to a large baking sheet or casserole dish.",
+        "Drizzle the cooking oil over the chicken and vegetables, then sprinkle the fajita seasoning mix over top. Use your hands to toss the ingredients until everything is well coated in oil and seasoning. Spread the chicken and vegetables out over the baking sheet evenly.",
+        "Bake the chicken and vegetables in the preheated oven for 35-40 minutes, stirring once halfway through. Squeeze the juice from half of the lime over top of the meat and vegetables after they come out of the oven.",
+        "To serve, scoop a small amount of meat and vegetables into the center of each tortilla. Top with a few sprigs of cilantro, a dollop of sour cream, and an extra squeeze of lime if desired."
+      ],
+      "notes": "These easy Sheet Pan Chicken Fajitas are a simple hands-off way to get that smoky-sweet flavor of traditional griddle fajitas.",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2022/03/Sheet-Pan-Chicken-Fajitas-done.jpg",
+      "created": "2026-02-06T20:00:12.038581",
+      "source_url": "https://www.budgetbytes.com/oven-fajitas/"
+    },
+    {
+      "name": "Spicy Sriracha Noodles",
+      "servings": 2,
+      "prep_time": 5,
+      "cook_time": 10,
+      "tags": [
+        "easy",
+        "noodles",
+        "spicy",
+        "take out",
+        "vegetarian"
+      ],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 4.0,
+          "unit": "oz",
+          "item": "lo mein noodles"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "butter"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "crushed red pepper"
+        },
+        {
+          "qty": 2.0,
+          "unit": "large",
+          "item": "eggs"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "brown sugar"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "soy sauce"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "sriracha"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "handful fresh cilantro"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "green onion, sliced"
+        }
+      ],
+      "steps": [
+        "Prepare the sauce for the noodles. In a small bowl, stir together the brown sugar, soy sauce, and sriracha. Set the sauce aside.",
+        "Bring a pot of water to a boil for the noodles. Once boiling, add the noodles and boil until tender. Drain the noodles in a colander.",
+        "While waiting for the water to boil, crack two eggs into a bowl then whisk lightly.",
+        "Heat the butter in a skillet over medium heat, then add the eggs and crushed pepper and lightly scramble the eggs. Avoid over cooking the eggs.",
+        "Once the noodles have drained, add them to the skillet with the eggs, then drizzle the sauce over top. Toss the noodles and eggs to coat in the sauce.",
+        "Top the noodles with fresh cilantro and sliced green onion, then serve."
+      ],
+      "notes": "These sweet, tangy, and spicy sriracha noodles take only a few minutes to make and are an inexpensive alternative to take out.",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2012/08/Spicy-Noodles-skillet.jpg",
+      "created": "2026-02-06T20:04:48.280414",
+      "source_url": "https://www.budgetbytes.com/dragon-noodles/"
+    },
+    {
+      "name": "Tomato Spinach One Pot Pasta",
+      "servings": 6,
+      "prep_time": 10,
+      "cook_time": 15,
+      "tags": [],
+      "meal_types": [
+        "lunch",
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 4.0,
+          "unit": "cup",
+          "item": "vegetable broth"
+        },
+        {
+          "qty": 2.0,
+          "unit": "tbsp",
+          "item": "olive oil"
+        },
+        {
+          "qty": 12.0,
+          "unit": "oz",
+          "item": "fettuccine"
+        },
+        {
+          "qty": 8.0,
+          "unit": "oz",
+          "item": "frozen chopped spinach"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "28oz. can diced tomatoes"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "yellow onion, sliced"
+        },
+        {
+          "qty": 4.0,
+          "unit": "clove",
+          "item": "garlic, sliced"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tbsp",
+          "item": "dried basil"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tbsp",
+          "item": "dried oregano"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "crushed red pepper"
+        },
+        {
+          "qty": 1,
+          "unit": "",
+          "item": "freshly cracked black pepper to taste ($0.05)"
+        },
+        {
+          "qty": 2.0,
+          "unit": "oz",
+          "item": "shaved Parmesan"
+        }
+      ],
+      "steps": [
+        "Add four cups of vegetable broth to a large pot. Break the fettuccine in half and add it to the pot along with the canned tomatoes (with juices), olive oil, frozen spinach, onion, garlic, basil, oregano, red pepper, and some freshly cracked black pepper.",
+        "Make sure the ingredients are submerged under the liquid, place a lid on top of the pot, and then turn the heat on to high. Allow the pot to come up to a full boil over high heat, then remove the lid and turn the heat down to medium.",
+        "Allow the pot to continue to boil over medium heat, without a lid, for 10-15 minutes, or until the pasta is cooked and most of the liquid has been absorbed. Stir the pot every few minutes as it cooks to prevent the pasta from sticking to the bottom, but avoid over stirring which can cause the pasta to become sticky.",
+        "Sprinkle with shaved Parmesan just before serving."
+      ],
+      "notes": "All the ingredients for this Tomato Spinach One Pot Pasta cook together to make an incredibly fast, flavorful, and easy weeknight meal.",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2013/05/Italian-Wonderpot-close-1.jpg",
+      "created": "2026-02-06T20:02:46.284416",
+      "source_url": "https://www.budgetbytes.com/italian-wonderpot/"
+    },
+    {
+      "name": "Turkey Taco Skillet",
+      "servings": 4,
+      "prep_time": 5,
+      "cook_time": 12,
+      "tags": [
+        "dinner",
+        "main course",
+        "american",
+        "southwest",
+        "easy dinner recipes",
+        "fast dinner",
+        "taco night"
+      ],
+      "meal_types": [
+        "dinner"
+      ],
+      "ingredients": [
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "chili powder"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "smoked paprika"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tsp",
+          "item": "ground cumin"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "cayenne pepper"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "dried oregano"
+        },
+        {
+          "qty": 0.5,
+          "unit": "tsp",
+          "item": "salt"
+        },
+        {
+          "qty": 0.25,
+          "unit": "tsp",
+          "item": "freshly cracked black pepper"
+        },
+        {
+          "qty": 1.0,
+          "unit": "tbsp",
+          "item": "cooking oil"
+        },
+        {
+          "qty": 1.0,
+          "unit": "lb",
+          "item": "ground turkey"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "yellow onion"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "10oz. can diced tomatoes with green chiles"
+        },
+        {
+          "qty": 1.0,
+          "unit": "",
+          "item": "15oz. can black beans"
+        },
+        {
+          "qty": 1.0,
+          "unit": "cup",
+          "item": "frozen corn"
+        },
+        {
+          "qty": 0.5,
+          "unit": "bunch",
+          "item": "green onions"
+        }
+      ],
+      "steps": [
+        "Combine the spices for the homemade taco seasoning, then set the seasoning aside.",
+        "Add the cooking oil and ground turkey to a large skillet. Begin to cook the turkey over medium heat, breaking it up into pieces as it cooks.",
+        "While the turkey is cooking, dice the onion. Add the onion to the skillet with the turkey and continue to stir and cook until the onions are soft. Add the prepared taco seasoning, then continue to stir and cook for 1-2 minutes more.",
+        "Drain the black beans then add them to the skillet with the diced tomatoes (with juices) and frozen corn (no need to thaw). Stir the ingredients in the skillet to combine, then heat through over medium.",
+        "While the mixture is heating, slice the green onions. Stir the green onions into the skillet just before serving."
+      ],
+      "notes": "This easy and versatile Turkey Taco Skillet takes about 20 minutes to make, is freezer friendly, and can be served several different ways.",
+      "image_url": "https://www.budgetbytes.com/wp-content/uploads/2020/02/Turkey-Taco-Skillet-above.jpg",
+      "created": "2026-02-06T20:01:37.962912",
+      "source_url": "https://www.budgetbytes.com/turkey-taco-skillet/"
+    }
+  ],
+  "usage_history": {
+    "ground-beef-tacos": [
+      "2026-02-06"
+    ],
+    "chicken-stir-fry": [
+      "2026-02-06"
+    ],
+    "garlic-butter-pasta": [
+      "2026-02-06"
+    ],
+    "creamy-garlic-chicken-recipe": [
+      "2026-02-06"
+    ],
+    "honey-garlic-chicken": [
+      "2026-02-06"
+    ],
+    "crockpot-beef-stew-recipe": [
+      "2026-02-06"
+    ],
+    "one-pot-creamy-cajun-chicken-pasta": [
+      "2026-02-06"
+    ],
+    "turkey-taco-skillet": [
+      "2026-02-06"
+    ],
+    "sheet-pan-chicken-fajitas": [
+      "2026-02-06"
+    ],
+    "cilantro-lime-rice": [
+      "2026-02-06"
+    ]
+  },
+  "exported_at": "2026-02-06T20:12:23.036692"
+}

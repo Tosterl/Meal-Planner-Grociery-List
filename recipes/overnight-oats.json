@@ -1,0 +1,23 @@
+{
+  "name": "Overnight Oats",
+  "servings": 2,
+  "prep_time": 5,
+  "cook_time": 0,
+  "tags": ["quick", "breakfast", "meal-prep", "healthy"],
+  "meal_types": ["breakfast"],
+  "ingredients": [
+    {"qty": 1, "unit": "cup", "item": "rolled oats"},
+    {"qty": 1, "unit": "cup", "item": "milk"},
+    {"qty": 0.5, "unit": "cup", "item": "greek yogurt"},
+    {"qty": 2, "unit": "tbsp", "item": "honey"},
+    {"qty": 0.5, "unit": "cup", "item": "blueberries"},
+    {"qty": 2, "unit": "tbsp", "item": "chia seeds"}
+  ],
+  "steps": [
+    "Combine oats, milk, yogurt, honey, and chia seeds in a jar or container.",
+    "Stir well, cover, and refrigerate overnight (or at least 4 hours).",
+    "Top with blueberries before serving. Eat cold or microwave 1-2 min."
+  ],
+  "notes": "Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.",
+  "created": "2025-02-06T12:00:00"
+}

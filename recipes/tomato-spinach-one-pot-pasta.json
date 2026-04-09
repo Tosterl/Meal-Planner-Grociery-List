@@ -1,0 +1,85 @@
+{
+  "name": "Tomato Spinach One Pot Pasta",
+  "servings": 6,
+  "prep_time": 10,
+  "cook_time": 15,
+  "tags": [
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 4.0,
+      "unit": "cup",
+      "item": "vegetable broth"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "olive oil"
+    },
+    {
+      "qty": 12.0,
+      "unit": "oz",
+      "item": "fettuccine"
+    },
+    {
+      "qty": 8.0,
+      "unit": "oz",
+      "item": "frozen chopped spinach"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "28oz. can diced tomatoes"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "yellow onion, sliced"
+    },
+    {
+      "qty": 4.0,
+      "unit": "clove",
+      "item": "garlic, sliced"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tbsp",
+      "item": "dried basil"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tbsp",
+      "item": "dried oregano"
+    },
+    {
+      "qty": 0.25,
+      "unit": "tsp",
+      "item": "crushed red pepper"
+    },
+    {
+      "qty": 1,
+      "unit": "",
+      "item": "freshly cracked black pepper to taste ($0.05)"
+    },
+    {
+      "qty": 2.0,
+      "unit": "oz",
+      "item": "nutritional yeast",
+      "original": "shaved Parmesan"
+    }
+  ],
+  "steps": [
+    "Add four cups of vegetable broth to a large pot. Break the fettuccine in half and add it to the pot along with the canned tomatoes (with juices), olive oil, frozen spinach, onion, garlic, basil, oregano, red pepper, and some freshly cracked black pepper.",
+    "Make sure the ingredients are submerged under the liquid, place a lid on top of the pot, and then turn the heat on to high. Allow the pot to come up to a full boil over high heat, then remove the lid and turn the heat down to medium.",
+    "Allow the pot to continue to boil over medium heat, without a lid, for 10-15 minutes, or until the pasta is cooked and most of the liquid has been absorbed. Stir the pot every few minutes as it cooks to prevent the pasta from sticking to the bottom, but avoid over stirring which can cause the pasta to become sticky.",
+    "Sprinkle with shaved Parmesan just before serving."
+  ],
+  "notes": "\ud83e\udd5b DAIRY-FREE SWAPS: shaved Parmesan \u2192 nutritional yeast. All the ingredients for this Tomato Spinach One Pot Pasta cook together to make an incredibly fast, flavorful, and easy weeknight meal.",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2013/05/Italian-Wonderpot-close-1.jpg",
+  "created": "2026-02-06T20:44:58.596892",
+  "source_url": "https://www.budgetbytes.com/italian-wonderpot/"
+}

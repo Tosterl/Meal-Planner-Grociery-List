@@ -1,0 +1,110 @@
+{
+  "name": "Instant Pot Beef Stew Recipe",
+  "servings": 6,
+  "prep_time": 15,
+  "cook_time": 60,
+  "tags": [
+    "main course",
+    "american",
+    "instant pot beef stew",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 1.0,
+      "unit": "lb",
+      "item": "beef stew meat, cubed"
+    },
+    {
+      "qty": 1,
+      "unit": "",
+      "item": "salt and pepper ($0.10)"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "all-purpose flour"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "vegan butter (Earth Balance)",
+      "original": "butter"
+    },
+    {
+      "qty": 2.0,
+      "unit": "cup",
+      "item": "beef broth*"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "Worcestershire sauce"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "soy sauce"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tbsp",
+      "item": "brown sugar"
+    },
+    {
+      "qty": 2.0,
+      "unit": "clove",
+      "item": "garlic, minced"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "tomato paste"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "dried rosemary"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "dried thyme"
+    },
+    {
+      "qty": 14.0,
+      "unit": "oz",
+      "item": "bag frozen pearl onions**"
+    },
+    {
+      "qty": 8.0,
+      "unit": "oz",
+      "item": "mushrooms"
+    },
+    {
+      "qty": 1.0,
+      "unit": "lb",
+      "item": "carrots"
+    },
+    {
+      "qty": 0.75,
+      "unit": "lb",
+      "item": "potatoes"
+    }
+  ],
+  "steps": [
+    "Place the stew meat in a bowl and season lightly with salt and pepper. Add the flour and stir to coat.",
+    "Place the butter*** in the Instant Pot and turn on the saut\u00e9 function. Heat the butter until it is melted and sizzling, then add the stew meat. Brown the meat on all sides. Don&#39;t stir too often as this will prevent the meat from achieving a nice brown, crispy exterior. The flour may coat the bottom of the pot and that is okay, just don&#39;t let it burn.",
+    "Pour the beef broth into the pot and stir to dissolve the browned bits from the bottom of the pot. Once dissolved, add the Worcestershire sauce, soy sauce, brown sugar, minced garlic, tomato paste, rosemary, and thyme.",
+    "Wash and quarter the mushrooms. Peel and slice the carrots into one-inch sections. Wash the potatoes well, peel if desired, then chop into one-inch cubes. Add the pearl onions (no need to thaw), mushrooms, carrots, and potatoes to the Instant Pot. Give all the ingredients in the pot a good stir.",
+    "Close the lid on the Instant Pot and close the steam valve. Press the \"meat/stew\" button, or set the cooker to 35 minutes of high pressure. After 35 minutes of high pressure, allow the cooker to naturally cool and release pressure.",
+    "Once the pressure has released, open the steam valve then carefully open the lid. Give the stew a good stir, taste, and adjust the salt if needed. Serve hot with crusty bread."
+  ],
+  "notes": "\ud83e\udd5b DAIRY-FREE SWAPS: butter \u2192 vegan butter (Earth Balance). This Instant Pot Beef Stew recipe is incredibly fast and easy, but is packed with slow-cooked flavor. Perfect for those busy weeknights!",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2017/01/Instant-Pot-Beef-Stew-Close.jpg",
+  "created": "2026-02-06T20:39:33.571545",
+  "source_url": "https://www.budgetbytes.com/instant-pot-beef-stew/"
+}

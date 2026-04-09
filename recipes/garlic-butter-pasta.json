@@ -1,0 +1,27 @@
+{
+  "name": "Garlic Butter Pasta",
+  "servings": 4,
+  "prep_time": 5,
+  "cook_time": 15,
+  "tags": ["quick", "italian", "vegetarian", "budget"],
+  "meal_types": ["lunch", "dinner"],
+  "ingredients": [
+    {"qty": 1, "unit": "lb", "item": "spaghetti"},
+    {"qty": 4, "unit": "tbsp", "item": "butter"},
+    {"qty": 6, "unit": "clove", "item": "garlic"},
+    {"qty": 0.5, "unit": "tsp", "item": "red pepper flakes"},
+    {"qty": 0.5, "unit": "cup", "item": "parmesan cheese"},
+    {"qty": 0.25, "unit": "cup", "item": "fresh parsley"},
+    {"qty": 1, "unit": "tbsp", "item": "olive oil"},
+    {"qty": 1, "unit": "", "item": "lemon"}
+  ],
+  "steps": [
+    "Cook spaghetti in salted water according to package. Reserve 1 cup pasta water before draining.",
+    "Mince garlic. Melt butter with olive oil in a large pan over medium heat.",
+    "Add garlic and red pepper flakes, cook 1-2 minutes until fragrant (don't burn).",
+    "Add drained pasta and 1/2 cup reserved pasta water. Toss to coat.",
+    "Add parmesan, squeeze of lemon juice, and parsley. Toss again, adding more pasta water if needed."
+  ],
+  "notes": "Add grilled chicken or shrimp for protein. Works with any pasta shape.",
+  "created": "2025-02-06T12:00:00"
+}

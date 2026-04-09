@@ -1,0 +1,55 @@
+{
+  "name": "Cilantro Lime Rice",
+  "servings": 6,
+  "prep_time": 10,
+  "cook_time": 20,
+  "tags": [
+    "dinner",
+    "side dish",
+    "southwest",
+    "cilantro rice",
+    "flavored rice",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 2.0,
+      "unit": "cup",
+      "item": "long grain white rice"
+    },
+    {
+      "qty": 3.0,
+      "unit": "cup",
+      "item": "chicken broth"
+    },
+    {
+      "qty": 0.5,
+      "unit": "bunch",
+      "item": "fresh cilantro"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "lime"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "olive oil"
+    }
+  ],
+  "steps": [
+    "Rinse the rice in cool water then let it drain well. Add the rice and chicken broth to a sauce pot, place a lid on top, and bring it to a full boil over high heat without removing the lid or stirring.",
+    "Once it reaches a full boil, turn the heat down to low, or just above low, and let the rice simmer for 15 minutes (no stirring or removing the lid). After 15 minutes, turn off the heat and let the pot rest for an additional five minutes.",
+    "While the rice is cooking, zest and juice the lime, and finely chop the cilantro. Add 3 tablespoons of the lime juice, \u00bd teaspoon of the lime zest, and 1 cup of finely chopped cilantro to a bowl with the olive oil and stir to combine.",
+    "Once the rice has rested off of the heat for five minutes, remove the lid and fluff with a fork. Drizzle the cilantro lime mixture over the rice, then gently fold to combine. Make sure not to stir the rice vigorously, or that can cause it to become mushy and sticky.",
+    "Taste the rice and adjust the lime or salt to your liking, then serve with your favorite meal."
+  ],
+  "notes": "This Cilantro Lime Rice recipe is bright, flavorful, easy to make with just a few ingredients, and will make any meal more delicious!",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2024/01/Cilantro-Lime-Rice-Pot.jpg",
+  "created": "2026-02-06T20:43:30.089357",
+  "source_url": "https://www.budgetbytes.com/cilantro-lime-rice/"
+}

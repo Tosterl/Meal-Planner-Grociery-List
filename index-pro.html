@@ -1,0 +1,2695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meal Planner Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf8f4;
+  --bg-card: #ffffff;
+  --bg-warm: #f5f1eb;
+  --bg-hero: #1b1710;
+  --ink: #1b1710;
+  --ink-light: #5c5347;
+  --ink-muted: #9a8f82;
+  --accent: #d4622b;
+  --accent-hover: #b8511f;
+  --accent-light: #fdeee6;
+  --green: #3d7a4f;
+  --green-light: #e5f2e8;
+  --green-dark: #2d5e3b;
+  --blue: #2e6b8a;
+  --blue-light: #e0eff6;
+  --gold: #c49a2e;
+  --gold-light: #fdf5dc;
+  --red: #c0392b;
+  --red-light: #fce8e6;
+  --border: #e8e2d9;
+  --border-dark: #d1c9bd;
+  --shadow-sm: 0 1px 3px rgba(27,23,16,0.06);
+  --shadow: 0 4px 12px rgba(27,23,16,0.08);
+  --shadow-lg: 0 12px 40px rgba(27,23,16,0.12);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-xs: 6px;
+  --kroger-color: #0058a3;
+  --wholefoods-color: #00674b;
+  --costco-color: #e31837;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ═══ HEADER ═══ */
+header {
+  background: var(--bg-hero);
+  color: #faf8f4;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.8rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.logo-icon { font-size: 1.3rem; }
+
+nav {
+  display: flex;
+  gap: 3px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 11px;
+  padding: 3px;
+}
+
+nav button {
+  background: none;
+  border: none;
+  color: rgba(250,248,244,0.5);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+nav button:hover { color: rgba(250,248,244,0.85); background: rgba(255,255,255,0.06); }
+nav button.active { background: var(--accent); color: white; font-weight: 600; }
+
+/* ═══ MAIN ═══ */
+main { max-width: 1280px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+.view { display: none; }
+.view.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+.view-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.view-header h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.view-header .subtitle { color: var(--ink-muted); font-size: 0.85rem; margin-top: 0.1rem; }
+
+/* ═══ BUTTONS ═══ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.btn-secondary { background: var(--bg-card); color: var(--ink); border: 1.5px solid var(--border); }
+.btn-secondary:hover { border-color: var(--border-dark); background: var(--bg-warm); }
+.btn-ghost { background: none; color: var(--ink-light); padding: 0.35rem 0.5rem; }
+.btn-ghost:hover { color: var(--accent); }
+.btn-danger { background: none; color: var(--ink-muted); padding: 0.35rem 0.5rem; }
+.btn-danger:hover { color: var(--red); }
+.btn-sm { padding: 0.35rem 0.7rem; font-size: 0.78rem; }
+.btn-xs { padding: 0.25rem 0.5rem; font-size: 0.72rem; }
+
+.btn-group { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+/* ═══ CARDS ═══ */
+.card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.card:hover { box-shadow: var(--shadow); border-color: var(--border-dark); }
+
+/* ═══ RECIPE GRID ═══ */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.recipe-card { cursor: pointer; position: relative; }
+
+.recipe-card-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  background: var(--bg-warm);
+  display: block;
+}
+
+.recipe-card-img-placeholder {
+  width: 100%;
+  height: 160px;
+  background: linear-gradient(135deg, var(--bg-warm) 0%, #ede7dc 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.recipe-card-body { padding: 1rem 1.1rem; }
+
+.recipe-card .recipe-name {
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.recipe-card .recipe-meta {
+  display: flex;
+  gap: 0.75rem;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  margin-bottom: 0.5rem;
+}
+
+.recipe-card .recipe-cost {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--green);
+  margin-bottom: 0.4rem;
+}
+
+.recipe-tags-row { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+
+.tag {
+  display: inline-block;
+  background: var(--bg-warm);
+  color: var(--ink-light);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.18rem 0.5rem;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.tag-meal { background: var(--blue-light); color: var(--blue); }
+
+.recipe-card .card-actions {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: flex;
+  gap: 0.2rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.recipe-card:hover .card-actions { opacity: 1; }
+
+.card-action-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(4px);
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+
+.card-action-btn:hover { transform: scale(1.1); }
+.card-action-btn.fav-active { background: var(--accent-light); }
+
+/* ═══ TAG FILTER BAR ═══ */
+.filter-bar { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 1rem; }
+
+.filter-btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* ═══ MODALS ═══ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(27,23,16,0.45);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2.5rem 1rem;
+  overflow-y: auto;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--bg-card);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 660px;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn 0.2s ease-out;
+}
+
+@keyframes modalIn { from { opacity:0; transform:translateY(16px) scale(0.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+
+.modal-header {
+  padding: 1.25rem 1.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.modal-header h3 { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 700; }
+.modal-body { padding: 1rem 1.5rem 1.5rem; }
+.modal-footer { padding: 0 1.5rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.5rem; }
+
+.modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0.5rem 0 1rem;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+}
+
+.modal-section { margin-top: 1.15rem; }
+
+.modal-section h4 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  margin-bottom: 0.5rem;
+}
+
+.detail-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+}
+
+.ingredient-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.25rem; }
+
+.ingredient-list li {
+  font-size: 0.88rem;
+  padding: 0.25rem 0;
+  display: flex;
+  gap: 0.35rem;
+}
+
+.ingredient-list li .qty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 500;
+  min-width: 65px;
+}
+
+.steps-list { list-style: none; counter-reset: step; }
+
+.steps-list li {
+  counter-increment: step;
+  position: relative;
+  padding: 0.45rem 0 0.45rem 2.4rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.steps-list li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.4rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--bg-warm);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-light);
+}
+
+.recipe-notes {
+  background: var(--gold-light);
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: var(--ink-light);
+  font-style: italic;
+}
+
+/* ═══ FORMS ═══ */
+.form-group { margin-bottom: 0.9rem; }
+
+.form-group label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  margin-bottom: 0.3rem;
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+.form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.75rem; }
+
+input, select, textarea {
+  width: 100%;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--ink);
+  transition: border-color 0.15s;
+}
+
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+textarea { resize: vertical; min-height: 60px; }
+
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  font-size: 0.82rem;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  background: var(--bg-warm);
+  border-radius: 20px;
+  transition: all 0.15s;
+}
+
+.checkbox-group label:has(input:checked) { background: var(--accent-light); color: var(--accent); }
+.checkbox-group input { width: auto; display: none; }
+
+.ing-row {
+  display: grid;
+  grid-template-columns: 65px 80px 1fr 34px;
+  gap: 0.35rem;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.ing-row input { padding: 0.45rem 0.55rem; font-size: 0.82rem; }
+
+.step-row { display: flex; gap: 0.35rem; align-items: flex-start; margin-bottom: 0.3rem; }
+
+.step-row .step-num {
+  min-width: 1.5rem;
+  height: 1.5rem;
+  background: var(--bg-warm);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-light);
+  margin-top: 0.45rem;
+  flex-shrink: 0;
+}
+
+.step-row textarea { min-height: 40px; flex: 1; }
+
+/* ═══ CALENDAR VIEW ═══ */
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.cal-month-label {
+  font-family: 'Fraunces', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  min-width: 180px;
+  text-align: center;
+}
+
+.cal-nav-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.cal-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.cal-header-cell {
+  background: var(--bg-warm);
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
+.cal-cell {
+  background: var(--bg-card);
+  min-height: 110px;
+  padding: 0.4rem;
+  position: relative;
+  vertical-align: top;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cal-cell:hover { background: var(--accent-light); }
+.cal-cell.other-month { background: var(--bg-warm); opacity: 0.5; }
+.cal-cell.today { box-shadow: inset 0 0 0 2px var(--accent); }
+
+.cal-date {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-light);
+  margin-bottom: 0.2rem;
+}
+
+.cal-meal-chip {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: all 0.1s;
+  display: block;
+}
+
+.cal-meal-chip:hover { transform: scale(1.02); }
+.cal-meal-chip.breakfast { background: var(--gold-light); color: #8a6d1b; }
+.cal-meal-chip.lunch { background: var(--blue-light); color: var(--blue); }
+.cal-meal-chip.dinner { background: var(--accent-light); color: var(--accent); }
+
+.cal-add-btn {
+  font-size: 0.65rem;
+  color: var(--ink-muted);
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.3rem;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  margin-top: 2px;
+  transition: all 0.15s;
+}
+
+.cal-add-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ═══ WEEKLY PLANNER (kept for quick view) ═══ */
+.plan-grid { display: grid; gap: 0.4rem; margin-top: 1rem; }
+
+.plan-header {
+  display: grid;
+  grid-template-columns: 90px 1fr 1fr 1fr;
+  gap: 0.4rem;
+  margin-bottom: 0.2rem;
+}
+
+.plan-header span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.plan-header span:first-child { text-align: left; }
+
+.plan-day {
+  display: grid;
+  grid-template-columns: 90px 1fr 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.plan-day-label {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--ink-light);
+}
+
+.plan-slot {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.7rem;
+  min-height: 50px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.plan-slot:hover { border-color: var(--accent); }
+.plan-slot.filled { background: var(--bg-card); }
+
+.plan-slot .slot-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  margin-bottom: 0.15rem;
+}
+
+.plan-slot .slot-recipe { font-size: 0.82rem; font-weight: 600; }
+
+.plan-slot .slot-cost {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--green);
+  margin-top: 0.15rem;
+}
+
+.plan-slot .slot-clear {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 0.65rem;
+  color: var(--ink-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.plan-slot:hover .slot-clear { opacity: 1; }
+.plan-slot .slot-clear:hover { color: var(--red); }
+.plan-slot .slot-placeholder { color: var(--ink-muted); font-size: 0.78rem; font-style: italic; }
+
+/* ═══ PLANNER TABS ═══ */
+.planner-tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--bg-warm);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 1rem;
+  width: fit-content;
+}
+
+.planner-tab {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.planner-tab:hover { color: var(--ink); }
+.planner-tab.active { background: var(--bg-card); color: var(--ink); font-weight: 600; box-shadow: var(--shadow-sm); }
+
+.planner-sub { display: none; }
+.planner-sub.active { display: block; }
+
+/* ═══ PRICING VIEW ═══ */
+.price-table-wrap {
+  overflow-x: auto;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+}
+
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.price-table th {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  padding: 0.7rem 0.8rem;
+  text-align: left;
+  border-bottom: 1.5px solid var(--border);
+  background: var(--bg-warm);
+  position: sticky;
+  top: 0;
+}
+
+.price-table td {
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.price-table tr:hover td { background: var(--accent-light); }
+
+.price-table .price-input {
+  width: 75px;
+  padding: 0.3rem 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  text-align: right;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xs);
+}
+
+.price-table .price-input:focus { border-color: var(--accent); }
+
+.store-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.store-kroger { background: #e0edfa; color: var(--kroger-color); }
+.store-wholefoods { background: #dff0ea; color: var(--wholefoods-color); }
+.store-costco { background: #fce0e3; color: var(--costco-color); }
+
+.cheapest { font-weight: 700; color: var(--green); }
+
+/* ═══ COST SUMMARY ═══ */
+.cost-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cost-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+  text-align: center;
+}
+
+.cost-card .store-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3rem;
+}
+
+.cost-card .cost-total {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cost-card .cost-per-meal {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  margin-top: 0.15rem;
+}
+
+.cost-card.best {
+  border-color: var(--green);
+  background: var(--green-light);
+}
+
+.cost-card.best .cost-total { color: var(--green-dark); }
+
+.cost-card .savings-badge {
+  display: inline-block;
+  background: var(--green);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  margin-top: 0.3rem;
+}
+
+/* ═══ GROCERY VIEW ═══ */
+.grocery-section { margin-bottom: 1.25rem; }
+
+.grocery-section h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.grocery-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0;
+  font-size: 0.88rem;
+  transition: opacity 0.2s;
+}
+
+.grocery-item.checked { opacity: 0.35; text-decoration: line-through; }
+
+.grocery-item input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--green);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.grocery-item .item-qty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 500;
+  min-width: 75px;
+}
+
+.grocery-item .item-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  margin-left: auto;
+}
+
+.grocery-empty {
+  text-align: center;
+  padding: 3.5rem 2rem;
+  color: var(--ink-muted);
+}
+
+.grocery-empty .empty-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+
+/* ═══ RECIPE PICKER ═══ */
+.picker-overlay { display: none; position: fixed; inset: 0; z-index: 150; }
+.picker-overlay.active { display: block; }
+
+.recipe-picker {
+  position: fixed;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  width: 280px;
+  max-height: 340px;
+  overflow-y: auto;
+  z-index: 160;
+  padding: 0.5rem;
+}
+
+.picker-search {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  margin-bottom: 0.35rem;
+}
+
+.picker-item {
+  padding: 0.45rem 0.55rem;
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.picker-item:hover { background: var(--accent-light); }
+
+.picker-item img {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.picker-item-text .picker-tags { font-size: 0.7rem; color: var(--ink-muted); }
+
+/* ═══ TOAST ═══ */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-hero);
+  color: #faf8f4;
+  padding: 0.65rem 1.3rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  z-index: 300;
+  transition: transform 0.25s ease;
+  pointer-events: none;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+.empty-state { text-align: center; padding: 3.5rem 2rem; color: var(--ink-muted); }
+.empty-state .empty-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+.empty-state p { margin-bottom: 0.75rem; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 768px) {
+  .header-inner { padding: 0.6rem 1rem; flex-wrap: wrap; }
+  nav { width: 100%; justify-content: center; }
+  nav button { font-size: 0.75rem; padding: 0.35rem 0.6rem; }
+  main { padding: 1rem; }
+  .recipe-grid { grid-template-columns: 1fr; }
+  .plan-day { grid-template-columns: 70px 1fr; }
+  .plan-header { display: none; }
+  .form-row, .form-row-3, .form-row-4 { grid-template-columns: 1fr; }
+  .view-header { flex-direction: column; }
+  .cost-summary { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo"><span class="logo-icon">🍽️</span> Meal Planner Pro</div>
+    <nav id="main-nav">
+      <button class="active" data-view="recipes">Recipes</button>
+      <button data-view="planner">Plan & Calendar</button>
+      <button data-view="pricing">Pricing</button>
+      <button data-view="grocery">Grocery List</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ═══════════════ RECIPES VIEW ═══════════════ -->
+  <div id="recipes-view" class="view active">
+    <div class="view-header">
+      <div>
+        <h2>My Recipes</h2>
+        <div class="subtitle" id="recipe-count"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-secondary btn-sm" onclick="importRecipes()" title="Select JSON files from recipes/ folder">📁 Import Recipes</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportRecipes()">⬇ Export</button>
+        <button class="btn btn-primary" onclick="openAddRecipe()">+ Add Recipe</button>
+      </div>
+    </div>
+    <div class="filter-bar" id="tag-filters"></div>
+    <div class="recipe-grid" id="recipe-grid"></div>
+    <div class="empty-state" id="empty-recipes" style="display:none;">
+      <div class="empty-icon">📖</div>
+      <p>No recipes yet. Add your first one!</p>
+      <button class="btn btn-primary" onclick="openAddRecipe()">+ Add Recipe</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PLANNER VIEW ═══════════════ -->
+  <div id="planner-view" class="view">
+    <div class="view-header">
+      <div>
+        <h2>Meal Plan</h2>
+        <div class="subtitle">Plan your meals by week or month</div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-secondary btn-sm" onclick="autoFillWeek()" title="Uses smart planning to optimize grocery list">🧠 Smart Fill Week</button>
+        <button class="btn btn-secondary btn-sm" onclick="clearCurrentWeek()">Clear Week</button>
+        <button class="btn btn-primary btn-sm" onclick="exportToCalendar()" title="Export to Google/Outlook/Apple Calendar">📅 Export to Calendar</button>
+      </div>
+    </div>
+
+    <div class="planner-tabs">
+      <button class="planner-tab active" onclick="switchPlannerTab('weekly')">Weekly</button>
+      <button class="planner-tab" onclick="switchPlannerTab('calendar')">Calendar</button>
+    </div>
+
+    <!-- Weekly sub-view -->
+    <div id="weekly-sub" class="planner-sub active">
+      <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:0.5rem;">
+        <button class="cal-nav-btn" onclick="changeWeek(-1)">◀</button>
+        <span id="week-label" class="cal-month-label" style="font-size:1rem;min-width:220px;"></span>
+        <button class="cal-nav-btn" onclick="changeWeek(1)">▶</button>
+        <button class="btn btn-ghost btn-sm" onclick="goToCurrentWeek()">Today</button>
+      </div>
+      <div class="plan-header" id="plan-header"><span></span><span>Breakfast</span><span>Lunch</span><span>Dinner</span></div>
+      <div class="plan-grid" id="plan-grid"></div>
+
+      <div id="week-cost-summary" style="margin-top:1.25rem;"></div>
+    </div>
+
+    <!-- Calendar sub-view -->
+    <div id="calendar-sub" class="planner-sub">
+      <div class="calendar-controls">
+        <button class="cal-nav-btn" onclick="changeMonth(-1)">◀</button>
+        <span class="cal-month-label" id="cal-month-label"></span>
+        <button class="cal-nav-btn" onclick="changeMonth(1)">▶</button>
+        <button class="btn btn-ghost btn-sm" onclick="goToCurrentMonth()">Today</button>
+      </div>
+      <div class="calendar-grid" id="calendar-grid"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PRICING VIEW ═══════════════ -->
+  <div id="pricing-view" class="view">
+    <div class="view-header">
+      <div>
+        <h2>Store Pricing</h2>
+        <div class="subtitle">Edit prices per ingredient — costs auto-calculate for meal plans</div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm" onclick="importKrogerPrices()">🛒 Import Kroger Prices</button>
+        <button class="btn btn-secondary btn-sm" onclick="resetPrices()">↺ Reset to Defaults</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportPrices()">⬇ Export Prices</button>
+      </div>
+    </div>
+    <div id="pricing-content"></div>
+  </div>
+
+  <!-- ═══════════════ GROCERY VIEW ═══════════════ -->
+  <div id="grocery-view" class="view">
+    <div class="view-header">
+      <div>
+        <h2>Grocery List</h2>
+        <div class="subtitle" id="grocery-subtitle"></div>
+      </div>
+      <div class="btn-group" style="align-items:center;gap:0.75rem;">
+        <label style="font-size:0.82rem;font-weight:600;color:var(--ink-light);display:flex;align-items:center;gap:0.35rem;">
+          Store:
+          <select id="grocery-store" onchange="generateGroceryList()" style="width:auto;padding:0.35rem 0.6rem;font-size:0.82rem;">
+            <option value="kroger">Kroger</option>
+            <option value="wholefoods">Whole Foods</option>
+            <option value="costco">Costco</option>
+            <option value="cheapest">Cheapest Mix</option>
+          </select>
+        </label>
+        <label style="font-size:0.82rem;font-weight:600;color:var(--ink-light);display:flex;align-items:center;gap:0.35rem;">
+          Scale: <input type="number" id="grocery-scale" value="1" min="0.5" max="5" step="0.5" onchange="generateGroceryList()" style="width:55px;text-align:center;padding:0.3rem;font-size:0.82rem;">×
+        </label>
+        <button class="btn btn-secondary btn-sm" onclick="copyGroceryList()">📋 Copy</button>
+        <button class="btn btn-secondary btn-sm" onclick="emailGroceryList()">📧 Email</button>
+        <button class="btn btn-primary btn-sm" onclick="generateGroceryList()">🔄 Refresh</button>
+      </div>
+    </div>
+    <div id="grocery-content"></div>
+  </div>
+</main>
+
+<!-- ═══ RECIPE DETAIL MODAL ═══ -->
+<div class="modal-overlay" id="detail-modal" onclick="if(event.target===this)closeModal('detail-modal')">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-header">
+      <h3 id="detail-title"></h3>
+      <button class="btn btn-ghost" onclick="closeModal('detail-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="detail-body"></div>
+  </div>
+</div>
+
+<!-- ═══ ADD/EDIT RECIPE MODAL ═══ -->
+<div class="modal-overlay" id="edit-modal" onclick="if(event.target===this)closeModal('edit-modal')">
+  <div class="modal" style="max-width:720px;">
+    <div class="modal-header">
+      <h3 id="edit-modal-title">Add Recipe</h3>
+      <button class="btn btn-ghost" onclick="closeModal('edit-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-slug">
+      <div class="form-row">
+        <div class="form-group" style="grid-column:span 1;">
+          <label>Recipe Name</label>
+          <input type="text" id="edit-name" placeholder="e.g. Chicken Stir Fry">
+        </div>
+        <div class="form-group">
+          <label>Image URL (optional)</label>
+          <input type="text" id="edit-image" placeholder="https://... or leave blank for auto">
+        </div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group"><label>Servings</label><input type="number" id="edit-servings" value="4" min="1"></div>
+        <div class="form-group"><label>Prep Time (min)</label><input type="number" id="edit-prep" min="0"></div>
+        <div class="form-group"><label>Cook Time (min)</label><input type="number" id="edit-cook" min="0"></div>
+      </div>
+      <div class="form-group">
+        <label>Meal Types</label>
+        <div class="checkbox-group" id="edit-meal-types">
+          <label><input type="checkbox" value="breakfast"> Breakfast</label>
+          <label><input type="checkbox" value="lunch"> Lunch</label>
+          <label><input type="checkbox" value="dinner" checked> Dinner</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tags (comma-separated)</label>
+        <input type="text" id="edit-tags" placeholder="quick, chicken, healthy">
+      </div>
+      <div class="form-group">
+        <label>Ingredients</label>
+        <div id="ing-editor"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addIngRow()" style="margin-top:0.3rem;">+ Add Ingredient</button>
+      </div>
+      <div class="form-group">
+        <label>Steps</label>
+        <div id="steps-editor"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addStepRow()" style="margin-top:0.3rem;">+ Add Step</button>
+      </div>
+      <div class="form-group">
+        <label>Notes (optional)</label>
+        <textarea id="edit-notes" rows="2" placeholder="Tips, variations..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('edit-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveRecipe()">Save Recipe</button>
+    </div>
+  </div>
+</div>
+
+<!-- Picker -->
+<div class="picker-overlay" id="picker-overlay" onclick="closePicker()"></div>
+<div class="recipe-picker" id="recipe-picker" style="display:none;">
+  <input class="picker-search" type="text" placeholder="Search recipes..." oninput="filterPicker(this.value)">
+  <div id="picker-list"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="file-import" accept=".json" style="display:none" onchange="handleImport(event)" multiple>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  CONSTANTS & CONFIG
+// ═══════════════════════════════════════════════════
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const DAYS_SHORT = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MEALS = ['breakfast','lunch','dinner'];
+const STORES = ['kroger','wholefoods','costco'];
+const STORE_LABELS = { kroger:'Kroger', wholefoods:'Whole Foods', costco:'Costco' };
+const STORE_COLORS = { kroger:'store-kroger', wholefoods:'store-wholefoods', costco:'store-costco' };
+
+const UNIT_ALIASES = {
+  tablespoon:'tbsp',tablespoons:'tbsp',teaspoon:'tsp',teaspoons:'tsp',
+  cup:'cup',cups:'cup',ounce:'oz',ounces:'oz',pound:'lb',pounds:'lb',
+  clove:'clove',cloves:'clove',can:'can',cans:'can',
+  slice:'slice',slices:'slice',piece:'piece',pieces:'piece'
+};
+
+// Unsplash access key (free tier, 50 req/hour)
+const UNSPLASH_KEY = '';  // Add your own key from unsplash.com/developers for auto-images
+
+// ═══════════════════════════════════════════════════
+//  REAL KROGER PRICES (Addison TX, via Kroger API 2026-02-06)
+// ═══════════════════════════════════════════════════
+const DEFAULT_PRICES = {
+  // Proteins (real Kroger prices)
+  "chicken breast":       { unit:"lb",  kroger:6.99, wholefoods:7.99, costco:2.99 },
+  "ground beef":          { unit:"lb",  kroger:9.49, wholefoods:7.99, costco:4.49 },
+  "ground turkey":        { unit:"lb",  kroger:4.99, wholefoods:6.99, costco:3.99 },
+  "bacon":                { unit:"12oz",kroger:6.49, wholefoods:8.99, costco:4.99 },
+  "eggs":                 { unit:"dozen",kroger:3.99, wholefoods:5.99, costco:2.79 },
+
+  // Grains & Pasta
+  "spaghetti":            { unit:"14oz",kroger:2.99, wholefoods:2.49, costco:1.19 },
+  "pasta":                { unit:"14oz",kroger:2.99, wholefoods:2.49, costco:1.19 },
+  "rice":                 { unit:"14oz",kroger:2.99, wholefoods:2.49, costco:0.79 },
+  "rolled oats":          { unit:"24oz",kroger:3.19, wholefoods:3.49, costco:1.49 },
+  "oats":                 { unit:"24oz",kroger:3.19, wholefoods:3.49, costco:1.49 },
+  "flour":                { unit:"5lb", kroger:2.49, wholefoods:4.99, costco:2.99 },
+  "bread":                { unit:"loaf",kroger:7.49, wholefoods:5.99, costco:3.99 },
+
+  // Dairy
+  "milk":                 { unit:"halfgal",kroger:4.49, wholefoods:5.99, costco:3.19 },
+  "butter":               { unit:"lb",  kroger:1.29, wholefoods:5.99, costco:3.49 },
+  "greek yogurt":         { unit:"32oz",kroger:4.99, wholefoods:6.49, costco:3.99 },
+  "shredded cheddar cheese":{unit:"8oz",kroger:2.69, wholefoods:4.99, costco:2.49 },
+  "cheese cheddar":       { unit:"8oz", kroger:2.69, wholefoods:4.99, costco:2.49 },
+  "parmesan cheese":      { unit:"8oz", kroger:4.99, wholefoods:6.99, costco:3.99 },
+  "sour cream":           { unit:"8oz", kroger:1.25, wholefoods:3.49, costco:1.99 },
+  "cream cheese":         { unit:"2ct", kroger:5.29, wholefoods:4.99, costco:3.99 },
+
+  // Tortillas & Wraps
+  "large flour tortillas": { unit:"8ct",kroger:3.99, wholefoods:4.75, costco:2.80 },
+  "small flour tortillas": { unit:"each",kroger:0.30, wholefoods:0.50, costco:0.20 },
+  "tortillas flour":      { unit:"8ct", kroger:3.99, wholefoods:4.75, costco:2.80 },
+
+  // Oils & Sauces
+  "soy sauce":            { unit:"10oz",kroger:3.19, wholefoods:4.49, costco:4.99 },
+  "sesame oil":           { unit:"bottle",kroger:3.99, wholefoods:5.99, costco:5.99 },
+  "olive oil":            { unit:"25oz",kroger:8.99, wholefoods:12.99, costco:9.99 },  // ON SALE from $12.99!
+  "vegetable oil":        { unit:"16oz",kroger:1.49, wholefoods:4.99, costco:4.99 },
+  "cooking oil":          { unit:"16oz",kroger:1.49, wholefoods:4.99, costco:4.99 },
+  "honey":                { unit:"24oz",kroger:5.99, wholefoods:8.99, costco:7.99 },
+  "sriracha":             { unit:"28oz",kroger:5.99, wholefoods:6.99, costco:5.49 },
+  "salsa":                { unit:"jar", kroger:3.49, wholefoods:4.49, costco:4.99 },
+
+  // Produce
+  "broccoli":             { unit:"bunch",kroger:2.99, wholefoods:3.99, costco:1.99 },
+  "broccoli florets":     { unit:"lb",  kroger:2.99, wholefoods:3.99, costco:1.99 },
+  "bell pepper":          { unit:"each",kroger:1.50, wholefoods:1.99, costco:0.99 },
+  "red bell pepper":      { unit:"each",kroger:1.50, wholefoods:1.99, costco:0.99 },
+  "garlic":               { unit:"head",kroger:0.69, wholefoods:0.99, costco:0.50 },
+  "fresh ginger":         { unit:"piece",kroger:0.99, wholefoods:1.49, costco:0.79 },
+  "avocado":              { unit:"each",kroger:1.29, wholefoods:1.99, costco:0.89 },
+  "lemon":                { unit:"each",kroger:0.69, wholefoods:0.99, costco:0.45 },
+  "lime":                 { unit:"each",kroger:0.49, wholefoods:0.69, costco:0.35 },
+  "tomatoes":             { unit:"16oz",kroger:2.79, wholefoods:3.29, costco:2.65 },
+  "tomato":               { unit:"each",kroger:0.89, wholefoods:1.29, costco:0.65 },
+  "lettuce":              { unit:"head",kroger:1.99, wholefoods:2.99, costco:1.49 },
+  "fresh parsley":        { unit:"bunch",kroger:1.29, wholefoods:1.99, costco:0.99 },
+  "onion yellow":         { unit:"lb",  kroger:0.99, wholefoods:1.49, costco:0.79 },
+  "yellow onion":         { unit:"each",kroger:0.99, wholefoods:1.49, costco:0.79 },
+  "carrots":              { unit:"lb",  kroger:1.99, wholefoods:2.49, costco:1.49 },
+  "potatoes":             { unit:"lb",  kroger:0.99, wholefoods:1.49, costco:0.79 },
+  "green onions":         { unit:"bunch",kroger:0.99, wholefoods:1.49, costco:0.79 },
+
+  // Frozen & Canned
+  "frozen corn":          { unit:"12oz",kroger:1.25, wholefoods:2.49, costco:1.49 },
+  "black beans":          { unit:"15oz",kroger:1.00, wholefoods:1.79, costco:0.89 },
+  "diced tomatoes":       { unit:"can", kroger:1.29, wholefoods:1.99, costco:0.99 },
+
+  // Baking & Pantry
+  "sugar":                { unit:"10lb",kroger:9.99, wholefoods:7.99, costco:6.99 },
+  "blueberries":          { unit:"pint",kroger:3.99, wholefoods:5.49, costco:2.99 },
+  "chia seeds":           { unit:"bag", kroger:5.99, wholefoods:7.99, costco:4.49 },
+  "cornstarch":           { unit:"box", kroger:1.79, wholefoods:2.49, costco:2.99 },
+
+  // Spices
+  "chili powder":         { unit:"jar", kroger:2.99, wholefoods:3.99, costco:3.49 },
+  "cumin":                { unit:"jar", kroger:2.99, wholefoods:3.99, costco:3.49 },
+  "ground cumin":         { unit:"jar", kroger:2.99, wholefoods:3.99, costco:3.49 },
+  "garlic powder":        { unit:"jar", kroger:2.49, wholefoods:3.49, costco:2.99 },
+  "onion powder":         { unit:"jar", kroger:2.49, wholefoods:3.49, costco:2.99 },
+  "red pepper flakes":    { unit:"jar", kroger:2.99, wholefoods:3.99, costco:2.99 },
+  "smoked paprika":       { unit:"jar", kroger:2.99, wholefoods:3.99, costco:3.49 },
+  "cayenne pepper":       { unit:"jar", kroger:2.99, wholefoods:3.99, costco:3.49 },
+  "dried oregano":        { unit:"jar", kroger:2.49, wholefoods:3.49, costco:2.99 },
+  "salt":                 { unit:"box", kroger:0.99, wholefoods:1.49, costco:0.79 },
+  "black pepper":         { unit:"jar", kroger:3.99, wholefoods:4.99, costco:3.49 },
+
+  "water":                { unit:"free",kroger:0, wholefoods:0, costco:0 },
+};
+
+// How to convert recipe units to price units
+const UNIT_TO_PRICE = {
+  // ingredient -> { recipe_unit_per_price_unit }
+  // Dairy
+  "butter":     { tbsp: 1/32 },  // 32 tbsp/lb
+  "milk":       { cup: 1/8 },    // 8 cups per half gallon
+  "greek yogurt":{ cup: 1/4 },   // ~4 cups per 32oz
+  "sour cream": { cup: 1/1 },    // 1 cup per 8oz
+  "shredded cheddar cheese": { cup: 1/2 }, // ~2 cups per 8oz
+  "cheese cheddar": { cup: 1/2 },
+  "parmesan cheese": { cup: 1/2 },
+  "cream cheese": { oz: 1/8 },   // 8oz per block
+
+  // Grains
+  "rice":       { cup: 1/2 },    // ~2 cups per 14oz dry
+  "rolled oats":{ cup: 1/3 },
+  "oats":       { cup: 1/3 },
+  "pasta":      { "": 1, lb: 1 },
+  "spaghetti":  { "": 1, lb: 1 },
+
+  // Oils & Sauces (based on real Kroger sizes)
+  "soy sauce":  { tbsp: 1/20 },  // 10oz = ~20 tbsp
+  "sesame oil": { tbsp: 1/16 },
+  "olive oil":  { tbsp: 1/50 },  // 25oz = ~50 tbsp
+  "vegetable oil":{ tbsp: 1/32 },// 16oz = ~32 tbsp
+  "cooking oil":{ tbsp: 1/32 },
+  "honey":      { tbsp: 1/32 },  // 24oz = ~32 tbsp
+  "sriracha":   { tbsp: 1/56 },  // 28oz = ~56 tbsp
+  "salsa":      { cup: 1/2 },
+
+  // Produce
+  "broccoli":   { "": 1, bunch: 1, cup: 1/4 },
+  "broccoli florets": { cup: 1/4 },
+  "lettuce":    { cup: 1/6 },
+  "blueberries":{ cup: 1/2 },
+  "green onions": { bunch: 1, "": 1/4 },  // 4 uses per bunch
+
+  // Dry goods
+  "chia seeds": { tbsp: 1/40 },
+  "cornstarch": { tbsp: 1/30 },
+  "flour":      { cup: 1/20 },   // ~20 cups per 5lb
+  "sugar":      { cup: 1/20 },
+
+  // Spices (price per jar, ~30 tsp per jar typically)
+  "chili powder":{ tbsp: 1/15, tsp: 1/45 },
+  "cumin":      { tsp: 1/30 },
+  "ground cumin":{ tsp: 1/30 },
+  "garlic powder":{ tsp: 1/30 },
+  "onion powder":{ tsp: 1/30 },
+  "smoked paprika":{ tsp: 1/30 },
+  "cayenne pepper":{ tsp: 1/30 },
+  "dried oregano":{ tsp: 1/30 },
+  "red pepper flakes":{ tsp: 1/30 },
+  "salt":       { tsp: 1/100 },  // cheap
+  "black pepper":{ tsp: 1/30 },
+
+  // Eggs: price is per dozen
+  "eggs":       { "": 1/12, each: 1/12 },
+
+  // Bacon: price is per 12oz (~12-14 slices)
+  "bacon":      { slice: 1/12 },
+
+  // Garlic: price is per head (~10 cloves)
+  "garlic":     { clove: 1/10 },
+
+  // Broths: price per 32oz carton (4 cups)
+  "heavy cream": { cup: 1/2 },
+  "chicken broth": { cup: 1/4 },
+  "beef broth": { cup: 1/4 },
+  "vegetable broth": { cup: 1/4 },
+
+  "fresh parsley":{ cup: 1/3, bunch: 1 },
+  "fresh ginger":{ tbsp: 1/3 },
+
+  // Tortillas: 8ct per pack
+  "large flour tortillas": { "": 1/8 },
+  "tortillas flour": { "": 1/8 },
+
+  // Canned goods
+  "black beans": { can: 1, "": 1 },
+  "frozen corn": { cup: 1/1.5 },  // 12oz ~= 1.5 cups
+  "diced tomatoes": { can: 1, "": 1 },
+};
+
+// ═══════════════════════════════════════════════════
+//  DATA LAYER (localStorage)
+// ═══════════════════════════════════════════════════
+const LS = {
+  get: (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch { return d; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
+};
+
+const getRecipes = () => LS.get('mp2_recipes', {});
+const setRecipes = v => LS.set('mp2_recipes', v);
+const getPlan = () => LS.get('mp2_plan', {});
+const setPlan = v => LS.set('mp2_plan', v);
+const getFavs = () => LS.get('mp2_favs', []);
+const setFavs = v => LS.set('mp2_favs', v);
+const getPrices = () => LS.get('mp2_prices', DEFAULT_PRICES);
+const setPrices = v => LS.set('mp2_prices', v);
+const getUsageHistory = () => LS.get('mp2_usage_history', {});
+const setUsageHistory = v => LS.set('mp2_usage_history', v);
+
+// ═══════════════════════════════════════════════════
+//  SMART PLANNING ENGINE
+// ═══════════════════════════════════════════════════
+const SMART_CONFIG = {
+  overlapWeight: 3.0,      // Points per shared ingredient
+  recencyPenalty: 1.5,     // Penalty multiplier for recent usage
+  cooldownDays: 14,        // Days before recipe should repeat
+  favoriteBonus: 2.0,      // Bonus for favorite recipes
+  samePlanPenalty: 50      // Heavy penalty for same-plan repeats
+};
+
+function recordUsage(recipeNames) {
+  const history = getUsageHistory();
+  const today = new Date().toISOString().split('T')[0];
+  recipeNames.forEach(name => {
+    const slug = slugify(name);
+    if (!history[slug]) history[slug] = [];
+    if (!history[slug].includes(today)) {
+      history[slug].push(today);
+      history[slug] = history[slug].slice(-90); // Keep last 90 days
+    }
+  });
+  setUsageHistory(history);
+}
+
+function daysSinceLastUsed(recipeName) {
+  const history = getUsageHistory();
+  const slug = slugify(recipeName);
+  if (!history[slug] || !history[slug].length) return 999;
+  const lastUsed = history[slug].sort().pop();
+  const lastDate = new Date(lastUsed);
+  const today = new Date();
+  return Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+}
+
+function getIngredientSet(recipe) {
+  const ingredients = new Set();
+  (recipe.ingredients || []).forEach(ing => {
+    let item = (ing.item || '').toLowerCase().trim();
+    ['diced', 'minced', 'chopped', 'sliced', 'crushed', 'fresh', 'dried'].forEach(w => {
+      item = item.replace(w, '').trim();
+    });
+    if (item) ingredients.add(item);
+  });
+  return ingredients;
+}
+
+function calculateIngredientOverlap(recipe, selectedRecipes) {
+  if (!selectedRecipes.length) return 0;
+  const recipeIngredients = getIngredientSet(recipe);
+  const selectedIngredients = new Set();
+  selectedRecipes.forEach(r => {
+    getIngredientSet(r).forEach(i => selectedIngredients.add(i));
+  });
+  let overlap = 0;
+  recipeIngredients.forEach(i => { if (selectedIngredients.has(i)) overlap++; });
+  return overlap;
+}
+
+function scoreRecipe(recipe, selectedRecipes, planUsage, favs) {
+  let score = 0;
+  const name = recipe.name;
+  const slug = slugify(name);
+
+  // Ingredient overlap bonus
+  const overlap = calculateIngredientOverlap(recipe, selectedRecipes);
+  score += overlap * SMART_CONFIG.overlapWeight;
+
+  // Recency penalty (from history)
+  const daysAgo = daysSinceLastUsed(name);
+  if (daysAgo < SMART_CONFIG.cooldownDays) {
+    score -= (SMART_CONFIG.cooldownDays - daysAgo) * SMART_CONFIG.recencyPenalty;
+  } else {
+    score += Math.min(daysAgo / 30, 5); // Bonus for old recipes
+  }
+
+  // Same-plan repeat penalty
+  if (planUsage[name] !== undefined) {
+    const mealsSince = selectedRecipes.length - planUsage[name];
+    score -= Math.max(SMART_CONFIG.samePlanPenalty - (mealsSince * 8), 5);
+  }
+
+  // Favorite bonus
+  if (favs.includes(slug)) {
+    score += SMART_CONFIG.favoriteBonus;
+  }
+
+  return score;
+}
+
+function smartSelectRecipe(candidates, selectedRecipes, planUsage, favs) {
+  if (!candidates.length) return null;
+
+  const scored = candidates.map(r => ({ recipe: r, score: scoreRecipe(r, selectedRecipes, planUsage, favs) }));
+  scored.sort((a, b) => b.score - a.score);
+
+  // Weighted random from top 3
+  const topN = Math.min(3, scored.length);
+  const top = scored.slice(0, topN);
+  const minScore = Math.min(...top.map(t => t.score));
+  const weights = top.map(t => t.score - minScore + 1);
+  const total = weights.reduce((a, b) => a + b, 0);
+
+  let r = Math.random() * total;
+  for (let i = 0; i < top.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return top[i].recipe;
+  }
+  return top[0].recipe;
+}
+
+function slugify(n) { return n.toLowerCase().trim().replace(/\s+/g,'-').replace(/['"]/g,''); }
+function normalizeUnit(u) { u=(u||'').toLowerCase().trim().replace(/\.$/,''); return UNIT_ALIASES[u]||u; }
+function formatQty(q) {
+  if(!q||q===0)return'0';
+  if(q===Math.floor(q))return String(Math.floor(q));
+  const w=Math.floor(q),f=q-w;
+  const fr={0.25:'¼',0.33:'⅓',0.5:'½',0.67:'⅔',0.75:'¾'};
+  for(const[v,s]of Object.entries(fr)){if(Math.abs(f-parseFloat(v))<0.06)return w?`${w}${s}`:s;}
+  return q.toFixed(1);
+}
+
+function getIngredientCost(item, unit, qty, store) {
+  const prices = getPrices();
+  const itemLower = item.toLowerCase().trim();
+
+  // Find matching price entry
+  let priceEntry = prices[itemLower];
+  if (!priceEntry) {
+    // Try partial match
+    for (const [key, val] of Object.entries(prices)) {
+      if (itemLower.includes(key) || key.includes(itemLower)) {
+        priceEntry = val;
+        break;
+      }
+    }
+  }
+  if (!priceEntry) return null;
+
+  const pricePerUnit = priceEntry[store] || 0;
+  if (pricePerUnit === 0) return 0;
+
+  // Convert recipe qty to price fraction
+  const conversions = UNIT_TO_PRICE[itemLower];
+  const normUnit = normalizeUnit(unit);
+
+  // Check for unit conversion (including empty string for items sold by count)
+  if (conversions) {
+    const conversionKey = normUnit || "";
+    if (conversions[conversionKey] !== undefined) {
+      return pricePerUnit * qty * conversions[conversionKey];
+    }
+    if (conversions[normUnit]) {
+      return pricePerUnit * qty * conversions[normUnit];
+    }
+  }
+
+  // Direct match (e.g. "each", "lb", no unit)
+  if (!normUnit || normUnit === priceEntry.unit || normUnit === 'each') {
+    return pricePerUnit * qty;
+  }
+
+  // Rough fallback: treat as fraction of price
+  if (['tbsp','tsp'].includes(normUnit)) return pricePerUnit * qty * 0.05;
+  if (normUnit === 'cup') return pricePerUnit * qty * 0.3;
+  if (normUnit === 'clove') return pricePerUnit * qty * 0.15;
+  if (normUnit === 'slice') return pricePerUnit * qty * 0.1;
+
+  return pricePerUnit * qty;
+}
+
+function getRecipeCost(recipe, store) {
+  let total = 0;
+  let estimated = false;
+  for (const ing of (recipe.ingredients || [])) {
+    const cost = getIngredientCost(ing.item, ing.unit, ing.qty, store);
+    if (cost !== null) total += cost;
+    else estimated = true;
+  }
+  return { total, estimated };
+}
+
+// ═══════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════
+document.getElementById('main-nav').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-view]');
+  if (!btn) return;
+  const view = btn.dataset.view;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(`${view}-view`).classList.add('active');
+  document.querySelectorAll('#main-nav button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (view === 'recipes') renderRecipes();
+  if (view === 'planner') { renderWeeklyPlan(); renderCalendar(); }
+  if (view === 'pricing') renderPricing();
+  if (view === 'grocery') generateGroceryList();
+});
+
+// ═══════════════════════════════════════════════════
+//  RECIPES VIEW
+// ═══════════════════════════════════════════════════
+let tagFilter = null;
+
+function renderRecipes() {
+  const recipes = getRecipes();
+  const keys = Object.keys(recipes).sort();
+  const favs = getFavs();
+  const grid = document.getElementById('recipe-grid');
+  const empty = document.getElementById('empty-recipes');
+
+  // Tags
+  const allTags = new Set();
+  keys.forEach(k => (recipes[k].tags||[]).forEach(t => allTags.add(t)));
+  const fb = document.getElementById('tag-filters');
+  fb.innerHTML = '';
+  if (allTags.size) {
+    fb.innerHTML = `<button class="filter-btn ${!tagFilter?'active':''}" onclick="tagFilter=null;renderRecipes()">All</button>`
+      + [...allTags].sort().map(t => `<button class="filter-btn ${tagFilter===t?'active':''}" onclick="tagFilter='${t}';renderRecipes()">${t}</button>`).join('');
+  }
+
+  const filtered = keys.filter(k => !tagFilter || (recipes[k].tags||[]).includes(tagFilter));
+  document.getElementById('recipe-count').textContent = `${filtered.length} recipe${filtered.length!==1?'s':''}${tagFilter?` tagged "${tagFilter}"`:''}`
+
+  if (!filtered.length) { grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+
+  grid.innerHTML = filtered.map(slug => {
+    const r = recipes[slug];
+    const isFav = favs.includes(slug);
+    const total = (r.prep_time||0)+(r.cook_time||0);
+    const tags = (r.meal_types||[]).map(m=>`<span class="tag tag-meal">${m}</span>`).join('')
+      + (r.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+
+    // Cost estimate (Kroger as default)
+    const cost = getRecipeCost(r, 'kroger');
+    const costStr = cost.total > 0 ? `~$${cost.total.toFixed(2)} total · $${(cost.total/r.servings).toFixed(2)}/serving` : '';
+
+    // Image
+    const imgHtml = r.image_url
+      ? `<img class="recipe-card-img" src="${r.image_url}" alt="${r.name}" onerror="this.outerHTML='<div class=recipe-card-img-placeholder>🍲</div>'">`
+      : `<div class="recipe-card-img-placeholder">🍲</div>`;
+
+    return `<div class="card recipe-card" onclick="showDetail('${slug}')">
+      <div class="card-actions">
+        <button class="card-action-btn ${isFav?'fav-active':''}" onclick="event.stopPropagation();toggleFav('${slug}')">${isFav?'❤️':'🤍'}</button>
+        <button class="card-action-btn" onclick="event.stopPropagation();openEditRecipe('${slug}')">✏️</button>
+        <button class="card-action-btn" onclick="event.stopPropagation();deleteRecipe('${slug}')">🗑️</button>
+      </div>
+      ${imgHtml}
+      <div class="recipe-card-body">
+        <div class="recipe-name">${r.name}</div>
+        <div class="recipe-meta">${total?`<span>⏱ ${total}min</span>`:''}  <span>🍽 ${r.servings} svg</span></div>
+        ${costStr?`<div class="recipe-cost">💰 ${costStr}</div>`:''}
+        <div class="recipe-tags-row">${tags}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showDetail(slug) {
+  const r = getRecipes()[slug];
+  if (!r) return;
+  document.getElementById('detail-title').textContent = r.name;
+
+  const total = (r.prep_time||0)+(r.cook_time||0);
+  let meta = [];
+  if(r.prep_time) meta.push(`🔪 Prep: ${r.prep_time}min`);
+  if(r.cook_time) meta.push(`🔥 Cook: ${r.cook_time}min`);
+  if(total) meta.push(`⏱ Total: ${total}min`);
+  meta.push(`🍽 ${r.servings} servings`);
+
+  const tags = [...(r.meal_types||[]).map(m=>`<span class="tag tag-meal">${m}</span>`),
+    ...(r.tags||[]).map(t=>`<span class="tag">${t}</span>`)].join(' ');
+
+  const ings = (r.ingredients||[]).map(i => {
+    const q=formatQty(i.qty), u=i.unit?` ${i.unit}`:'';
+    return `<li><span class="qty">${q}${u}</span><span>${i.item}</span></li>`;
+  }).join('');
+
+  const steps = (r.steps||[]).map(s=>`<li>${s}</li>`).join('');
+  const notes = r.notes?`<div class="modal-section"><div class="recipe-notes">💡 ${r.notes}</div></div>`:'';
+
+  // Cost comparison
+  const costs = STORES.map(s => ({ store:s, ...getRecipeCost(r,s) }));
+  const minCost = Math.min(...costs.map(c=>c.total));
+  const costHtml = `<div class="modal-section"><h4>Estimated Cost</h4>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+      ${costs.map(c => `<div style="text-align:center;padding:0.5rem 0.75rem;background:var(--bg-warm);border-radius:8px;${c.total===minCost?'border:2px solid var(--green);background:var(--green-light);':''}">
+        <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-muted);">${STORE_LABELS[c.store]}</div>
+        <div style="font-family:'Fraunces',serif;font-size:1.25rem;font-weight:700;${c.total===minCost?'color:var(--green-dark);':''}">\$${c.total.toFixed(2)}</div>
+        <div style="font-size:0.72rem;color:var(--ink-muted);">$${(c.total/r.servings).toFixed(2)}/serving</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+
+  const imgHtml = r.image_url ? `<img class="detail-image" src="${r.image_url}" onerror="this.style.display='none'">` : '';
+
+  document.getElementById('detail-body').innerHTML = `
+    ${imgHtml}
+    <div class="modal-meta">${meta.map(m=>`<span>${m}</span>`).join('')}</div>
+    <div style="margin-bottom:0.75rem">${tags}</div>
+    <div class="modal-section"><h4>Ingredients</h4><ul class="ingredient-list">${ings}</ul></div>
+    ${steps?`<div class="modal-section"><h4>Steps</h4><ol class="steps-list">${steps}</ol></div>`:''}
+    ${notes}
+    ${costHtml}
+  `;
+  openModal('detail-modal');
+}
+
+function toggleFav(slug) {
+  const f=getFavs(); const i=f.indexOf(slug);
+  if(i>=0)f.splice(i,1); else { if(getRecipes()[slug])f.push(slug); }
+  setFavs(f); renderRecipes();
+}
+
+function deleteRecipe(slug) {
+  const r=getRecipes(); if(!r[slug])return;
+  if(!confirm(`Delete "${r[slug].name}"?`))return;
+  delete r[slug]; setRecipes(r); renderRecipes(); showToast('Deleted');
+}
+
+// ═══════════════════════════════════════════════════
+//  ADD / EDIT RECIPE
+// ═══════════════════════════════════════════════════
+function openAddRecipe() {
+  document.getElementById('edit-modal-title').textContent='Add Recipe';
+  document.getElementById('edit-slug').value='';
+  document.getElementById('edit-name').value='';
+  document.getElementById('edit-image').value='';
+  document.getElementById('edit-servings').value='4';
+  document.getElementById('edit-prep').value='';
+  document.getElementById('edit-cook').value='';
+  document.getElementById('edit-tags').value='';
+  document.getElementById('edit-notes').value='';
+  document.querySelectorAll('#edit-meal-types input').forEach(cb=>cb.checked=cb.value==='dinner');
+  const ie=document.getElementById('ing-editor'); ie.innerHTML=''; for(let i=0;i<4;i++)addIngRow();
+  const se=document.getElementById('steps-editor'); se.innerHTML=''; for(let i=0;i<3;i++)addStepRow();
+  openModal('edit-modal');
+}
+
+function openEditRecipe(slug) {
+  const r=getRecipes()[slug]; if(!r)return;
+  document.getElementById('edit-modal-title').textContent='Edit Recipe';
+  document.getElementById('edit-slug').value=slug;
+  document.getElementById('edit-name').value=r.name;
+  document.getElementById('edit-image').value=r.image_url||'';
+  document.getElementById('edit-servings').value=r.servings||4;
+  document.getElementById('edit-prep').value=r.prep_time||'';
+  document.getElementById('edit-cook').value=r.cook_time||'';
+  document.getElementById('edit-tags').value=(r.tags||[]).join(', ');
+  document.getElementById('edit-notes').value=r.notes||'';
+  document.querySelectorAll('#edit-meal-types input').forEach(cb=>cb.checked=(r.meal_types||[]).includes(cb.value));
+  const ie=document.getElementById('ing-editor'); ie.innerHTML='';
+  (r.ingredients||[]).forEach(i=>addIngRow(i)); if(!(r.ingredients||[]).length)addIngRow();
+  const se=document.getElementById('steps-editor'); se.innerHTML='';
+  (r.steps||[]).forEach(s=>addStepRow(s)); if(!(r.steps||[]).length)addStepRow();
+  openModal('edit-modal');
+}
+
+function addIngRow(d) {
+  const e=document.getElementById('ing-editor'), row=document.createElement('div');
+  row.className='ing-row';
+  row.innerHTML=`<input type="text" placeholder="Qty" value="${d?d.qty:''}"><input type="text" placeholder="Unit" value="${d?(d.unit||''):''}"><input type="text" placeholder="Ingredient" value="${d?d.item:''}"><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>`;
+  e.appendChild(row);
+}
+
+function addStepRow(t) {
+  const e=document.getElementById('steps-editor'), n=e.children.length+1, row=document.createElement('div');
+  row.className='step-row';
+  row.innerHTML=`<span class="step-num">${n}</span><textarea placeholder="Step...">${t||''}</textarea><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()" style="margin-top:0.35rem">✕</button>`;
+  e.appendChild(row);
+}
+
+function saveRecipe() {
+  const name=document.getElementById('edit-name').value.trim();
+  if(!name){showToast('Name required');return;}
+  const oldSlug=document.getElementById('edit-slug').value, newSlug=slugify(name);
+  const mealTypes=[]; document.querySelectorAll('#edit-meal-types input:checked').forEach(cb=>mealTypes.push(cb.value));
+  const tagsRaw=document.getElementById('edit-tags').value;
+  const tags=tagsRaw?tagsRaw.split(',').map(t=>t.trim().toLowerCase()).filter(Boolean):[];
+  const ingredients=[]; document.querySelectorAll('#ing-editor .ing-row').forEach(row=>{
+    const ins=row.querySelectorAll('input');
+    const qty=parseFloat(ins[0].value),unit=normalizeUnit(ins[1].value),item=ins[2].value.trim();
+    if(item&&!isNaN(qty))ingredients.push({qty,unit,item});
+    else if(item)ingredients.push({qty:1,unit:'',item});
+  });
+  const steps=[]; document.querySelectorAll('#steps-editor textarea').forEach(ta=>{const v=ta.value.trim();if(v)steps.push(v);});
+
+  let imageUrl = document.getElementById('edit-image').value.trim();
+
+  const recipe={name,servings:parseInt(document.getElementById('edit-servings').value)||4,
+    prep_time:parseInt(document.getElementById('edit-prep').value)||null,
+    cook_time:parseInt(document.getElementById('edit-cook').value)||null,
+    tags,meal_types:mealTypes.length?mealTypes:['dinner'],ingredients,steps,
+    notes:document.getElementById('edit-notes').value.trim()||null,
+    image_url:imageUrl||null,
+    created:new Date().toISOString()};
+
+  const recipes=getRecipes();
+  if(oldSlug&&oldSlug!==newSlug)delete recipes[oldSlug];
+  recipes[newSlug]=recipe;
+  setRecipes(recipes);
+
+  // Auto-fetch image from Unsplash if none provided and key exists
+  if(!imageUrl && UNSPLASH_KEY) {
+    fetchUnsplashImage(name).then(url => {
+      if(url) {
+        const r2 = getRecipes();
+        if(r2[newSlug]) { r2[newSlug].image_url = url; setRecipes(r2); renderRecipes(); }
+      }
+    });
+  }
+
+  closeModal('edit-modal'); renderRecipes(); showToast(`Saved: ${name}`);
+}
+
+async function fetchUnsplashImage(query) {
+  if(!UNSPLASH_KEY) return null;
+  try {
+    const res = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(query+' food')}&per_page=1&client_id=${UNSPLASH_KEY}`);
+    const data = await res.json();
+    return data.results?.[0]?.urls?.regular || null;
+  } catch { return null; }
+}
+
+// ═══════════════════════════════════════════════════
+//  WEEKLY PLAN
+// ═══════════════════════════════════════════════════
+let currentWeekStart = getMonday(new Date());
+
+function getMonday(d) {
+  const dt = new Date(d);
+  const day = dt.getDay();
+  const diff = dt.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(dt.setDate(diff));
+}
+
+function formatDate(d) { return d.toISOString().split('T')[0]; }
+
+function changeWeek(dir) {
+  currentWeekStart = new Date(currentWeekStart.getTime() + dir * 7 * 86400000);
+  renderWeeklyPlan();
+}
+
+function goToCurrentWeek() { currentWeekStart = getMonday(new Date()); renderWeeklyPlan(); }
+
+function renderWeeklyPlan() {
+  const plan = getPlan();
+  const grid = document.getElementById('plan-grid');
+  const ws = currentWeekStart;
+  const we = new Date(ws.getTime() + 6 * 86400000);
+  document.getElementById('week-label').textContent =
+    `${ws.toLocaleDateString('en-US',{month:'short',day:'numeric'})} – ${we.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}`;
+
+  grid.innerHTML = DAYS.map((day, i) => {
+    const date = new Date(ws.getTime() + i * 86400000);
+    const dateStr = formatDate(date);
+    const isToday = formatDate(new Date()) === dateStr;
+
+    return `<div class="plan-day" ${isToday?'style="background:var(--accent-light);border-radius:8px;"':''}>
+      <div class="plan-day-label">${DAYS_SHORT[i]}<br><span style="font-size:0.7rem;font-weight:400;color:var(--ink-muted);">${date.getDate()}</span></div>
+      ${MEALS.map(meal => {
+        const key = `${dateStr}-${meal}`;
+        const recipeName = plan[key];
+        if (recipeName) {
+          const slug = slugify(recipeName);
+          const recipe = getRecipes()[slug];
+          const cost = recipe ? getRecipeCost(recipe, 'kroger') : null;
+          return `<div class="plan-slot filled" onclick="openPicker(event,'${key}')">
+            <div class="slot-label">${meal}</div>
+            <div class="slot-recipe">${recipeName}</div>
+            ${cost?`<div class="slot-cost">$${cost.total.toFixed(2)}</div>`:''}
+            <button class="slot-clear" onclick="event.stopPropagation();clearSlot('${key}')">✕</button>
+          </div>`;
+        }
+        return `<div class="plan-slot" onclick="openPicker(event,'${key}')">
+          <div class="slot-label">${meal}</div>
+          <div class="slot-placeholder">+ add</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+
+  // Weekly cost summary
+  renderWeekCostSummary();
+}
+
+function renderWeekCostSummary() {
+  const plan = getPlan();
+  const recipes = getRecipes();
+  const ws = currentWeekStart;
+  let mealCount = 0;
+
+  const totals = { kroger: 0, wholefoods: 0, costco: 0 };
+
+  for (let i = 0; i < 7; i++) {
+    const dateStr = formatDate(new Date(ws.getTime() + i * 86400000));
+    MEALS.forEach(meal => {
+      const name = plan[`${dateStr}-${meal}`];
+      if (!name) return;
+      const slug = slugify(name);
+      const recipe = recipes[slug];
+      if (!recipe) return;
+      mealCount++;
+      STORES.forEach(s => { totals[s] += getRecipeCost(recipe, s).total; });
+    });
+  }
+
+  const el = document.getElementById('week-cost-summary');
+  if (mealCount === 0) { el.innerHTML = ''; return; }
+
+  const minStore = STORES.reduce((a, b) => totals[a] < totals[b] ? a : b);
+
+  el.innerHTML = `<div class="cost-summary">${STORES.map(s => {
+    const isBest = s === minStore;
+    const savings = totals[s] - totals[minStore];
+    return `<div class="cost-card ${isBest?'best':''}">
+      <div class="store-name" style="color:var(--${s}-color);">${STORE_LABELS[s]}</div>
+      <div class="cost-total">\$${totals[s].toFixed(2)}</div>
+      <div class="cost-per-meal">$${(totals[s]/mealCount).toFixed(2)} per meal · ${mealCount} meals</div>
+      ${isBest?'<div class="savings-badge">Best Value</div>':''}
+      ${!isBest&&savings>0?`<div style="font-size:0.75rem;color:var(--red);margin-top:0.2rem;">+$${savings.toFixed(2)} more</div>`:''}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
+  const recipes = getRecipes(), keys = Object.keys(recipes);
+  if (!keys.length) { showToast('Add recipes first!'); return; }
+
+  const plan = getPlan(), ws = currentWeekStart;
+  const favs = getFavs();
+  const selectedRecipes = [];
+  const planUsage = {};
+  const usedInPlan = new Set();
+
+  // Track leftover servings available: { recipeName: servingsRemaining }
+  const leftovers = {};
+
+  // Build list of all meal slots for the week
+  const mealSlots = [];
+  for (let i = 0; i < 7; i++) {
+    const dateStr = formatDate(new Date(ws.getTime() + i * 86400000));
+    MEALS.forEach(meal => mealSlots.push({ dateStr, meal }));
+  }
+
+  for (const slot of mealSlots) {
+    const { dateStr, meal } = slot;
+
+    // Check if we have leftovers available for this meal type
+    if (useLeftovers) {
+      const availableLeftover = Object.entries(leftovers).find(([name, data]) => {
+        return data.servings > 0 && data.mealTypes.includes(meal);
+      });
+
+      if (availableLeftover) {
+        const [name, data] = availableLeftover;
+        plan[`${dateStr}-${meal}`] = `${name} (leftover)`;
+        data.servings--;
+        continue;
+      }
+    }
+
+    // Filter suitable recipes for this meal type
+    let suitable = keys.filter(k => (recipes[k].meal_types || ['dinner']).includes(meal));
+    if (!suitable.length) suitable = keys;
+
+    let chosen;
+    if (useSmartPlanning) {
+      // Prefer unused recipes, but allow repeats if pool is small
+      let candidates = suitable.filter(k => !usedInPlan.has(k)).map(k => recipes[k]);
+      if (!candidates.length) candidates = suitable.map(k => recipes[k]);
+
+      chosen = smartSelectRecipe(candidates, selectedRecipes, planUsage, favs);
+      if (!chosen) chosen = recipes[suitable[Math.floor(Math.random() * suitable.length)]];
+    } else {
+      // Pure random (old behavior)
+      chosen = recipes[suitable[Math.floor(Math.random() * suitable.length)]];
+    }
+
+    plan[`${dateStr}-${meal}`] = chosen.name;
+    selectedRecipes.push(chosen);
+    planUsage[chosen.name] = selectedRecipes.length - 1;
+    usedInPlan.add(slugify(chosen.name));
+
+    // Track leftovers (servings - 1 because we're eating one now)
+    if (useLeftovers && chosen.servings > 1) {
+      leftovers[chosen.name] = {
+        servings: chosen.servings - 1,
+        mealTypes: chosen.meal_types || ['dinner']
+      };
+    }
+  }
+
+  // Record usage for smart planning history (only unique recipes, not leftovers)
+  if (useSmartPlanning) {
+    recordUsage(selectedRecipes.map(r => r.name));
+  }
+
+  // Calculate stats
+  const allIngredients = new Set();
+  selectedRecipes.forEach(r => getIngredientSet(r).forEach(i => allIngredients.add(i)));
+
+  const leftoverMeals = mealSlots.length - selectedRecipes.length;
+
+  setPlan(plan);
+  renderWeeklyPlan();
+  showToast(`Week filled! ${selectedRecipes.length} recipes, ${leftoverMeals} leftover meals, ${allIngredients.size} grocery items`);
+}
+
+function clearCurrentWeek() {
+  if(!confirm('Clear this week?'))return;
+  const plan=getPlan(), ws=currentWeekStart;
+  for(let i=0;i<7;i++){
+    const dateStr=formatDate(new Date(ws.getTime()+i*86400000));
+    MEALS.forEach(meal=>delete plan[`${dateStr}-${meal}`]);
+  }
+  setPlan(plan); renderWeeklyPlan();
+}
+
+function clearSlot(key) { const p=getPlan(); delete p[key]; setPlan(p); renderWeeklyPlan(); renderCalendar(); }
+
+// ═══════════════════════════════════════════════════
+//  RECIPE PICKER
+// ═══════════════════════════════════════════════════
+let pickerTarget = null;
+
+function openPicker(e, key) {
+  pickerTarget = key;
+  const recipes=getRecipes(), keys=Object.keys(recipes).sort();
+  const meal = key.split('-').pop();
+  const picker=document.getElementById('recipe-picker'), overlay=document.getElementById('picker-overlay');
+  const list=document.getElementById('picker-list'), search=picker.querySelector('.picker-search');
+
+  const rect=e.currentTarget.getBoundingClientRect();
+  picker.style.left=Math.min(rect.left,window.innerWidth-300)+'px';
+  picker.style.top=Math.min(rect.bottom+4,window.innerHeight-360)+'px';
+
+  function render(f=''){
+    const fl=f.toLowerCase();
+    const suitable=keys.filter(k=>(recipes[k].meal_types||['dinner']).includes(meal));
+    const others=keys.filter(k=>!suitable.includes(k));
+    const renderArr=arr=>arr.filter(k=>{
+      const r=recipes[k]; return r.name.toLowerCase().includes(fl)||(r.tags||[]).some(t=>t.includes(fl));
+    }).map(k=>{
+      const r=recipes[k];
+      const img=r.image_url?`<img src="${r.image_url}" onerror="this.style.display='none'">`:'';
+      return `<div class="picker-item" onclick="pickRecipe('${k}')">${img}<div class="picker-item-text"><div>${r.name}</div><div class="picker-tags">${(r.tags||[]).join(', ')}</div></div></div>`;
+    }).join('');
+    const s=renderArr(suitable),o=renderArr(others);
+    list.innerHTML=(s||'')+(o?(s?'<hr style="margin:0.3rem 0;border:none;border-top:1px solid var(--border)">':'')+o:'');
+    if(!s&&!o)list.innerHTML='<div style="padding:0.5rem;color:var(--ink-muted);font-size:0.82rem;">No recipes</div>';
+  }
+
+  search.value=''; render();
+  search.oninput=()=>render(search.value);
+  picker.style.display='block'; overlay.classList.add('active'); search.focus();
+}
+
+function filterPicker(){}
+function pickRecipe(slug) {
+  if(!pickerTarget)return;
+  const p=getPlan(); p[pickerTarget]=getRecipes()[slug].name; setPlan(p);
+  closePicker(); renderWeeklyPlan(); renderCalendar();
+}
+function closePicker() {
+  document.getElementById('recipe-picker').style.display='none';
+  document.getElementById('picker-overlay').classList.remove('active');
+  pickerTarget=null;
+}
+
+// ═══════════════════════════════════════════════════
+//  CALENDAR VIEW
+// ═══════════════════════════════════════════════════
+let calMonth = new Date().getMonth(), calYear = new Date().getFullYear();
+
+function changeMonth(dir) {
+  calMonth += dir;
+  if(calMonth>11){calMonth=0;calYear++;}
+  if(calMonth<0){calMonth=11;calYear--;}
+  renderCalendar();
+}
+
+function goToCurrentMonth() {
+  calMonth=new Date().getMonth(); calYear=new Date().getFullYear(); renderCalendar();
+}
+
+function renderCalendar() {
+  const plan = getPlan();
+  const label = document.getElementById('cal-month-label');
+  label.textContent = new Date(calYear, calMonth).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+
+  const grid = document.getElementById('calendar-grid');
+  const firstDay = new Date(calYear, calMonth, 1);
+  const startDay = (firstDay.getDay() + 6) % 7; // Monday = 0
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = formatDate(new Date());
+
+  let html = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i) => {
+    const idx = (i + 1) % 7; // Shift to Mon first
+    return `<div class="cal-header-cell">${DAYS_SHORT[i]}</div>`;
+  }).join('');
+
+  // Fill cells
+  const totalCells = Math.ceil((startDay + daysInMonth) / 7) * 7;
+
+  for (let i = 0; i < totalCells; i++) {
+    const dayNum = i - startDay + 1;
+    const isOther = dayNum < 1 || dayNum > daysInMonth;
+
+    let dateObj, dateStr;
+    if (isOther) {
+      dateObj = new Date(calYear, calMonth, dayNum);
+      dateStr = formatDate(dateObj);
+    } else {
+      dateObj = new Date(calYear, calMonth, dayNum);
+      dateStr = formatDate(dateObj);
+    }
+
+    const isToday = dateStr === today;
+
+    // Get meals for this date
+    const meals = MEALS.map(meal => {
+      const name = plan[`${dateStr}-${meal}`];
+      return name ? `<div class="cal-meal-chip ${meal}" title="${name}" onclick="event.stopPropagation();showDetail('${slugify(name)}')">${name}</div>` : '';
+    }).join('');
+
+    html += `<div class="cal-cell ${isOther?'other-month':''} ${isToday?'today':''}" onclick="jumpToDate('${dateStr}')">
+      <div class="cal-date">${dateObj.getDate()}</div>
+      ${meals}
+      ${!isOther?`<button class="cal-add-btn" onclick="event.stopPropagation();calAddMeal('${dateStr}',this)">+ add</button>`:''}
+    </div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function jumpToDate(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  currentWeekStart = getMonday(d);
+  switchPlannerTab('weekly');
+  renderWeeklyPlan();
+}
+
+function calAddMeal(dateStr, btn) {
+  // Open picker for dinner by default
+  pickerTarget = `${dateStr}-dinner`;
+  const recipes=getRecipes(), keys=Object.keys(recipes).sort();
+  const picker=document.getElementById('recipe-picker'), overlay=document.getElementById('picker-overlay');
+  const list=document.getElementById('picker-list'), search=picker.querySelector('.picker-search');
+
+  const rect = btn.getBoundingClientRect();
+  picker.style.left=Math.min(rect.left,window.innerWidth-300)+'px';
+  picker.style.top=Math.min(rect.bottom+4,window.innerHeight-360)+'px';
+
+  function render(f=''){
+    const fl=f.toLowerCase();
+    list.innerHTML = keys.filter(k=>{
+      const r=recipes[k]; return r.name.toLowerCase().includes(fl)||(r.tags||[]).some(t=>t.includes(fl));
+    }).map(k=>{
+      const r=recipes[k];
+      return `<div class="picker-item" onclick="pickRecipe('${k}')"><div class="picker-item-text"><div>${r.name}</div><div class="picker-tags">${(r.tags||[]).join(', ')}</div></div></div>`;
+    }).join('') || '<div style="padding:0.5rem;color:var(--ink-muted);">No recipes</div>';
+  }
+
+  search.value=''; render();
+  search.oninput=()=>render(search.value);
+  picker.style.display='block'; overlay.classList.add('active'); search.focus();
+}
+
+function switchPlannerTab(tab) {
+  document.querySelectorAll('.planner-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.planner-sub').forEach(s=>s.classList.remove('active'));
+  document.querySelector(`.planner-tab[onclick*="${tab}"]`).classList.add('active');
+  document.getElementById(`${tab}-sub`).classList.add('active');
+  if(tab==='weekly')renderWeeklyPlan();
+  if(tab==='calendar')renderCalendar();
+}
+
+// ═══════════════════════════════════════════════════
+//  PRICING VIEW
+// ═══════════════════════════════════════════════════
+function renderPricing() {
+  const prices = getPrices();
+  const items = Object.keys(prices).sort();
+
+  document.getElementById('pricing-content').innerHTML = `
+    <p style="font-size:0.85rem;color:var(--ink-light);margin-bottom:1rem;">
+      Prices are estimates for Columbus, OH. Edit any cell to match your local prices — changes auto-save and update all cost calculations.
+    </p>
+    <div class="price-table-wrap">
+      <table class="price-table">
+        <thead><tr>
+          <th>Ingredient</th>
+          <th>Unit</th>
+          <th><span class="store-badge store-kroger">Kroger</span></th>
+          <th><span class="store-badge store-wholefoods">Whole Foods</span></th>
+          <th><span class="store-badge store-costco">Costco</span></th>
+          <th>Cheapest</th>
+        </tr></thead>
+        <tbody>
+          ${items.map(item => {
+            const p = prices[item];
+            const min = Math.min(p.kroger||999, p.wholefoods||999, p.costco||999);
+            const cheapest = STORES.filter(s=>p[s]===min).map(s=>STORE_LABELS[s]).join(', ');
+            return `<tr>
+              <td style="font-weight:600;text-transform:capitalize;">${item}</td>
+              <td style="color:var(--ink-muted);font-size:0.8rem;">${p.unit}</td>
+              ${STORES.map(s=>`<td><input class="price-input" type="number" step="0.01" min="0" value="${p[s]||''}" onchange="updatePrice('${item}','${s}',this.value)"></td>`).join('')}
+              <td class="cheapest">${min>0?`$${min.toFixed(2)} (${cheapest})`:'—'}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:1rem;">
+      <button class="btn btn-secondary btn-sm" onclick="addPriceItem()">+ Add Ingredient</button>
+    </div>
+  `;
+}
+
+function updatePrice(item, store, val) {
+  const prices = getPrices();
+  if (prices[item]) {
+    prices[item][store] = parseFloat(val) || 0;
+    setPrices(prices);
+    renderPricing();
+  }
+}
+
+function addPriceItem() {
+  const name = prompt('Ingredient name:');
+  if (!name) return;
+  const unit = prompt('Price unit (e.g. lb, each, bottle):') || 'each';
+  const prices = getPrices();
+  prices[name.toLowerCase().trim()] = { unit, kroger: 0, wholefoods: 0, costco: 0 };
+  setPrices(prices);
+  renderPricing();
+  showToast(`Added: ${name}`);
+}
+
+function resetPrices() {
+  if (!confirm('Reset all prices to defaults?')) return;
+  setPrices(DEFAULT_PRICES);
+  renderPricing();
+  showToast('Prices reset');
+}
+
+function exportPrices() {
+  const blob = new Blob([JSON.stringify(getPrices(), null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='prices.json'; a.click();
+  showToast('Prices exported');
+}
+
+function importKrogerPrices() {
+  // Create file input for kroger_cache.json
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const cache = JSON.parse(text);
+
+      if (!cache.prices) {
+        showToast('Invalid Kroger cache file', 'error');
+        return;
+      }
+
+      const prices = getPrices();
+      let updated = 0;
+      let added = 0;
+
+      // Import each price from Kroger cache
+      for (const [item, data] of Object.entries(cache.prices)) {
+        const key = item.toLowerCase().trim();
+        const price = data.promo_price || data.price;
+
+        if (prices[key]) {
+          prices[key].kroger = price;
+          updated++;
+        } else {
+          // Add new item
+          prices[key] = {
+            unit: data.size || 'each',
+            kroger: price,
+            wholefoods: price * 1.3,  // Estimate
+            costco: price * 0.85       // Estimate
+          };
+          added++;
+        }
+      }
+
+      setPrices(prices);
+      renderPricing();
+
+      const storeId = cache.location_id || 'unknown';
+      const updated_date = cache.updated ? new Date(cache.updated).toLocaleDateString() : 'unknown';
+      showToast(`Imported ${updated} updated, ${added} new prices from Kroger (${updated_date})`);
+
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to parse Kroger cache file', 'error');
+    }
+  };
+  input.click();
+}
+
+// ═══════════════════════════════════════════════════
+//  GROCERY LIST
+// ═══════════════════════════════════════════════════
+const CATEGORIES = {
+  '🥩 Meat & Protein':['chicken','beef','pork','turkey','salmon','shrimp','fish','sausage','bacon','steak','ground','tofu','tempeh','egg'],
+  '🥬 Produce':['onion','garlic','tomato','pepper','lettuce','spinach','carrot','celery','potato','broccoli','mushroom','avocado','lemon','lime','ginger','cilantro','parsley','basil','jalapeño','cucumber','zucchini','corn','bell pepper','scallion','blueberr'],
+  '🧀 Dairy':['milk','cheese','butter','cream','yogurt','sour cream'],
+  '🍞 Bread & Grains':['bread','tortilla','bun','roll','pita','naan','oat','rice','pasta','spaghetti','flour'],
+  '🥫 Pantry':['sugar','oil','vinegar','soy sauce','broth','stock','bean','lentil','chickpea','tomato sauce','tomato paste','coconut milk','honey','maple syrup','peanut butter','sesame','cornstarch','salsa','chia'],
+  '🧂 Spices':['salt','pepper','cumin','paprika','oregano','thyme','cinnamon','chili powder','cayenne','turmeric','curry','garlic powder','onion powder','red pepper flakes']
+};
+
+function generateGroceryList() {
+  const plan=getPlan(), recipes=getRecipes(), scale=parseFloat(document.getElementById('grocery-scale').value)||1;
+  const store = document.getElementById('grocery-store').value;
+  const content=document.getElementById('grocery-content');
+
+  // Get all planned recipes for current week
+  const ws = currentWeekStart;
+  const planEntries = [];
+  for(let i=0;i<7;i++){
+    const dateStr=formatDate(new Date(ws.getTime()+i*86400000));
+    MEALS.forEach(meal=>{
+      const name=plan[`${dateStr}-${meal}`];
+      if(name) planEntries.push(name);
+    });
+  }
+
+  if(!planEntries.length){
+    content.innerHTML=`<div class="grocery-empty"><div class="empty-icon">🛒</div><p>No meals planned this week.<br>Fill your meal plan first!</p><button class="btn btn-primary" onclick="document.querySelector('[data-view=planner]').click()">Go to Plan</button></div>`;
+    return;
+  }
+
+  // Consolidate ingredients
+  const grocery={};
+  planEntries.forEach(name=>{
+    const r=recipes[slugify(name)]; if(!r)return;
+    (r.ingredients||[]).forEach(ing=>{
+      const item=ing.item.toLowerCase().trim(), unit=normalizeUnit(ing.unit||'');
+      if(!grocery[item])grocery[item]={};
+      grocery[item][unit]=(grocery[item][unit]||0)+(ing.qty||0)*scale;
+    });
+  });
+
+  // Categorize
+  const sections={};
+  for(const item of Object.keys(grocery)){
+    let placed=false;
+    for(const[section,kws]of Object.entries(CATEGORIES)){
+      if(kws.some(kw=>item.includes(kw))){if(!sections[section])sections[section]=[];sections[section].push(item);placed=true;break;}
+    }
+    if(!placed){if(!sections['🛍️ Other'])sections['🛍️ Other']=[];sections['🛍️ Other'].push(item);}
+  }
+
+  const totalItems=Object.keys(grocery).length;
+  let totalCost=0;
+
+  document.getElementById('grocery-subtitle').textContent=`${totalItems} items · ${planEntries.length} meals this week${scale!==1?` · ${scale}× scaled`:''}`;
+
+  content.innerHTML = Object.keys(sections).sort().map(section=>{
+    const items=sections[section].sort().map(item=>{
+      const parts=Object.entries(grocery[item]).map(([u,q])=>{const qs=formatQty(q);return u?`${qs} ${u}`:qs;});
+
+      // Calculate price for this item
+      let price = 0;
+      for(const[u,q]of Object.entries(grocery[item])){
+        if(store==='cheapest'){
+          const costs=STORES.map(s=>getIngredientCost(item,u,q,s)||Infinity);
+          price+=Math.min(...costs.filter(c=>c!==Infinity));
+        } else {
+          price += getIngredientCost(item,u,q,store)||0;
+        }
+      }
+      totalCost += price;
+
+      return `<div class="grocery-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span class="item-qty">${parts.join(' + ')}</span><span>${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</span><span class="item-price">${price>0?'$'+price.toFixed(2):'—'}</span></div>`;
+    }).join('');
+    return `<div class="grocery-section"><h3>${section}</h3>${items}</div>`;
+  }).join('') + `<div style="text-align:right;margin-top:1rem;padding:1rem;background:var(--bg-warm);border-radius:var(--radius);font-family:'Fraunces',serif;">
+    <span style="font-size:0.82rem;color:var(--ink-muted);">Estimated Total (${store==='cheapest'?'Best Mix':STORE_LABELS[store]}):</span><br>
+    <span style="font-size:1.8rem;font-weight:700;color:var(--green-dark);">$${totalCost.toFixed(2)}</span>
+    <span style="font-size:0.85rem;color:var(--ink-muted);margin-left:0.5rem;">· $${(totalCost/planEntries.length).toFixed(2)}/meal</span>
+  </div>`;
+}
+
+function copyGroceryList() {
+  const plan=getPlan(), recipes=getRecipes(), scale=parseFloat(document.getElementById('grocery-scale').value)||1;
+  const ws=currentWeekStart;
+  const grocery={};
+  for(let i=0;i<7;i++){
+    const ds=formatDate(new Date(ws.getTime()+i*86400000));
+    MEALS.forEach(m=>{
+      const n=plan[`${ds}-${m}`]; if(!n)return;
+      const r=recipes[slugify(n)]; if(!r)return;
+      (r.ingredients||[]).forEach(ing=>{
+        const item=ing.item.toLowerCase().trim(),unit=normalizeUnit(ing.unit||'');
+        if(!grocery[item])grocery[item]={};
+        grocery[item][unit]=(grocery[item][unit]||0)+(ing.qty||0)*scale;
+      });
+    });
+  }
+  let md='# 🛒 Grocery List\n\n';
+  Object.keys(grocery).sort().forEach(item=>{
+    const parts=Object.entries(grocery[item]).map(([u,q])=>u?`${formatQty(q)} ${u}`:formatQty(q));
+    md+=`- [ ] ${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')} — ${parts.join(' + ')}\n`;
+  });
+  navigator.clipboard.writeText(md).then(()=>showToast('Copied to clipboard!'));
+}
+
+function emailGroceryList() {
+  const plan=getPlan(), recipes=getRecipes(), scale=parseFloat(document.getElementById('grocery-scale').value)||1;
+  const store = document.getElementById('grocery-store').value;
+  const ws=currentWeekStart;
+  const weDate = new Date(ws.getTime() + 6*86400000);
+
+  // Build grocery list
+  const grocery={};
+  const plannedMeals = [];
+  for(let i=0;i<7;i++){
+    const ds=formatDate(new Date(ws.getTime()+i*86400000));
+    const dayName = new Date(ws.getTime()+i*86400000).toLocaleDateString('en-US',{weekday:'short'});
+    MEALS.forEach(m=>{
+      const n=plan[`${ds}-${m}`]; if(!n)return;
+      plannedMeals.push(`${dayName} ${m}: ${n}`);
+      const r=recipes[slugify(n)]; if(!r)return;
+      (r.ingredients||[]).forEach(ing=>{
+        const item=ing.item.toLowerCase().trim(),unit=normalizeUnit(ing.unit||'');
+        if(!grocery[item])grocery[item]={};
+        grocery[item][unit]=(grocery[item][unit]||0)+(ing.qty||0)*scale;
+      });
+    });
+  }
+
+  // Calculate total cost
+  let totalCost = 0;
+  for(const[item, units] of Object.entries(grocery)){
+    for(const[u,q] of Object.entries(units)){
+      if(store==='cheapest'){
+        const costs=STORES.map(s=>getIngredientCost(item,u,q,s)||Infinity);
+        totalCost+=Math.min(...costs.filter(c=>c!==Infinity));
+      } else {
+        totalCost += getIngredientCost(item,u,q,store)||0;
+      }
+    }
+  }
+
+  // Format dates for subject
+  const weekStart = ws.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const weekEnd = weDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+
+  // Build email body
+  let body = `GROCERY LIST FOR ${weekStart} - ${weekEnd}\n`;
+  body += `${'═'.repeat(40)}\n\n`;
+  body += `Estimated Total: $${totalCost.toFixed(2)} (${STORE_LABELS[store] || 'Best Mix'})\n`;
+  body += `${Object.keys(grocery).length} items for ${plannedMeals.length} meals\n\n`;
+
+  body += `SHOPPING LIST\n${'─'.repeat(30)}\n`;
+  Object.keys(grocery).sort().forEach(item=>{
+    const parts=Object.entries(grocery[item]).map(([u,q])=>u?`${formatQty(q)} ${u}`:formatQty(q));
+    const name = item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+    body+=`[ ] ${name} — ${parts.join(' + ')}\n`;
+  });
+
+  body += `\nMEAL PLAN\n${'─'.repeat(30)}\n`;
+  plannedMeals.forEach(m => body += `• ${m}\n`);
+
+  body += `\n${'─'.repeat(30)}\nGenerated by Meal Planner Pro`;
+
+  // Create mailto link
+  const subject = `Grocery List: ${weekStart} - ${weekEnd} ($${totalCost.toFixed(2)})`;
+  const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  window.open(mailtoUrl, '_blank');
+  showToast('Opening email client...');
+}
+
+// ═══════════════════════════════════════════════════
+//  IMPORT / EXPORT
+// ═══════════════════════════════════════════════════
+function importRecipes(){document.getElementById('file-import').click();}
+function handleImport(e){
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
+
+  const recipes = getRecipes();
+  let count = 0, errors = 0;
+  let processed = 0;
+
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const data = JSON.parse(ev.target.result);
+        const arr = Array.isArray(data) ? data : [data];
+        arr.forEach(r => {
+          if (r.name) {
+            recipes[slugify(r.name)] = r;
+            count++;
+          }
+        });
+      } catch { errors++; }
+
+      processed++;
+      if (processed === files.length) {
+        setRecipes(recipes);
+        renderRecipes();
+        const msg = errors ? `Imported ${count} recipes (${errors} errors)` : `Imported ${count} recipe${count !== 1 ? 's' : ''}`;
+        showToast(msg);
+      }
+    };
+    reader.readAsText(file);
+  });
+  e.target.value = '';
+}
+function exportRecipes(){
+  const blob=new Blob([JSON.stringify(Object.values(getRecipes()),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='recipes.json';a.click();
+  showToast('Exported!');
+}
+
+function exportForPython(){
+  // Export each recipe as a separate file in a zip-like format
+  // For now, export a combined JSON that can be split by Python
+  const recipes = getRecipes();
+  const output = {
+    recipes: Object.values(recipes),
+    usage_history: getUsageHistory(),
+    exported_at: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(output, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'meal-planner-sync.json';
+  a.click();
+  showToast('Exported for Python sync!');
+}
+
+function exportToCalendar() {
+  const plan = getPlan();
+  const recipes = getRecipes();
+
+  if (Object.keys(plan).length === 0) {
+    showToast('No meals planned! Fill the week first.');
+    return;
+  }
+
+  const mealTimes = {
+    breakfast: ['0800', '0900'],
+    lunch: ['1200', '1300'],
+    dinner: ['1830', '1930']
+  };
+
+  const mealEmoji = {
+    breakfast: '🍳',
+    lunch: '🥗',
+    dinner: '🍽️'
+  };
+
+  let lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Meal Planner Pro//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:Meal Plan'
+  ];
+
+  let uidCounter = 0;
+
+  // Get all planned dates
+  const dates = [...new Set(Object.keys(plan).map(k => k.split('-').slice(0, 3).join('-')))].sort();
+
+  for (const dateStr of dates) {
+    const dateParts = dateStr.split('-');
+    const icsDate = dateParts.join('');
+
+    for (const meal of MEALS) {
+      const key = `${dateStr}-${meal}`;
+      const recipeName = plan[key];
+      if (!recipeName) continue;
+
+      const [startTime, endTime] = mealTimes[meal] || ['1200', '1300'];
+      const emoji = mealEmoji[meal] || '🍴';
+      const isLeftover = recipeName.includes('(leftover)');
+      const cleanName = recipeName.replace(' (leftover)', '');
+
+      uidCounter++;
+      const uid = `mealplan-${icsDate}-${meal}-${uidCounter}@mealplanner`;
+
+      let description = `Recipe: ${cleanName}`;
+      if (isLeftover) description += '\\n(Leftover - no cooking needed!)';
+
+      // Get ingredients if available
+      const recipe = recipes[slugify(cleanName)];
+      if (recipe && recipe.ingredients && !isLeftover) {
+        description += '\\n\\nIngredients:';
+        recipe.ingredients.forEach(ing => {
+          description += `\\n• ${ing.qty || ''} ${ing.unit || ''} ${ing.item}`.trim();
+        });
+      }
+
+      lines.push('BEGIN:VEVENT');
+      lines.push(`UID:${uid}`);
+      lines.push(`DTSTART:${icsDate}T${startTime}00`);
+      lines.push(`DTEND:${icsDate}T${endTime}00`);
+      lines.push(`SUMMARY:${emoji} ${meal.charAt(0).toUpperCase() + meal.slice(1)}: ${recipeName}`);
+      lines.push(`DESCRIPTION:${description}`);
+      lines.push('STATUS:CONFIRMED');
+      lines.push('END:VEVENT');
+    }
+  }
+
+  lines.push('END:VCALENDAR');
+
+  const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'meal-plan.ics';
+  a.click();
+
+  showToast('Calendar exported! Import into Google/Outlook/Apple Calendar');
+}
+
+// ═══════════════════════════════════════════════════
+//  MODAL & TOAST
+// ═══════════════════════════════════════════════════
+function openModal(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden';}
+function closeModal(id){document.getElementById(id).classList.remove('active');document.body.style.overflow='';}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('detail-modal');closeModal('edit-modal');closePicker();}});
+
+// ═══════════════════════════════════════════════════
+//  SEED DATA
+// ═══════════════════════════════════════════════════
+function loadBundledRecipes(){
+  // Bundled recipes are the base layer; user edits/additions in localStorage overlay on top
+  const BUNDLED=[
+{"name":"Chicken Stir Fry","servings":4,"prep_time":15,"cook_time":10,"tags":["quick","asian","chicken","healthy"],"meal_types":["lunch","dinner"],"ingredients":[{"qty":1.5,"unit":"lb","item":"chicken breast"},{"qty":2,"unit":"tbsp","item":"soy sauce"},{"qty":1,"unit":"tbsp","item":"sesame oil"},{"qty":1,"unit":"tbsp","item":"cornstarch"},{"qty":2,"unit":"cup","item":"broccoli florets"},{"qty":1,"unit":"","item":"red bell pepper"},{"qty":2,"unit":"clove","item":"garlic"},{"qty":1,"unit":"tbsp","item":"fresh ginger"},{"qty":2,"unit":"cup","item":"rice"},{"qty":1,"unit":"tbsp","item":"vegetable oil"}],"steps":["Slice chicken breast into thin strips and toss with cornstarch, 1 tbsp soy sauce, and sesame oil.","Cook rice according to package directions.","Heat vegetable oil in a wok or large skillet over high heat.","Add chicken and cook 4-5 minutes until golden. Remove and set aside.","Add garlic, ginger, broccoli, and bell pepper. Stir fry 3-4 minutes.","Return chicken to wok, add remaining soy sauce, toss to combine.","Serve over rice."],"notes":"Works great with any vegetables you have on hand. Snap peas and carrots are good swaps."},
+{"name":"Garlic Butter Pasta","servings":4,"prep_time":5,"cook_time":15,"tags":["quick","italian","vegetarian","budget"],"meal_types":["lunch","dinner"],"ingredients":[{"qty":1,"unit":"lb","item":"spaghetti"},{"qty":4,"unit":"tbsp","item":"butter"},{"qty":6,"unit":"clove","item":"garlic"},{"qty":0.5,"unit":"tsp","item":"red pepper flakes"},{"qty":0.5,"unit":"cup","item":"parmesan cheese"},{"qty":0.25,"unit":"cup","item":"fresh parsley"},{"qty":1,"unit":"tbsp","item":"olive oil"},{"qty":1,"unit":"","item":"lemon"}],"steps":["Cook spaghetti in salted water according to package. Reserve 1 cup pasta water before draining.","Mince garlic. Melt butter with olive oil in a large pan over medium heat.","Add garlic and red pepper flakes, cook 1-2 minutes until fragrant (don't burn).","Add drained pasta and 1/2 cup reserved pasta water. Toss to coat.","Add parmesan, squeeze of lemon juice, and parsley. Toss again, adding more pasta water if needed."],"notes":"Add grilled chicken or shrimp for protein. Works with any pasta shape."},
+{"name":"Breakfast Burrito","servings":2,"prep_time":5,"cook_time":10,"tags":["quick","breakfast","protein"],"meal_types":["breakfast","lunch"],"ingredients":[{"qty":4,"unit":"","item":"eggs"},{"qty":2,"unit":"","item":"large flour tortillas"},{"qty":4,"unit":"slice","item":"bacon"},{"qty":0.5,"unit":"cup","item":"shredded cheddar cheese"},{"qty":0.25,"unit":"cup","item":"salsa"},{"qty":1,"unit":"tbsp","item":"butter"},{"qty":1,"unit":"","item":"avocado"}],"steps":["Cook bacon in a skillet until crispy. Remove and chop.","Whisk eggs, melt butter in the same skillet, and scramble eggs over medium heat.","Warm tortillas in microwave for 15 seconds.","Fill each tortilla with eggs, bacon, cheese, sliced avocado, and salsa.","Fold and roll into burritos. Optional: toast seam-side down in a dry pan for 1 minute."],"notes":"Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min."},
+{"name":"Ground Beef Tacos","servings":4,"prep_time":10,"cook_time":15,"tags":["quick","mexican","beef","family"],"meal_types":["lunch","dinner"],"ingredients":[{"qty":1,"unit":"lb","item":"ground beef"},{"qty":8,"unit":"","item":"small flour tortillas"},{"qty":1,"unit":"tbsp","item":"chili powder"},{"qty":1,"unit":"tsp","item":"cumin"},{"qty":0.5,"unit":"tsp","item":"garlic powder"},{"qty":0.5,"unit":"tsp","item":"onion powder"},{"qty":0.25,"unit":"cup","item":"water"},{"qty":1,"unit":"cup","item":"shredded cheddar cheese"},{"qty":1,"unit":"cup","item":"lettuce"},{"qty":2,"unit":"","item":"tomato"},{"qty":0.5,"unit":"cup","item":"sour cream"},{"qty":1,"unit":"","item":"lime"}],"steps":["Brown ground beef in a skillet over medium-high heat, breaking it up as it cooks.","Drain excess fat. Add chili powder, cumin, garlic powder, onion powder, and water.","Simmer 5 minutes until sauce thickens.","Warm tortillas in a dry skillet or microwave.","Assemble tacos with beef, cheese, lettuce, diced tomato, sour cream, and lime juice."],"notes":"Works great with ground turkey too. Add jalape\u00f1o for heat."},
+{"name":"Overnight Oats","servings":2,"prep_time":5,"cook_time":0,"tags":["quick","breakfast","meal-prep","healthy"],"meal_types":["breakfast"],"ingredients":[{"qty":1,"unit":"cup","item":"rolled oats"},{"qty":1,"unit":"cup","item":"milk"},{"qty":0.5,"unit":"cup","item":"greek yogurt"},{"qty":2,"unit":"tbsp","item":"honey"},{"qty":0.5,"unit":"cup","item":"blueberries"},{"qty":2,"unit":"tbsp","item":"chia seeds"}],"steps":["Combine oats, milk, yogurt, honey, and chia seeds in a jar or container.","Stir well, cover, and refrigerate overnight (or at least 4 hours).","Top with blueberries before serving. Eat cold or microwave 1-2 min."],"notes":"Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein."},
+{"name":"Easy Sesame Chicken","servings":4,"prep_time":15,"cook_time":15,"tags":["dinner","main course","asian","easy dinner","take out fake out","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":0.25,"unit":"cup","item":"soy sauce"},{"qty":2,"unit":"tbsp","item":"water"},{"qty":1,"unit":"tbsp","item":"toasted sesame oil"},{"qty":3,"unit":"tbsp","item":"brown sugar"},{"qty":1,"unit":"tbsp","item":"rice vinegar"},{"qty":1,"unit":"tsp","item":"grated fresh ginger"},{"qty":2,"unit":"clove","item":"garlic, minced"},{"qty":0.5,"unit":"tbsp","item":"cornstarch"},{"qty":1,"unit":"tbsp","item":"sesame seeds"},{"qty":2,"unit":"tbsp","item":"cooking oil"},{"qty":1,"unit":"lb","item":"boneless skinless chicken thighs"},{"qty":1,"unit":"large","item":"egg"},{"qty":2,"unit":"tbsp","item":"cornstarch"},{"qty":1,"unit":"pinch","item":"each salt and pepper"},{"qty":4,"unit":"cup","item":"cooked jasmine rice"},{"qty":2,"unit":"whole","item":"green onions"}],"steps":["Prepare the sauce: stir together soy sauce, water, sesame oil, brown sugar, rice vinegar, ginger, garlic, cornstarch, and sesame seeds. Set aside.","Whisk egg, 2 Tbsp cornstarch, salt and pepper. Cut chicken into 1-inch pieces and toss in batter.","Heat cooking oil in a large skillet over medium. Add chicken in a single layer.","Cook undisturbed until golden brown, flip, and cook other side.","Pour sauce over chicken, toss to coat. Simmer until thickened.","Serve over rice with sliced green onions."],"notes":"Faster and tastier than takeout.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2018/07/Sesame-Chicken-Overhead.jpg","source_url":"https://www.budgetbytes.com/easy-sesame-chicken/"},
+{"name":"Peanut Noodles with Chicken","servings":4,"prep_time":10,"cook_time":15,"tags":["dinner","lunch","american","thai","chicken pasta recipe","easy dinner recipes","peanut noodles","quick dinner","dairy-free"],"meal_types":["lunch","dinner"],"ingredients":[{"qty":0.333,"unit":"cup","item":"smooth natural-style peanut butter"},{"qty":2,"unit":"tbsp","item":"sriracha"},{"qty":2,"unit":"tbsp","item":"brown sugar"},{"qty":1,"unit":"","item":"fresh lime"},{"qty":1,"unit":"tbsp","item":"soy sauce"},{"qty":1,"unit":"clove","item":"garlic, minced"},{"qty":1,"unit":"tsp","item":"grated fresh ginger"},{"qty":1,"unit":"","item":"13.5 oz. can coconut milk"},{"qty":1,"unit":"","item":"boneless, skinless chicken breast"},{"qty":1,"unit":"tbsp","item":"cooking oil"},{"qty":8,"unit":"oz","item":"noodles"},{"qty":0.25,"unit":"cup","item":"chopped peanuts"},{"qty":0.25,"unit":"cup","item":"chopped cilantro"}],"steps":["Whisk peanut butter, sriracha, brown sugar, soy sauce, lime juice, garlic, and ginger.","Add coconut milk and whisk smooth.","Cut chicken into small pieces. Cook in oil until browned.","Add peanut sauce, simmer on low while cooking noodles.","Cook noodles, drain, add to skillet. Toss to coat.","Top with chopped peanuts and cilantro."],"notes":"Rich, creamy, sweet, and savory \u2014 completely addictive.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2023/03/Peanut-Noodles-with-Chicken-close.jpg","source_url":"https://www.budgetbytes.com/peanut-noodles-with-chicken/"},
+{"name":"Instant Pot Beef Stew Recipe","servings":6,"prep_time":15,"cook_time":60,"tags":["main course","american","instant pot beef stew","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":1,"unit":"lb","item":"beef stew meat, cubed"},{"qty":1,"unit":"","item":"salt and pepper"},{"qty":2,"unit":"tbsp","item":"all-purpose flour"},{"qty":2,"unit":"tbsp","item":"vegan butter (Earth Balance)"},{"qty":2,"unit":"cup","item":"beef broth"},{"qty":1,"unit":"tbsp","item":"Worcestershire sauce"},{"qty":1,"unit":"tbsp","item":"soy sauce"},{"qty":0.5,"unit":"tbsp","item":"brown sugar"},{"qty":2,"unit":"clove","item":"garlic, minced"},{"qty":2,"unit":"tbsp","item":"tomato paste"},{"qty":1,"unit":"tsp","item":"dried rosemary"},{"qty":1,"unit":"tsp","item":"dried thyme"},{"qty":14,"unit":"oz","item":"bag frozen pearl onions"},{"qty":8,"unit":"oz","item":"mushrooms"},{"qty":1,"unit":"lb","item":"carrots"},{"qty":0.75,"unit":"lb","item":"potatoes"}],"steps":["Season stew meat with salt/pepper, coat with flour.","Saut\u00e9 in melted butter in Instant Pot until browned.","Add broth, Worcestershire, soy sauce, brown sugar, garlic, tomato paste, rosemary, thyme.","Add pearl onions, mushrooms, carrots, potatoes. Stir.","Pressure cook 35 min high, natural release.","Stir, adjust salt, serve with crusty bread."],"notes":"Dairy-free: uses vegan butter. Incredibly fast with slow-cooked flavor.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2017/01/Instant-Pot-Beef-Stew-Close.jpg","source_url":"https://www.budgetbytes.com/instant-pot-beef-stew/"},
+{"name":"Coconut Rice","servings":6,"prep_time":5,"cook_time":25,"tags":["side dish","asian","coconut rice","jasmine rice","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":1.5,"unit":"cup","item":"long-grain jasmine rice"},{"qty":1,"unit":"clove","item":"garlic"},{"qty":0.75,"unit":"tsp","item":"salt"},{"qty":1,"unit":"","item":"13.5oz. can coconut milk"},{"qty":1,"unit":"cup","item":"water"}],"steps":["Rinse rice, add to pot with minced garlic and salt.","Add coconut milk and water. Stir briefly.","Bring to boil, reduce to low, simmer 15 min with lid on. Don't stir.","Rest 5 min off heat with lid on, then fluff and serve."],"notes":"Fragrant jasmine rice with rich coconut milk and savory garlic.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2022/04/Coconut-RIce-plate.jpg","source_url":"https://www.budgetbytes.com/coconut-rice/"},
+{"name":"Cilantro Lime Rice","servings":6,"prep_time":10,"cook_time":20,"tags":["dinner","side dish","southwest","cilantro rice","flavored rice","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":2,"unit":"cup","item":"long grain white rice"},{"qty":3,"unit":"cup","item":"chicken broth"},{"qty":0.5,"unit":"bunch","item":"fresh cilantro"},{"qty":1,"unit":"","item":"lime"},{"qty":2,"unit":"tbsp","item":"olive oil"}],"steps":["Rinse rice, add with broth to pot. Boil with lid, reduce to low 15 min.","Rest 5 min off heat.","Zest and juice lime, chop cilantro. Mix with olive oil.","Fluff rice, fold in cilantro lime mixture. Adjust to taste."],"notes":"Bright, flavorful, easy \u2014 makes any meal more delicious.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2024/01/Cilantro-Lime-Rice-Pot.jpg","source_url":"https://www.budgetbytes.com/cilantro-lime-rice/"},
+{"name":"Creamy Garlic Chicken Recipe","servings":4,"prep_time":10,"cook_time":30,"tags":["dinner","american","creamy garlic chicken","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":2,"unit":"","item":"boneless, skinless chicken breasts"},{"qty":0.5,"unit":"tsp","item":"Italian seasoning"},{"qty":0.5,"unit":"tsp","item":"salt"},{"qty":0.25,"unit":"tsp","item":"freshly cracked black pepper"},{"qty":0.25,"unit":"cup","item":"all-purpose flour"},{"qty":2,"unit":"tbsp","item":"olive oil"},{"qty":2,"unit":"tbsp","item":"vegan butter (Earth Balance)"},{"qty":1,"unit":"whole","item":"garlic bulb"},{"qty":1,"unit":"cup","item":"chicken broth"},{"qty":0.75,"unit":"cup","item":"full-fat coconut cream"},{"qty":0.5,"unit":"tsp","item":"garlic powder"}],"steps":["Fillet chicken into thin cutlets. Season with Italian seasoning, salt, pepper. Coat in flour.","Cook in olive oil and 1 Tbsp butter until golden, ~4 min per side. Remove.","Smash and saut\u00e9 garlic cloves in remaining butter 3 min.","Add broth and coconut cream, simmer 8-10 min until reduced by half.","Return chicken, spoon sauce over top, heat through."],"notes":"Dairy-free: uses vegan butter and coconut cream. Mouthwatering!","image_url":"https://www.budgetbytes.com/wp-content/uploads/2024/02/Creamy-Garlic-Chicken-Pan.jpg","source_url":"https://www.budgetbytes.com/creamy-garlic-chicken/"},
+{"name":"Crockpot Beef Stew Recipe","servings":8,"prep_time":15,"cook_time":255,"tags":["dinner","main course","american","beef stew recipe","crock pot","slow cooker","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":2,"unit":"lb","item":"red potatoes"},{"qty":1,"unit":"","item":"yellow onion"},{"qty":3,"unit":"","item":"carrots"},{"qty":4,"unit":"stalk","item":"celery"},{"qty":4,"unit":"clove","item":"garlic"},{"qty":1.5,"unit":"lb","item":"beef stew meat"},{"qty":2,"unit":"tbsp","item":"all-purpose flour"},{"qty":0.25,"unit":"tsp","item":"salt"},{"qty":0.25,"unit":"tsp","item":"black pepper"},{"qty":2,"unit":"tbsp","item":"cooking oil"},{"qty":2,"unit":"cup","item":"beef broth"},{"qty":2,"unit":"tbsp","item":"Dijon mustard"},{"qty":1,"unit":"tbsp","item":"Worcestershire sauce"},{"qty":1,"unit":"tbsp","item":"soy sauce"},{"qty":1.5,"unit":"tsp","item":"brown sugar"},{"qty":1.5,"unit":"tsp","item":"dried rosemary"},{"qty":1.5,"unit":"tsp","item":"dried thyme"}],"steps":["Dice veggies, place in slow cooker.","Coat stew meat in flour, salt, pepper. Brown in oil.","Transfer to slow cooker. Deglaze skillet with broth, mustard, Worcestershire, soy sauce, brown sugar, herbs.","Pour over ingredients, stir. Cook high 4hrs or low 8hrs.","Stir to thicken, adjust salt, serve hot."],"notes":"Perfect cozy meal for a cold winter day.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2023/02/Slow-Cooker-Beef-Stew-inbowl.jpeg","source_url":"https://www.budgetbytes.com/slow-cooker-beef-stew/"},
+{"name":"Honey Garlic Chicken","servings":4,"prep_time":10,"cook_time":18,"tags":["dinner","lunch","american","honey garlic chicken","dairy-free"],"meal_types":["lunch","dinner"],"ingredients":[{"qty":0.333,"unit":"cup","item":"honey"},{"qty":2,"unit":"tbsp","item":"soy sauce"},{"qty":1,"unit":"tbsp","item":"rice vinegar"},{"qty":1,"unit":"tsp","item":"sriracha"},{"qty":2,"unit":"tsp","item":"toasted sesame oil"},{"qty":1,"unit":"tbsp","item":"cornstarch"},{"qty":2,"unit":"","item":"boneless, skinless chicken breasts"},{"qty":1,"unit":"tsp","item":"salt"},{"qty":0.5,"unit":"tsp","item":"black pepper"},{"qty":0.5,"unit":"tsp","item":"garlic powder"},{"qty":2,"unit":"tbsp","item":"all-purpose flour"},{"qty":3,"unit":"tbsp","item":"olive oil"},{"qty":2,"unit":"tbsp","item":"vegan butter (Earth Balance)"},{"qty":4,"unit":"clove","item":"garlic, minced"},{"qty":2,"unit":"","item":"green onions, sliced"}],"steps":["Mix honey, soy sauce, rice vinegar, sriracha, sesame oil, cornstarch for sauce.","Cube chicken, season, coat in flour. Brown in batches in oil.","Saut\u00e9 minced garlic in butter 30-60 sec.","Add sauce, simmer 2 min to thicken.","Return chicken, coat in sauce, heat through. Top with green onions."],"notes":"Dairy-free: uses vegan butter. Sweet & tangy and irresistible.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg","source_url":"https://www.budgetbytes.com/honey-garlic-chicken/"},
+{"name":"One Pot Creamy Cajun Chicken Pasta","servings":4,"prep_time":10,"cook_time":20,"tags":["dinner","main course","american","one pot","quick","spicy","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":2,"unit":"tsp","item":"smoked paprika"},{"qty":1,"unit":"tsp","item":"oregano"},{"qty":1,"unit":"tsp","item":"thyme"},{"qty":0.5,"unit":"tsp","item":"garlic powder"},{"qty":0.5,"unit":"tsp","item":"onion powder"},{"qty":0.25,"unit":"tsp","item":"cayenne pepper"},{"qty":0.25,"unit":"tsp","item":"black pepper"},{"qty":0.25,"unit":"tsp","item":"salt"},{"qty":1,"unit":"tbsp","item":"olive oil"},{"qty":1,"unit":"tbsp","item":"vegan butter (Earth Balance)"},{"qty":1,"unit":"lb","item":"boneless, skinless chicken breast"},{"qty":1,"unit":"","item":"yellow onion, diced"},{"qty":0.5,"unit":"lb","item":"penne pasta"},{"qty":15,"unit":"oz","item":"fire roasted diced tomatoes"},{"qty":2,"unit":"cup","item":"chicken broth"},{"qty":2,"unit":"oz","item":"dairy-free cream cheese (Kite Hill)"},{"qty":3,"unit":"","item":"green onions, sliced"}],"steps":["Mix Cajun seasoning. Cube chicken, toss with seasoning.","Cook chicken in oil and butter until colored. Add diced onion, saut\u00e9 2 min.","Add pasta, tomatoes, broth. Boil with lid, then simmer 10 min.","Stir in cream cheese until melted. Top with green onions."],"notes":"Dairy-free: uses vegan butter and dairy-free cream cheese. Perfect busy weeknight meal.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2018/10/One-Pot-Creamy-Cajun-Chicken-Pasta-pan.jpg","source_url":"https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/"},
+{"name":"One Pot Lemon Pepper Chicken with Orzo","servings":4,"prep_time":10,"cook_time":35,"tags":["dinner","main course","american","chicken and orzo","lemon pepper chicken","one pot meal","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":4,"unit":"","item":"chicken thighs"},{"qty":2,"unit":"tbsp","item":"lemon pepper seasoning"},{"qty":1,"unit":"tbsp","item":"cooking oil"},{"qty":2,"unit":"clove","item":"garlic"},{"qty":2,"unit":"cup","item":"chicken broth"},{"qty":0.25,"unit":"cup","item":"chopped parsley"},{"qty":1.5,"unit":"cup","item":"orzo"},{"qty":2,"unit":"oz","item":"feta, crumbled"}],"steps":["Season chicken with lemon pepper. Brown skin-side down 6-8 min, flip and brown other side.","Saut\u00e9 garlic in residual fat. Add broth, scrape up browned bits.","Add orzo and half the parsley. Return chicken skin-side up.","Boil with lid, reduce to low, simmer 15 min until orzo is tender.","Top with remaining parsley and feta."],"notes":"Zesty one-pot meal with juicy chicken thighs and orzo.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2022/07/One-Pot-Lemon-Pepper-Chicken-and-Orzo-H.jpg","source_url":"https://www.budgetbytes.com/lemon-pepper-chicken/"},
+{"name":"Savory Oatmeal","servings":1,"prep_time":5,"cook_time":10,"tags":["breakfast","dinner","lunch","main course","american","asian","breakfast recipes","healthy breakfast","oatmeal recipe","dairy-free"],"meal_types":["breakfast","lunch","dinner"],"ingredients":[{"qty":1,"unit":"clove","item":"garlic, minced"},{"qty":0.5,"unit":"tsp","item":"grated fresh ginger"},{"qty":4,"unit":"","item":"mushrooms"},{"qty":1,"unit":"tsp","item":"vegan butter (Earth Balance)"},{"qty":1,"unit":"cup","item":"vegetable broth"},{"qty":0.5,"unit":"cup","item":"old-fashioned rolled oats"},{"qty":0.5,"unit":"cup","item":"spinach"},{"qty":0.5,"unit":"tsp","item":"toasted sesame oil"}],"steps":["Saut\u00e9 garlic, ginger in butter 1-2 min.","Add mushrooms, cook until wilted.","Add broth, bring to boil. Add oats, simmer 5 min.","Stir in spinach and sesame oil. Season to taste."],"notes":"Dairy-free: uses vegan butter. Hearty and customizable.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2021/09/Savory-Oatmeal-above.jpg","source_url":"https://www.budgetbytes.com/savory-oatmeal/"},
+{"name":"Spicy Sriracha Noodles","servings":2,"prep_time":5,"cook_time":10,"tags":["easy","noodles","spicy","take out","vegetarian","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":4,"unit":"oz","item":"lo mein noodles"},{"qty":2,"unit":"tbsp","item":"vegan butter (Earth Balance)"},{"qty":0.25,"unit":"tsp","item":"crushed red pepper"},{"qty":2,"unit":"large","item":"eggs"},{"qty":1,"unit":"tbsp","item":"brown sugar"},{"qty":1,"unit":"tbsp","item":"soy sauce"},{"qty":2,"unit":"tbsp","item":"sriracha"},{"qty":1,"unit":"","item":"handful fresh cilantro"},{"qty":1,"unit":"","item":"green onion, sliced"}],"steps":["Mix brown sugar, soy sauce, sriracha for sauce.","Boil noodles until tender, drain.","Scramble eggs in butter with crushed red pepper.","Add noodles and sauce to skillet, toss to coat.","Top with cilantro and green onion."],"notes":"Dairy-free: uses vegan butter. Sweet, tangy, spicy \u2014 better than take out.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2012/08/Spicy-Noodles-skillet.jpg","source_url":"https://www.budgetbytes.com/dragon-noodles/"},
+{"name":"Tomato Spinach One Pot Pasta","servings":6,"prep_time":10,"cook_time":15,"tags":["dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":4,"unit":"cup","item":"vegetable broth"},{"qty":2,"unit":"tbsp","item":"olive oil"},{"qty":12,"unit":"oz","item":"fettuccine"},{"qty":8,"unit":"oz","item":"frozen chopped spinach"},{"qty":1,"unit":"","item":"28oz. can diced tomatoes"},{"qty":1,"unit":"","item":"yellow onion, sliced"},{"qty":4,"unit":"clove","item":"garlic, sliced"},{"qty":0.5,"unit":"tbsp","item":"dried basil"},{"qty":0.5,"unit":"tbsp","item":"dried oregano"},{"qty":0.25,"unit":"tsp","item":"crushed red pepper"},{"qty":1,"unit":"","item":"freshly cracked black pepper"},{"qty":2,"unit":"oz","item":"nutritional yeast"}],"steps":["Add all ingredients to a large pot. Submerge under liquid, lid on, bring to boil.","Remove lid, reduce to medium. Boil 10-15 min, stirring occasionally.","Sprinkle with nutritional yeast before serving."],"notes":"Dairy-free: uses nutritional yeast instead of Parmesan. Incredibly fast weeknight meal.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2013/05/Italian-Wonderpot-close-1.jpg","source_url":"https://www.budgetbytes.com/italian-wonderpot/"},
+{"name":"Turkey Taco Skillet","servings":4,"prep_time":5,"cook_time":12,"tags":["dinner","main course","american","southwest","easy dinner recipes","taco night","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":1,"unit":"tbsp","item":"chili powder"},{"qty":1,"unit":"tsp","item":"smoked paprika"},{"qty":1,"unit":"tsp","item":"ground cumin"},{"qty":0.25,"unit":"tsp","item":"cayenne pepper"},{"qty":0.5,"unit":"tsp","item":"dried oregano"},{"qty":0.5,"unit":"tsp","item":"salt"},{"qty":0.25,"unit":"tsp","item":"freshly cracked black pepper"},{"qty":1,"unit":"tbsp","item":"cooking oil"},{"qty":1,"unit":"lb","item":"ground turkey"},{"qty":1,"unit":"","item":"yellow onion"},{"qty":1,"unit":"","item":"10oz. can diced tomatoes with green chiles"},{"qty":1,"unit":"","item":"15oz. can black beans"},{"qty":1,"unit":"cup","item":"frozen corn"},{"qty":0.5,"unit":"bunch","item":"green onions"}],"steps":["Mix taco seasoning spices.","Cook turkey in oil, breaking up as it cooks. Add diced onion, cook until soft.","Add seasoning, cook 1-2 min.","Add beans, tomatoes, corn. Heat through.","Top with sliced green onions."],"notes":"Easy, versatile, freezer friendly. Serve in bowls, tacos, or over rice.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2020/02/Turkey-Taco-Skillet-above.jpg","source_url":"https://www.budgetbytes.com/turkey-taco-skillet/"},
+{"name":"Homemade Chicken Yakisoba","servings":6,"prep_time":15,"cook_time":15,"tags":["easy","stir fry noodles","stir fry recipes","yakisoba recipe","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":0.5,"unit":"head","item":"green cabbage"},{"qty":1,"unit":"","item":"yellow onion"},{"qty":2,"unit":"","item":"carrots"},{"qty":1,"unit":"","item":"crown broccoli"},{"qty":1,"unit":"","item":"inch fresh ginger"},{"qty":1,"unit":"large","item":"chicken breast"},{"qty":2,"unit":"tbsp","item":"vegetable oil"},{"qty":2,"unit":"","item":"3oz. packages ramen noodles"},{"qty":1,"unit":"tsp","item":"sesame oil"},{"qty":0.25,"unit":"cup","item":"soy sauce"},{"qty":0.25,"unit":"cup","item":"worcestershire sauce"},{"qty":2,"unit":"tbsp","item":"ketchup"},{"qty":1,"unit":"tbsp","item":"sriracha"},{"qty":1,"unit":"tbsp","item":"sugar"}],"steps":["Prep veggies: shred cabbage, slice onion, grate carrots, chop broccoli. Grate ginger. Slice chicken.","Saut\u00e9 ginger in oil, add chicken, cook through.","Add all veggies, cook until wilted.","Boil ramen noodles 2-3 min, drain, toss with sesame oil.","Mix soy sauce, Worcestershire, ketchup, sriracha, sugar. Pour into skillet. Add noodles, toss and heat."],"notes":"Better than takeout yakisoba \u2014 full of chicken and veggies.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2012/03/Chicken-Yakisoba-fork-bowl.jpg","source_url":"https://www.budgetbytes.com/chicken-yakisoba/"},
+{"name":"Chicken Stir Fry Recipe","servings":6,"prep_time":15,"cook_time":20,"tags":["dinner","lunch","american","asian","chicken stir fry","dairy-free"],"meal_types":["lunch","dinner"],"ingredients":[{"qty":0.33,"unit":"cup","item":"soy sauce"},{"qty":3,"unit":"tbsp","item":"brown sugar"},{"qty":2,"unit":"tsp","item":"toasted sesame oil"},{"qty":2,"unit":"clove","item":"garlic, minced"},{"qty":2,"unit":"tsp","item":"grated fresh ginger"},{"qty":1,"unit":"","item":"\u00bd Tbsp cornstarch"},{"qty":0.33,"unit":"cup","item":"water"},{"qty":1,"unit":"tsp","item":"sriracha"},{"qty":0.75,"unit":"lb","item":"broccoli"},{"qty":2,"unit":"","item":"carrots"},{"qty":1,"unit":"","item":"red bell pepper"},{"qty":1,"unit":"small","item":"onion"},{"qty":2,"unit":"","item":"green onions"},{"qty":2,"unit":"","item":"boneless, skinless chicken breasts"},{"qty":3,"unit":"tbsp","item":"cooking oil, divided"}],"steps":["Make sauce: soy sauce, brown sugar, sesame oil, garlic, ginger, sriracha, cornstarch, water.","Chop all veggies. Cut chicken into \u00bd-inch pieces.","Brown chicken in 2 Tbsp oil. Remove.","Cook carrots and broccoli 1 min, add bell pepper and onion 1-2 min more.","Return chicken, pour sauce over, simmer until thickened. Top with green onions."],"notes":"Quick & easy with lots of chicken, veggies, and a delicious stir fry sauce.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg","source_url":"https://www.budgetbytes.com/chicken-stir-fry/"},
+{"name":"Poor Man's Burrito Bowls","servings":6,"prep_time":5,"cook_time":20,"tags":["dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":2,"unit":"cup","item":"uncooked long grain white rice"},{"qty":0.5,"unit":"tsp","item":"salt"},{"qty":2,"unit":"","item":"15oz. cans black beans"},{"qty":0.5,"unit":"tsp","item":"ground cumin"},{"qty":0.25,"unit":"tsp","item":"garlic powder"},{"qty":1,"unit":"","item":"16oz. jar salsa"},{"qty":6,"unit":"oz","item":"dairy-free cheese"},{"qty":1,"unit":"bunch","item":"green onions"},{"qty":1,"unit":"","item":"jalape\u00f1o"}],"steps":["Cook rice: boil with 3 cups water and salt, reduce to low 15 min, rest 5 min.","Heat beans (undrained) with cumin and garlic powder.","Slice green onions and jalape\u00f1o.","Build bowls: rice, beans, salsa, cheese, green onions, jalape\u00f1o."],"notes":"Dairy-free: uses dairy-free cheese. Super fast and affordable.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2015/09/Poor-Mans-Burrito-Bowls-close.jpg","source_url":"https://www.budgetbytes.com/poor-mans-burrito-bowls/"},
+{"name":"Sheet Pan Chicken Fajitas","servings":4,"prep_time":15,"cook_time":40,"tags":["dinner","main course","southwest","sheet pan dinner","sheet pan fajitas","weeknight dinner","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":1,"unit":"tbsp","item":"chili powder"},{"qty":0.5,"unit":"tbsp","item":"paprika"},{"qty":0.5,"unit":"tsp","item":"onion powder"},{"qty":0.25,"unit":"tsp","item":"garlic powder"},{"qty":0.25,"unit":"tsp","item":"cumin"},{"qty":0.125,"unit":"tsp","item":"cayenne pepper"},{"qty":1,"unit":"tsp","item":"sugar"},{"qty":0.5,"unit":"tsp","item":"salt"},{"qty":2,"unit":"small","item":"yellow onions"},{"qty":3,"unit":"","item":"bell peppers, any color"},{"qty":1,"unit":"lb","item":"chicken breast"},{"qty":2,"unit":"tbsp","item":"cooking oil"},{"qty":1,"unit":"","item":"lime"},{"qty":8,"unit":"","item":"6-inch tortillas"},{"qty":0.5,"unit":"cup","item":"dairy-free sour cream (Tofutti)"},{"qty":0.25,"unit":"bunch","item":"cilantro"}],"steps":["Preheat 400\u00b0F. Mix fajita seasoning.","Slice onions, peppers, chicken into strips. Toss with oil and seasoning on sheet pan.","Bake 35-40 min, stirring halfway.","Squeeze lime over top. Serve in tortillas with sour cream and cilantro."],"notes":"Dairy-free: uses Tofutti sour cream. Hands-off smoky-sweet fajitas.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2022/03/Sheet-Pan-Chicken-Fajitas-done.jpg","source_url":"https://www.budgetbytes.com/oven-fajitas/"},
+{"name":"Quick & Easy Garlic Noodles","servings":4,"prep_time":10,"cook_time":15,"tags":["dinner","main course","side dish","asian","garlic noodles","noodles","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":2,"unit":"tbsp","item":"oyster sauce"},{"qty":2,"unit":"tbsp","item":"brown sugar"},{"qty":2,"unit":"tsp","item":"soy sauce"},{"qty":1,"unit":"tsp","item":"toasted sesame oil"},{"qty":8,"unit":"oz","item":"angel hair pasta"},{"qty":4,"unit":"clove","item":"garlic"},{"qty":0.5,"unit":"bunch","item":"green onions"},{"qty":4,"unit":"tbsp","item":"vegan butter (Earth Balance)"}],"steps":["Mix oyster sauce, brown sugar, soy sauce, sesame oil.","Boil pasta, drain.","Melt butter, saut\u00e9 garlic and green onions 1-2 min.","Toss pasta with sauce mixture. Garnish with green onions."],"notes":"Dairy-free: uses vegan butter. Sweet, rich, savory with a strong garlic punch.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2015/07/Garlic-Noodles-Overhead.jpg","source_url":"https://www.budgetbytes.com/garlic-noodles/"},
+{"name":"Curried Chickpeas with Spinach","servings":4,"prep_time":5,"cook_time":20,"tags":["main course","indian","curried chickpeas with spinach","easy","gluten free","quick","vegan","vegetarian","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":2,"unit":"tbsp","item":"olive oil"},{"qty":1,"unit":"","item":"yellow onion"},{"qty":2,"unit":"","item":"garlic cloves"},{"qty":1,"unit":"","item":"inch fresh ginger"},{"qty":1.5,"unit":"tbsp","item":"curry powder"},{"qty":8,"unit":"oz","item":"fresh spinach"},{"qty":15,"unit":"oz","item":"can tomato sauce"},{"qty":2,"unit":"","item":"15 oz. cans chickpeas"}],"steps":["Saut\u00e9 diced onion, garlic, ginger in olive oil until soft.","Add curry powder, cook 1 min. Add water and spinach, wilt.","Add drained chickpeas and tomato sauce. Heat through 5 min.","Serve over rice or with bread."],"notes":"Vegan, gluten-free, filling, and freezes great.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2013/12/Curried-Cickpeas-with-Spinach-Finished.jpg","source_url":"https://www.budgetbytes.com/curried-chickpeas-spinach/"},
+{"name":"One Pot Chili Mac","servings":6,"prep_time":5,"cook_time":30,"tags":["dinner","main course","american","chili mac","hamburger helper","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":1,"unit":"","item":"yellow onion"},{"qty":2,"unit":"clove","item":"garlic"},{"qty":1,"unit":"tbsp","item":"olive oil"},{"qty":1,"unit":"lb","item":"ground beef"},{"qty":2,"unit":"tbsp","item":"all-purpose flour"},{"qty":1,"unit":"tbsp","item":"chili powder"},{"qty":0.5,"unit":"tsp","item":"smoked paprika"},{"qty":0.5,"unit":"tsp","item":"garlic powder"},{"qty":0.5,"unit":"tsp","item":"dried oregano"},{"qty":8,"unit":"oz","item":"tomato sauce"},{"qty":3,"unit":"cup","item":"beef broth"},{"qty":0.5,"unit":"lb","item":"uncooked macaroni"},{"qty":1,"unit":"cup","item":"dairy-free alternative"}],"steps":["Saut\u00e9 onion and garlic in olive oil. Add beef, cook through.","Add flour and spices, cook 2 min.","Add tomato sauce and broth, scrape up browned bits.","Add macaroni, boil with lid, then simmer 10 min stirring often.","Stir in half the cheese, sprinkle rest on top, melt with lid."],"notes":"Dairy-free: uses dairy-free cheese. Comfort food classic from scratch.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2024/01/Chili-Mac-Bowl.jpg","source_url":"https://www.budgetbytes.com/chili-cheese-beef-n-mac/"},
+{"name":"Kimchi Fried Rice","servings":4,"prep_time":10,"cook_time":20,"tags":["dinner","lunch","side dish","asian","fried rice","kimchi","dairy-free"],"meal_types":["lunch","dinner"],"ingredients":[{"qty":6,"unit":"","item":"inch broccoli stem"},{"qty":1,"unit":"","item":"carrot"},{"qty":4,"unit":"","item":"green onions"},{"qty":1,"unit":"cup","item":"kimchi plus 2-4 Tbsp kimchi juice"},{"qty":2,"unit":"large","item":"eggs"},{"qty":2,"unit":"tbsp","item":"light cooking oil"},{"qty":4,"unit":"cup","item":"cooked, day-old rice"},{"qty":1,"unit":"tbsp","item":"soy sauce"},{"qty":1,"unit":"tsp","item":"toasted sesame oil"}],"steps":["Shred broccoli stem and carrot. Slice green onions. Chop kimchi.","Saut\u00e9 white parts of green onion in oil 1 min.","Add broccoli, carrots 1 min. Add kimchi and juice, cook until dry.","Add rice, fold together. Push aside, scramble eggs in center, fold in.","Season with soy sauce and sesame oil. Top with green onion tops."],"notes":"Tangy, spicy \u2014 perfect for using up leftover ingredients.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2017/12/Kimchi-Fried-Rice-dressed.jpg","source_url":"https://www.budgetbytes.com/kimchi-fried-rice/"}
+  ];
+  // Start with bundled recipes as the base
+  const merged={};
+  BUNDLED.forEach(s=>{merged[slugify(s.name)]=s;});
+  // Overlay any user-saved recipes from localStorage (user edits win)
+  const saved=getRecipes();
+  Object.keys(saved).forEach(k=>{merged[k]=saved[k];});
+  setRecipes(merged);
+}
+
+// ═══════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════
+loadBundledRecipes();
+renderRecipes();
+renderWeeklyPlan();
+renderCalendar();
+</script>
+</body>
+</html>

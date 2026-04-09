@@ -1,0 +1,74 @@
+{
+  "created": "2026-02-06T19:55:27.425909",
+  "days": [
+    {
+      "day": "Monday",
+      "meals": {
+        "dinner": {
+          "name": "Ground Beef Tacos",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "meals": {
+        "dinner": {
+          "name": "Chicken Stir Fry",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Wednesday",
+      "meals": {
+        "dinner": {
+          "name": "Garlic Butter Pasta",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Thursday",
+      "meals": {
+        "dinner": {
+          "name": "Ground Beef Tacos",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Friday",
+      "meals": {
+        "dinner": {
+          "name": "Ground Beef Tacos",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Saturday",
+      "meals": {
+        "dinner": {
+          "name": "Ground Beef Tacos",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Sunday",
+      "meals": {
+        "dinner": {
+          "name": "Chicken Stir Fry",
+          "servings": 4
+        }
+      }
+    }
+  ],
+  "strategy": "smart",
+  "stats": {
+    "unique_ingredients": 29,
+    "total_recipes": 7,
+    "avg_ingredients_per_recipe": 10.9
+  }
+}

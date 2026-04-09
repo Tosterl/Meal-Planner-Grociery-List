@@ -1,0 +1,71 @@
+{
+  "name": "Quick &amp; Easy Garlic Noodles",
+  "servings": 4,
+  "prep_time": 10,
+  "cook_time": 15,
+  "tags": [
+    "dinner",
+    "main course",
+    "side dish",
+    "asian",
+    "garlic noodles",
+    "noodles",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "oyster sauce*"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "brown sugar**"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tsp",
+      "item": "soy sauce"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "toasted sesame oil"
+    },
+    {
+      "qty": 8.0,
+      "unit": "oz",
+      "item": "angel hair pasta***"
+    },
+    {
+      "qty": 4.0,
+      "unit": "clove",
+      "item": "garlic"
+    },
+    {
+      "qty": 0.5,
+      "unit": "bunch",
+      "item": "green onions"
+    },
+    {
+      "qty": 4.0,
+      "unit": "tbsp",
+      "item": "vegan butter (Earth Balance)",
+      "original": "butter"
+    }
+  ],
+  "steps": [
+    "Add the oyster sauce, brown sugar, soy sauce and sesame oil to a bowl and stir until combined.",
+    "Bring a large pot of water to a boil and cook the noodles according to the package directions (boil for 7-10 minutes). Drain the cooked noodles in a colander, then set aside.",
+    "While the pasta cooks, mince the garlic and slice the green onions. Melt the butter in a large skillet over medium-low heat. Once the butter is melted and bubbly, add the garlic and onions (save a few for garnish) and saut\u00e9 until they are soft and fragrant (1-2 minutes).",
+    "Remove the skillet from the heat. Add the drained pasta and oyster sauce mixture to the skillet, and stir well to coat the pasta. If your pasta is stiff or sticky making it hard to stir, sprinkle a small amount of hot water over the pasta to loosen it up. Garnish the pasta with any reserved sliced green onions, then serve."
+  ],
+  "notes": "\ud83e\udd5b DAIRY-FREE SWAPS: butter \u2192 vegan butter (Earth Balance). Garlic Noodles are sweet, rich, and savory with a strong garlic punch. They make the perfect side dish to any Asian inspired meal.",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2015/07/Garlic-Noodles-Overhead.jpg",
+  "created": "2026-02-06T22:24:47.212631",
+  "source_url": "https://www.budgetbytes.com/garlic-noodles/"
+}

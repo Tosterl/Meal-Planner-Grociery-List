@@ -1,0 +1,78 @@
+{
+  "name": "Kimchi Fried Rice",
+  "servings": 4,
+  "prep_time": 10,
+  "cook_time": 20,
+  "tags": [
+    "dinner",
+    "lunch",
+    "side dish",
+    "asian",
+    "fried rice",
+    "kimchi",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "lunch",
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 6.0,
+      "unit": "",
+      "item": "inch broccoli stem *"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "carrot"
+    },
+    {
+      "qty": 4.0,
+      "unit": "",
+      "item": "green onions"
+    },
+    {
+      "qty": 1.0,
+      "unit": "cup",
+      "item": "kimchi** plus 2-4 Tbsp kimchi juice"
+    },
+    {
+      "qty": 2.0,
+      "unit": "large",
+      "item": "eggs"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "light cooking oil"
+    },
+    {
+      "qty": 4.0,
+      "unit": "cup",
+      "item": "cooked, day-old rice"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "soy sauce"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "toasted sesame oil"
+    }
+  ],
+  "steps": [
+    "Use a vegetable peeler to peel the broccoli stem and carrot. Use a large-holed cheese grater to grate the broccoli stem and carrot. You should have about 1 cup of each after shredding.",
+    "Slice the green onions, separating the white ends from the green ends. Roughly chop the kimchi, making sure all the pieces are about bite sized.&nbsp;Place the eggs in a bowl and lightly whisk with a fork.",
+    "Heat a large skillet or wok over medium to medium-high heat. Once hot, add the oil and swirl to coat the surface. Add the white ends of the green onion and saut\u00e9 for about one minute, or just until slightly softened.",
+    "Add the shredded broccoli stem and carrots to the skillet and saut\u00e9 for about one minute more. Finally, add the chopped kimchi and 2-4 Tbsp kimchi juice (depending on how strong you want your kimchi flavor) and let it simmer until the juice reduces and the skillet is fairly dry again.",
+    "Add the day-old rice to the skillet and fold it together with the vegetables. Allow the rice to heat through. Push the rice off to the sides of the skillet and pour the eggs in the center. Gently scramble the eggs until they are set, then fold them into the rice.",
+    "Finally, turn the heat off and sprinkle the soy sauce and toasted sesame oil over the fried rice. Gently fold the rice until the soy sauce and sesame oil are incorporated. Taste the kimchi fried rice and adjust the saltiness to your liking by adding more soy sauce if needed. If you want more tanginess or heat, you can add more kimchi juice. Finally, top with the sliced green ends of the green onions just before serving."
+  ],
+  "notes": "This Kimchi Fried rice is tangy, spicy, and the perfect way to use up all the leftover ingredients and scraps in your kitchen.&nbsp;",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2017/12/Kimchi-Fried-Rice-dressed.jpg",
+  "created": "2026-02-06T22:25:24.653137",
+  "source_url": "https://www.budgetbytes.com/kimchi-fried-rice/"
+}
