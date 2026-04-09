@@ -997,6 +997,72 @@ textarea { resize: vertical; min-height: 60px; }
 }
 .pantry-quick-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-light); }
 
+/* ═══ HELP VIEW ═══ */
+.help-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
+.help-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.35rem 1.5rem;
+  transition: all 0.2s;
+}
+.help-card:hover { box-shadow: var(--shadow); border-color: var(--border-dark); }
+.help-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.help-card p { font-size: 0.85rem; color: var(--ink-light); line-height: 1.65; margin-bottom: 0.5rem; }
+.help-steps { list-style: none; counter-reset: helpstep; padding: 0; margin: 0.5rem 0 0; }
+.help-steps li {
+  counter-increment: helpstep;
+  position: relative;
+  padding: 0.3rem 0 0.3rem 2rem;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--ink-light);
+}
+.help-steps li::before {
+  content: counter(helpstep);
+  position: absolute;
+  left: 0;
+  top: 0.3rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  background: var(--accent-light);
+  color: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.help-kbd {
+  display: inline-block;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ink-light);
+}
+.help-section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+  letter-spacing: -0.02em;
+}
+.help-section-title:first-of-type { margin-top: 0.5rem; }
+
 /* ═══ TONIGHT VIEW ═══ */
 .tonight-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem; }
 .tonight-card {
@@ -1104,6 +1170,7 @@ textarea { resize: vertical; min-height: 60px; }
       <button data-view="grocery">Grocery List</button>
       <button data-view="pantry">Pantry</button>
       <button data-view="tonight">Tonight?</button>
+      <button data-view="help">Help</button>
     </nav>
   </div>
 </header>
@@ -1234,6 +1301,248 @@ textarea { resize: vertical; min-height: 60px; }
       <button class="btn btn-primary" onclick="runTonightSearch()">Find Recipes</button>
     </div>
     <div id="tonight-results" class="tonight-results" style="margin-top:1.25rem;"></div>
+  </div>
+
+  <!-- ═══════════════ HELP VIEW ═══════════════ -->
+  <div id="help-view" class="view">
+    <div class="view-header">
+      <div>
+        <h2>How to Use Meal Planner Pro</h2>
+        <div class="subtitle">Everything you need to know — from adding recipes to syncing your calendar</div>
+      </div>
+    </div>
+
+    <div class="help-section-title">Getting Started</div>
+    <div class="help-grid">
+
+      <div class="help-card">
+        <h3>📖 Adding Recipes</h3>
+        <p>Three ways to build your recipe library:</p>
+        <ol class="help-steps">
+          <li><strong>From a URL</strong> — Click <strong>"Import from URL"</strong> in the Recipes tab. Paste a link from any recipe website (AllRecipes, Budget Bytes, Food Network, etc.) and it auto-scrapes the ingredients and steps.</li>
+          <li><strong>Manually</strong> — Click <strong>"+ Add Recipe"</strong> to enter a recipe by hand. Fill in name, servings, ingredients, and steps.</li>
+          <li><strong>Import JSON</strong> — Click <strong>"Import Recipes"</strong> to load recipe JSON files exported from the CLI tool or other sources.</li>
+        </ol>
+      </div>
+
+      <div class="help-card">
+        <h3>❤️ Favorites & Blocking</h3>
+        <p>Hover over any recipe card to see action buttons:</p>
+        <ol class="help-steps">
+          <li><strong>❤️ Favorite</strong> — Favorited recipes get a boost in Smart Fill, so they appear more often in your meal plans.</li>
+          <li><strong>🚫 Block</strong> — Blocked recipes will <em>never</em> show up in auto-fill. Use this for recipes you're tired of or didn't like. Click again (🔓) to unblock.</li>
+          <li><strong>✏️ Edit</strong> — Modify the recipe name, ingredients, steps, or tags.</li>
+          <li><strong>🗑️ Delete</strong> — Permanently remove a recipe.</li>
+        </ol>
+      </div>
+
+      <div class="help-card">
+        <h3>🏷️ Tags & Filtering</h3>
+        <p>Recipes have <strong>meal types</strong> (breakfast, lunch, dinner) and <strong>tags</strong> (quick, chicken, healthy, etc.).</p>
+        <p>Use the filter bar at the top of the Recipes tab to show only recipes matching a tag. Smart Fill uses meal types to put the right recipes in the right slots.</p>
+      </div>
+
+    </div>
+
+    <div class="help-section-title">Planning Your Week</div>
+    <div class="help-grid">
+
+      <div class="help-card">
+        <h3>🧠 Smart Fill Week</h3>
+        <p>The fastest way to plan. One click fills all 21 meal slots for the week.</p>
+        <ol class="help-steps">
+          <li>Go to <strong>Plan & Calendar</strong> tab</li>
+          <li>Click <strong>"Smart Fill Week"</strong></li>
+          <li>The algorithm picks recipes that share ingredients (fewer groceries), avoids recently-used recipes, and fills leftovers automatically when a recipe makes multiple servings.</li>
+        </ol>
+        <p>Favorites get a boost. Blocked recipes are excluded.</p>
+      </div>
+
+      <div class="help-card">
+        <h3>💰 Budget Fill Week</h3>
+        <p>Fill the week while staying under a dollar target.</p>
+        <ol class="help-steps">
+          <li>Click <strong>"Budget Fill"</strong> in the Plan tab</li>
+          <li>Enter your budget (e.g. $75)</li>
+          <li>It picks the cheapest recipes that fit, based on Kroger prices</li>
+        </ol>
+        <p>Great for tight weeks! Combine with the Pantry tracker to save even more.</p>
+      </div>
+
+      <div class="help-card">
+        <h3>🗳️ Family Voting</h3>
+        <p>Let the family pick next week's meals.</p>
+        <ol class="help-steps">
+          <li>Click <strong>"Family Vote"</strong> in the Plan tab</li>
+          <li>Share the link with family members (text, email, etc.)</li>
+          <li>Everyone swipes through recipes and votes 👍 or 👎</li>
+          <li>Results show which recipes are most popular</li>
+        </ol>
+        <p>Works on phones — no app install needed!</p>
+      </div>
+
+      <div class="help-card">
+        <h3>📅 Manual Planning</h3>
+        <p>Click any meal slot to manually pick a recipe. Switch between <strong>Weekly</strong> and <strong>Calendar</strong> views using the tabs. Use the arrow buttons to navigate between weeks/months.</p>
+        <p>Click <strong>"Clear Week"</strong> to start over. Individual slots can be cleared by hovering and clicking ✕.</p>
+      </div>
+
+    </div>
+
+    <div class="help-section-title">Shopping & Cooking</div>
+    <div class="help-grid">
+
+      <div class="help-card">
+        <h3>🛒 Grocery List</h3>
+        <p>Your grocery list auto-generates from the current week's meal plan.</p>
+        <ol class="help-steps">
+          <li>Go to the <strong>Grocery List</strong> tab</li>
+          <li>Items are consolidated and categorized by store section</li>
+          <li>Pick a store (Kroger, Whole Foods, Costco, or Cheapest Mix) to see prices</li>
+          <li>Use <strong>Scale</strong> to double (2x) or halve (0.5x) quantities</li>
+          <li>Check off items as you shop</li>
+        </ol>
+      </div>
+
+      <div class="help-card">
+        <h3>📱 Send to Phone</h3>
+        <p>Get the grocery list on your phone for shopping:</p>
+        <ol class="help-steps">
+          <li><strong>"Text"</strong> — Opens your Messages app with the full list ready to send</li>
+          <li><strong>"Email"</strong> — Opens your email client with a formatted list + meal plan</li>
+          <li><strong>"Copy"</strong> — Copies markdown to clipboard (paste into Notes, Reminders, etc.)</li>
+        </ol>
+      </div>
+
+      <div class="help-card">
+        <h3>🥫 Pantry Tracker</h3>
+        <p>Track what you already have so you only buy what you need.</p>
+        <ol class="help-steps">
+          <li>Go to the <strong>Pantry</strong> tab</li>
+          <li>Add items you have at home (use quick-add buttons for staples)</li>
+          <li>The <strong>Grocery List</strong> automatically subtracts pantry items — you'll see "In Pantry" for items fully covered and reduced quantities for partial matches</li>
+        </ol>
+      </div>
+
+      <div class="help-card">
+        <h3>🍳 What Can I Make Tonight?</h3>
+        <p>Don't know what to cook? Let the app figure it out.</p>
+        <ol class="help-steps">
+          <li>Go to the <strong>Tonight?</strong> tab</li>
+          <li>Type in what ingredients you have (comma-separated)</li>
+          <li>Click <strong>"Find Recipes"</strong></li>
+          <li>See recipes ranked by match % — green items = you have it, red = you'd need to get it</li>
+        </ol>
+      </div>
+
+    </div>
+
+    <div class="help-section-title">Pricing & Nutrition</div>
+    <div class="help-grid">
+
+      <div class="help-card">
+        <h3>💲 Store Pricing</h3>
+        <p>Prices are pre-loaded for Kroger, Whole Foods, and Costco. The Pricing tab lets you:</p>
+        <ol class="help-steps">
+          <li>Edit any price to match your local store</li>
+          <li>Import real Kroger prices from the CLI tool (<span class="help-kbd">python kroger_api.py update</span>)</li>
+          <li>See which store is cheapest per ingredient</li>
+          <li>Weekly cost comparison shows at the bottom of the Plan tab</li>
+        </ol>
+      </div>
+
+      <div class="help-card">
+        <h3>🥗 Nutrition Tracking</h3>
+        <p>Calorie and macro estimates are shown automatically:</p>
+        <ol class="help-steps">
+          <li><strong>Recipe cards</strong> show estimated calories</li>
+          <li><strong>Recipe detail</strong> (click a card) shows full breakdown: calories, protein, carbs, fat per recipe and per serving</li>
+          <li>Estimates are based on common ingredient data — accuracy improves with standard ingredients</li>
+        </ol>
+      </div>
+
+    </div>
+
+    <div class="help-section-title">Calendar Sync (Skylight, Google, Apple)</div>
+    <div class="help-grid">
+
+      <div class="help-card" style="grid-column: span 2;">
+        <h3>📅 Auto-Sync to Your Calendars</h3>
+        <p>Your meal plan is published to a live URL that calendars subscribe to. <strong>Set up once, updates automatically!</strong></p>
+        <ol class="help-steps">
+          <li><strong>Google Calendar:</strong> Go to calendar.google.com → Click <strong>+</strong> next to "Other calendars" → <strong>"From URL"</strong> → Paste: <span class="help-kbd">https://tosterl.github.io/Meal-Planner-Grociery-List/meal-plan.ics</span></li>
+          <li><strong>Skylight Calendar:</strong> Either sync via Google Calendar (Skylight auto-pulls from Google), or in Skylight app → Settings → Calendars → Add → paste the URL above</li>
+          <li><strong>Apple Calendar:</strong> File → New Calendar Subscription → paste the URL</li>
+          <li><strong>Outlook:</strong> Add calendar → From internet → paste the URL</li>
+        </ol>
+        <p style="margin-top:0.75rem;">To update the calendar, run <span class="help-kbd">python publish.py</span> from the terminal. A <strong>GitHub Action</strong> also runs every <strong>Sunday at 6 PM ET</strong> to auto-publish a fresh plan.</p>
+      </div>
+
+    </div>
+
+    <div class="help-section-title">CLI Commands (Terminal)</div>
+    <div class="help-grid">
+
+      <div class="help-card" style="grid-column: span 2;">
+        <h3>Terminal Commands</h3>
+        <p>The Python CLI provides additional power features:</p>
+        <div style="overflow-x:auto; margin-top:0.5rem;">
+          <table style="width:100%; font-size:0.84rem; border-collapse:collapse;">
+            <thead>
+              <tr style="border-bottom:2px solid var(--border);">
+                <th style="text-align:left;padding:0.4rem 0.75rem;color:var(--ink-muted);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;">Command</th>
+                <th style="text-align:left;padding:0.4rem 0.75rem;color:var(--ink-muted);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;">What it does</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python publish.py</span></td><td style="padding:0.45rem 0.75rem;">Generate plan + push calendar to Skylight/Google</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python publish.py --all --zip 45202</span></td><td style="padding:0.45rem 0.75rem;">Plan + calendar + build Kroger pickup cart</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python publish.py --kroger --zip 45202</span></td><td style="padding:0.45rem 0.75rem;">Just build Kroger cart from existing plan</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python planner.py plan</span></td><td style="padding:0.45rem 0.75rem;">Generate a smart meal plan</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python planner.py grocery</span></td><td style="padding:0.45rem 0.75rem;">Generate grocery list from latest plan</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python planner.py calendar</span></td><td style="padding:0.45rem 0.75rem;">Export meal plan as .ics calendar file</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python planner.py block "Recipe"</span></td><td style="padding:0.45rem 0.75rem;">Block a recipe from ever being planned</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python planner.py unblock "Recipe"</span></td><td style="padding:0.45rem 0.75rem;">Unblock a recipe</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python planner.py blocked</span></td><td style="padding:0.45rem 0.75rem;">See all blocked recipes</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python scraper.py "URL"</span></td><td style="padding:0.45rem 0.75rem;">Scrape a recipe from any website</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python kroger_api.py search "item"</span></td><td style="padding:0.45rem 0.75rem;">Search Kroger for product + price</td></tr>
+              <tr><td style="padding:0.45rem 0.75rem;"><span class="help-kbd">python kroger_api.py aisles --zip 45202</span></td><td style="padding:0.45rem 0.75rem;">Get aisle locations for your grocery list</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="help-section-title">Tips & Tricks</div>
+    <div class="help-grid">
+
+      <div class="help-card">
+        <h3>💡 Pro Tips</h3>
+        <ol class="help-steps">
+          <li><strong>Leftovers save time</strong> — Recipes with 4+ servings auto-fill later meals as leftovers. You cook less!</li>
+          <li><strong>Stock your pantry first</strong> — Add common staples (oil, rice, spices) to the Pantry tab. Your grocery list shrinks dramatically.</li>
+          <li><strong>Use "Cheapest Mix"</strong> — In the Grocery List, select "Cheapest Mix" as the store to see the lowest price across all stores for each item.</li>
+          <li><strong>Scale for crowds</strong> — Having guests? Set Scale to 2x in the Grocery List to double all quantities.</li>
+          <li><strong>Import recipe URLs</strong> — Way faster than typing. Works with 500+ recipe sites including AllRecipes, Budget Bytes, Food Network, and more.</li>
+        </ol>
+      </div>
+
+      <div class="help-card">
+        <h3>🔄 Typical Weekly Workflow</h3>
+        <ol class="help-steps">
+          <li>Optional: Share the <strong>Family Vote</strong> link over the weekend</li>
+          <li>Sunday: Click <strong>Smart Fill Week</strong> (or let the GitHub Action do it automatically)</li>
+          <li>Review the plan, swap out anything you don't feel like</li>
+          <li>Check the <strong>Grocery List</strong> — pantry items are already subtracted</li>
+          <li>Hit <strong>"Text"</strong> to send the list to your phone</li>
+          <li>Shop at Kroger (or use <span class="help-kbd">python publish.py --kroger --zip YOUR_ZIP</span> for pickup)</li>
+          <li>Cook and enjoy! Check the calendar on your Skylight for what's on today.</li>
+        </ol>
+      </div>
+
+    </div>
+
   </div>
 
   <!-- ═══════════════ GROCERY VIEW ═══════════════ -->
