@@ -4,172 +4,213 @@ PRODID:-//Meal Planner Pro//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 X-WR-CALNAME:Meal Plan
+X-WR-TIMEZONE:America/New_York
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:America/New_York
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+TZNAME:EST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
 BEGIN:VEVENT
-UID:mealplan-20260209-breakfast-1@mealplanner
-DTSTART:20260209T080000
-DTEND:20260209T090000
-SUMMARY:🍳 Breakfast: Savory Oatmeal
-DESCRIPTION:Recipe: Savory Oatmeal
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260209-lunch-2@mealplanner
-DTSTART:20260209T120000
-DTEND:20260209T130000
-SUMMARY:🥗 Lunch: Quick &amp; Easy Garlic Noodles
-DESCRIPTION:Recipe: Quick &amp; Easy Garlic Noodles
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260209-dinner-3@mealplanner
-DTSTART:20260209T183000
-DTEND:20260209T193000
-SUMMARY:🍽️ Dinner: Quick &amp; Easy Garlic Noodles (leftover)
-DESCRIPTION:Recipe: Quick &amp; Easy Garlic Noodles\n(Leftover - no cooking needed!)
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260210-breakfast-4@mealplanner
-DTSTART:20260210T080000
-DTEND:20260210T090000
-SUMMARY:🍳 Breakfast: Breakfast Burrito
-DESCRIPTION:Recipe: Breakfast Burrito
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260210-lunch-5@mealplanner
-DTSTART:20260210T120000
-DTEND:20260210T130000
-SUMMARY:🥗 Lunch: Quick &amp; Easy Garlic Noodles (leftover)
-DESCRIPTION:Recipe: Quick &amp; Easy Garlic Noodles\n(Leftover - no cooking needed!)
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260210-dinner-6@mealplanner
-DTSTART:20260210T183000
-DTEND:20260210T193000
-SUMMARY:🍽️ Dinner: Quick &amp; Easy Garlic Noodles (leftover)
-DESCRIPTION:Recipe: Quick &amp; Easy Garlic Noodles\n(Leftover - no cooking needed!)
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260211-breakfast-7@mealplanner
-DTSTART:20260211T080000
-DTEND:20260211T090000
-SUMMARY:🍳 Breakfast: Breakfast Burrito (leftover)
-DESCRIPTION:Recipe: Breakfast Burrito\n(Leftover - no cooking needed!)
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260211-lunch-8@mealplanner
-DTSTART:20260211T120000
-DTEND:20260211T130000
-SUMMARY:🥗 Lunch: Spicy Sriracha Noodles
-DESCRIPTION:Recipe: Spicy Sriracha Noodles
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260211-dinner-9@mealplanner
-DTSTART:20260211T183000
-DTEND:20260211T193000
-SUMMARY:🍽️ Dinner: Spicy Sriracha Noodles (leftover)
-DESCRIPTION:Recipe: Spicy Sriracha Noodles\n(Leftover - no cooking needed!)
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260212-breakfast-10@mealplanner
-DTSTART:20260212T080000
-DTEND:20260212T090000
+UID:mealplan-20260413-breakfast-1@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260413T080000
+DTEND;TZID=America/New_York:20260413T090000
 SUMMARY:🍳 Breakfast: Overnight Oats
 DESCRIPTION:Recipe: Overnight Oats
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260212-lunch-11@mealplanner
-DTSTART:20260212T120000
-DTEND:20260212T130000
-SUMMARY:🥗 Lunch: Honey Garlic Chicken
-DESCRIPTION:Recipe: Honey Garlic Chicken
+UID:mealplan-20260413-lunch-2@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260413T120000
+DTEND;TZID=America/New_York:20260413T130000
+SUMMARY:🥗 Lunch: Chicken Stir Fry
+DESCRIPTION:Recipe: Chicken Stir Fry
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260212-dinner-12@mealplanner
-DTSTART:20260212T183000
-DTEND:20260212T193000
-SUMMARY:🍽️ Dinner: Honey Garlic Chicken (leftover)
-DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)
+UID:mealplan-20260413-dinner-3@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260413T183000
+DTEND;TZID=America/New_York:20260413T193000
+SUMMARY:🍽️ Dinner: Chicken Stir Fry (leftover)
+DESCRIPTION:Recipe: Chicken Stir Fry\n(Leftover - no cooking needed!)
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260213-breakfast-13@mealplanner
-DTSTART:20260213T080000
-DTEND:20260213T090000
+UID:mealplan-20260414-breakfast-4@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260414T080000
+DTEND;TZID=America/New_York:20260414T090000
 SUMMARY:🍳 Breakfast: Overnight Oats (leftover)
 DESCRIPTION:Recipe: Overnight Oats\n(Leftover - no cooking needed!)
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260213-lunch-14@mealplanner
-DTSTART:20260213T120000
-DTEND:20260213T130000
-SUMMARY:🥗 Lunch: Honey Garlic Chicken (leftover)
-DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)
+UID:mealplan-20260414-lunch-5@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260414T120000
+DTEND;TZID=America/New_York:20260414T130000
+SUMMARY:🥗 Lunch: Chicken Stir Fry (leftover)
+DESCRIPTION:Recipe: Chicken Stir Fry\n(Leftover - no cooking needed!)
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260213-dinner-15@mealplanner
-DTSTART:20260213T183000
-DTEND:20260213T193000
-SUMMARY:🍽️ Dinner: Honey Garlic Chicken (leftover)
-DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)
+UID:mealplan-20260414-dinner-6@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260414T183000
+DTEND;TZID=America/New_York:20260414T193000
+SUMMARY:🍽️ Dinner: Chicken Stir Fry (leftover)
+DESCRIPTION:Recipe: Chicken Stir Fry\n(Leftover - no cooking needed!)
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260214-breakfast-16@mealplanner
-DTSTART:20260214T080000
-DTEND:20260214T090000
+UID:mealplan-20260415-breakfast-7@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260415T080000
+DTEND;TZID=America/New_York:20260415T090000
 SUMMARY:🍳 Breakfast: Savory Oatmeal
 DESCRIPTION:Recipe: Savory Oatmeal
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260214-lunch-17@mealplanner
-DTSTART:20260214T120000
-DTEND:20260214T130000
-SUMMARY:🥗 Lunch: Crockpot Beef Stew Recipe
-DESCRIPTION:Recipe: Crockpot Beef Stew Recipe
+UID:mealplan-20260415-lunch-8@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260415T120000
+DTEND;TZID=America/New_York:20260415T130000
+SUMMARY:🥗 Lunch: Ground Beef Tacos
+DESCRIPTION:Recipe: Ground Beef Tacos
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260214-dinner-18@mealplanner
-DTSTART:20260214T183000
-DTEND:20260214T193000
-SUMMARY:🍽️ Dinner: Crockpot Beef Stew Recipe (leftover)
-DESCRIPTION:Recipe: Crockpot Beef Stew Recipe\n(Leftover - no cooking needed!)
+UID:mealplan-20260415-dinner-9@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260415T183000
+DTEND;TZID=America/New_York:20260415T193000
+SUMMARY:🍽️ Dinner: Ground Beef Tacos (leftover)
+DESCRIPTION:Recipe: Ground Beef Tacos\n(Leftover - no cooking needed!)
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260215-breakfast-19@mealplanner
-DTSTART:20260215T080000
-DTEND:20260215T090000
+UID:mealplan-20260416-breakfast-10@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260416T080000
+DTEND;TZID=America/New_York:20260416T090000
 SUMMARY:🍳 Breakfast: Breakfast Burrito
 DESCRIPTION:Recipe: Breakfast Burrito
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260215-lunch-20@mealplanner
-DTSTART:20260215T120000
-DTEND:20260215T130000
-SUMMARY:🥗 Lunch: Breakfast Burrito (leftover)
+UID:mealplan-20260416-lunch-11@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260416T120000
+DTEND;TZID=America/New_York:20260416T130000
+SUMMARY:🥗 Lunch: Ground Beef Tacos (leftover)
+DESCRIPTION:Recipe: Ground Beef Tacos\n(Leftover - no cooking needed!)
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260416-dinner-12@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260416T183000
+DTEND;TZID=America/New_York:20260416T193000
+SUMMARY:🍽️ Dinner: Ground Beef Tacos (leftover)
+DESCRIPTION:Recipe: Ground Beef Tacos\n(Leftover - no cooking needed!)
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260417-breakfast-13@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260417T080000
+DTEND;TZID=America/New_York:20260417T090000
+SUMMARY:🍳 Breakfast: Breakfast Burrito (leftover)
 DESCRIPTION:Recipe: Breakfast Burrito\n(Leftover - no cooking needed!)
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260215-dinner-21@mealplanner
-DTSTART:20260215T183000
-DTEND:20260215T193000
-SUMMARY:🍽️ Dinner: Crockpot Beef Stew Recipe (leftover)
-DESCRIPTION:Recipe: Crockpot Beef Stew Recipe\n(Leftover - no cooking needed!)
+UID:mealplan-20260417-lunch-14@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260417T120000
+DTEND;TZID=America/New_York:20260417T130000
+SUMMARY:🥗 Lunch: Honey Garlic Chicken
+DESCRIPTION:Recipe: Honey Garlic Chicken
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260417-dinner-15@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260417T183000
+DTEND;TZID=America/New_York:20260417T193000
+SUMMARY:🍽️ Dinner: Honey Garlic Chicken (leftover)
+DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260418-breakfast-16@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260418T080000
+DTEND;TZID=America/New_York:20260418T090000
+SUMMARY:🍳 Breakfast: Savory Oatmeal
+DESCRIPTION:Recipe: Savory Oatmeal
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260418-lunch-17@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260418T120000
+DTEND;TZID=America/New_York:20260418T130000
+SUMMARY:🥗 Lunch: Honey Garlic Chicken (leftover)
+DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260418-dinner-18@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260418T183000
+DTEND;TZID=America/New_York:20260418T193000
+SUMMARY:🍽️ Dinner: Honey Garlic Chicken (leftover)
+DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260419-breakfast-19@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260419T080000
+DTEND;TZID=America/New_York:20260419T090000
+SUMMARY:🍳 Breakfast: Overnight Oats
+DESCRIPTION:Recipe: Overnight Oats
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260419-lunch-20@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260419T120000
+DTEND;TZID=America/New_York:20260419T130000
+SUMMARY:🥗 Lunch: Peanut Noodles with Chicken
+DESCRIPTION:Recipe: Peanut Noodles with Chicken
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260419-dinner-21@mealplanner
+DTSTAMP:20260408T205046Z
+DTSTART;TZID=America/New_York:20260419T183000
+DTEND;TZID=America/New_York:20260419T193000
+SUMMARY:🍽️ Dinner: Peanut Noodles with Chicken (leftover)
+DESCRIPTION:Recipe: Peanut Noodles with Chicken\n(Leftover - no cooking needed!)
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR
