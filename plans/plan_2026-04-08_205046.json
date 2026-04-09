@@ -1,0 +1,144 @@
+{
+  "created": "2026-04-08T20:50:46.275443",
+  "days": [
+    {
+      "day": "Monday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Chicken Stir Fry",
+          "servings": 4
+        },
+        "dinner": {
+          "name": "Chicken Stir Fry (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "lunch": {
+          "name": "Chicken Stir Fry (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Chicken Stir Fry (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Wednesday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Ground Beef Tacos",
+          "servings": 4
+        },
+        "dinner": {
+          "name": "Ground Beef Tacos (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Thursday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Ground Beef Tacos (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Ground Beef Tacos (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Friday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "lunch": {
+          "name": "Honey Garlic Chicken",
+          "servings": 4
+        },
+        "dinner": {
+          "name": "Honey Garlic Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Saturday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Honey Garlic Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Honey Garlic Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Sunday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Peanut Noodles with Chicken",
+          "servings": 4
+        },
+        "dinner": {
+          "name": "Peanut Noodles with Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    }
+  ],
+  "strategy": "smart",
+  "stats": {
+    "unique_ingredients": 59,
+    "unique_recipes": 9,
+    "leftover_meals": 12,
+    "total_meals": 21,
+    "avg_ingredients_per_recipe": 9.4
+  }
+}

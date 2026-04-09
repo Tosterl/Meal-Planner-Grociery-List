@@ -8,7 +8,7 @@ import sys
 import io
 
 # Fix Windows console encoding for emoji support
-if sys.platform == "win32":
+if sys.platform == "win32" and getattr(sys.stdout, 'encoding', '') != 'utf-8':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
@@ -462,8 +462,9 @@ def generate_grocery_list(plan: dict = None, scale: float = 1.0) -> dict:
     return sorted_grocery
 
 
-def export_calendar_ics(plan: dict, filepath: Path):
-    """Export meal plan to ICS format for Google Calendar, Outlook, etc."""
+def export_calendar_ics(plan: dict, filepath: Path, timezone: str = "America/New_York"):
+    """Export meal plan to ICS format for Google Calendar, Outlook, Skylight, etc.
+    Supports both one-time import and URL subscription (auto-refresh)."""
     lines = [
         "BEGIN:VCALENDAR",
         "VERSION:2.0",
@@ -471,6 +472,28 @@ def export_calendar_ics(plan: dict, filepath: Path):
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
         "X-WR-CALNAME:Meal Plan",
+        f"X-WR-TIMEZONE:{timezone}",
+        # Tell subscribing calendars to refresh every 6 hours
+        "REFRESH-INTERVAL;VALUE=DURATION:PT6H",
+        "X-PUBLISHED-TTL:PT6H",
+        # Timezone definition (US Eastern)
+        "BEGIN:VTIMEZONE",
+        f"TZID:{timezone}",
+        "BEGIN:DAYLIGHT",
+        "TZOFFSETFROM:-0500",
+        "TZOFFSETTO:-0400",
+        "TZNAME:EDT",
+        "DTSTART:19700308T020000",
+        "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU",
+        "END:DAYLIGHT",
+        "BEGIN:STANDARD",
+        "TZOFFSETFROM:-0400",
+        "TZOFFSETTO:-0500",
+        "TZNAME:EST",
+        "DTSTART:19701101T020000",
+        "RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU",
+        "END:STANDARD",
+        "END:VTIMEZONE",
     ]
 
     # Meal times (approximate)
@@ -500,6 +523,9 @@ def export_calendar_ics(plan: dict, filepath: Path):
         days_until_monday = 7
     start_date = start_date + timedelta(days=days_until_monday)
 
+    # Timestamp for DTSTAMP (when this file was generated)
+    now_stamp = datetime.now().strftime("%Y%m%dT%H%M%SZ")
+
     uid_counter = 0
     for i, day in enumerate(plan.get("days", [])):
         current_date = start_date + timedelta(days=i)
@@ -524,8 +550,9 @@ def export_calendar_ics(plan: dict, filepath: Path):
             lines.extend([
                 "BEGIN:VEVENT",
                 f"UID:{uid}",
-                f"DTSTART:{date_str}T{start_time}00",
-                f"DTEND:{date_str}T{end_time}00",
+                f"DTSTAMP:{now_stamp}",
+                f"DTSTART;TZID={timezone}:{date_str}T{start_time}00",
+                f"DTEND;TZID={timezone}:{date_str}T{end_time}00",
                 f"SUMMARY:{summary}",
                 f"DESCRIPTION:{description}",
                 "STATUS:CONFIRMED",
