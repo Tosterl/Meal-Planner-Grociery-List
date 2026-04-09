@@ -3472,8 +3472,11 @@ function renderPantry() {
               ${aisle} ${stock}
             </div>
           </div>
-          <div style="text-align:right;white-space:nowrap;">
-            <div class="pantry-item-qty">${item.qty || 1}× ${price}${promoStr}</div>
+          <div style="display:flex;align-items:center;gap:0.3rem;white-space:nowrap;">
+            <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();updateKrogerQty(${i},-1)" style="font-size:0.9rem;padding:0.15rem 0.4rem;">−</button>
+            <span class="pantry-item-qty" style="min-width:28px;text-align:center;">${item.qty || 1}×</span>
+            <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();updateKrogerQty(${i},1)" style="font-size:0.9rem;padding:0.15rem 0.4rem;">+</button>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--green);margin-left:0.25rem;">${price}${promoStr}</span>
           </div>
           <button class="btn btn-danger btn-xs" onclick="removeKrogerPantryItem(${i})">✕</button>
         </div>`;
@@ -3487,10 +3490,15 @@ function renderPantry() {
       }
       html += keys.map(item => {
         const p = pantry[item];
+        const esc = item.replace(/'/g,"\\'");
         return `<div class="pantry-item">
           <div class="pantry-item-name">${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</div>
-          <div class="pantry-item-qty">${formatQty(p.qty)} ${p.unit}</div>
-          <button class="btn btn-danger btn-xs" onclick="removePantryItem('${item.replace(/'/g,"\\'")}')">✕</button>
+          <div style="display:flex;align-items:center;gap:0.3rem;">
+            <button class="btn btn-ghost btn-xs" onclick="updateManualQty('${esc}',-1)" style="font-size:0.9rem;padding:0.15rem 0.4rem;">−</button>
+            <span class="pantry-item-qty" style="min-width:35px;text-align:center;">${formatQty(p.qty)} ${p.unit}</span>
+            <button class="btn btn-ghost btn-xs" onclick="updateManualQty('${esc}',1)" style="font-size:0.9rem;padding:0.15rem 0.4rem;">+</button>
+          </div>
+          <button class="btn btn-danger btn-xs" onclick="removePantryItem('${esc}')">✕</button>
         </div>`;
       }).join('');
     }
@@ -3601,6 +3609,22 @@ function removeKrogerPantryItem(index) {
     renderPantry();
     showToast(`Removed: ${name}`);
   }
+}
+
+function updateKrogerQty(index, delta) {
+  const items = getKrogerPantry();
+  if (index < 0 || index >= items.length) return;
+  items[index].qty = Math.max(1, (items[index].qty || 1) + delta);
+  setKrogerPantry(items);
+  renderPantry();
+}
+
+function updateManualQty(item, delta) {
+  const p = getPantry();
+  if (!p[item]) return;
+  p[item].qty = Math.max(0.5, (p[item].qty || 1) + delta);
+  setPantry(p);
+  renderPantry();
 }
 
 // ═══════════════════════════════════════════════════
