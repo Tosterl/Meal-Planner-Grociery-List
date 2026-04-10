@@ -1,0 +1,129 @@
+name: Validate JSON Files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'recipes/**'
+      - 'plans/**'
+      - 'pantry.json'
+  pull_request:
+    paths:
+      - 'recipes/**'
+      - 'plans/**'
+      - 'pantry.json'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate recipe JSON files
+        run: |
+          python << 'EOF'
+          import json
+          import sys
+          from pathlib import Path
+
+          errors = []
+          warnings = []
+
+          # Validate recipes
+          recipes_dir = Path('recipes')
+          if recipes_dir.exists():
+              recipe_files = list(recipes_dir.glob('*.json'))
+              print(f"Validating {len(recipe_files)} recipe file(s)...")
+
+              for f in recipe_files:
+                  try:
+                      with open(f, encoding='utf-8') as fp:
+                          data = json.load(fp)
+
+                      # Required fields
+                      if not data.get('name'):
+                          errors.append(f"{f.name}: missing 'name'")
+                      if not isinstance(data.get('servings', 0), (int, float)):
+                          warnings.append(f"{f.name}: 'servings' should be a number")
+
+                      # Ingredients structure
+                      ings = data.get('ingredients', [])
+                      if not isinstance(ings, list):
+                          errors.append(f"{f.name}: 'ingredients' should be a list")
+                      else:
+                          for i, ing in enumerate(ings):
+                              if not isinstance(ing, dict):
+                                  errors.append(f"{f.name}: ingredient {i} should be an object")
+                              elif not ing.get('item'):
+                                  warnings.append(f"{f.name}: ingredient {i} missing 'item'")
+
+                      # Steps should be a list of strings
+                      steps = data.get('steps', [])
+                      if not isinstance(steps, list):
+                          errors.append(f"{f.name}: 'steps' should be a list")
+
+                  except json.JSONDecodeError as e:
+                      errors.append(f"{f.name}: invalid JSON - {e}")
+                  except Exception as e:
+                      errors.append(f"{f.name}: {e}")
+
+          # Validate plans
+          plans_dir = Path('plans')
+          if plans_dir.exists():
+              plan_files = list(plans_dir.glob('plan_*.json'))
+              print(f"Validating {len(plan_files)} plan file(s)...")
+
+              for f in plan_files:
+                  try:
+                      with open(f, encoding='utf-8') as fp:
+                          data = json.load(fp)
+
+                      if 'days' not in data:
+                          errors.append(f"{f.name}: missing 'days'")
+                      elif not isinstance(data['days'], list):
+                          errors.append(f"{f.name}: 'days' should be a list")
+                      else:
+                          for i, day in enumerate(data['days']):
+                              if not isinstance(day, dict):
+                                  errors.append(f"{f.name}: day {i} should be an object")
+                              elif 'meals' not in day:
+                                  errors.append(f"{f.name}: day {i} missing 'meals'")
+
+                  except json.JSONDecodeError as e:
+                      errors.append(f"{f.name}: invalid JSON - {e}")
+                  except Exception as e:
+                      errors.append(f"{f.name}: {e}")
+
+          # Validate pantry
+          pantry_file = Path('pantry.json')
+          if pantry_file.exists():
+              try:
+                  with open(pantry_file, encoding='utf-8') as fp:
+                      data = json.load(fp)
+                  if not isinstance(data.get('items', []), list):
+                      errors.append("pantry.json: 'items' should be a list")
+              except json.JSONDecodeError as e:
+                  errors.append(f"pantry.json: invalid JSON - {e}")
+
+          # Report
+          if warnings:
+              print("\n⚠️  Warnings:")
+              for w in warnings:
+                  print(f"  - {w}")
+
+          if errors:
+              print("\n❌ Errors:")
+              for e in errors:
+                  print(f"  - {e}")
+              sys.exit(1)
+
+          print("\n✅ All JSON files valid!")
+          EOF

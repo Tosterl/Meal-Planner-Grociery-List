@@ -1,0 +1,65 @@
+name: Auto-Regenerate Calendar
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'plans/**'
+      - 'recipes/**'
+      - 'planner.py'
+  workflow_dispatch:
+
+# Don't run if the previous commit was already from this workflow
+concurrency:
+  group: regen-calendar
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    # Skip if last commit was an automated regen (avoids infinite loop)
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, 'chore: Auto-regen calendar')"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Regenerate meal-plan.ics from latest plan
+        run: |
+          python -c "
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, '.')
+          from planner import load_latest_plan, export_calendar_ics
+
+          plan = load_latest_plan()
+          if not plan:
+              print('No plans found, skipping')
+              sys.exit(0)
+
+          export_calendar_ics(plan, Path('meal-plan.ics'))
+          print('Calendar regenerated from latest plan')
+          "
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add meal-plan.ics
+          git diff --cached --quiet && echo "No calendar changes" && exit 0
+          git commit -m "chore: Auto-regen calendar from plan update"
+          git push origin main

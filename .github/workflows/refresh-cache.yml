@@ -1,0 +1,43 @@
+name: Daily Cache Refresh
+
+# Updates the calendar's DTSTAMP daily so subscribing calendars (Skylight,
+# Google, etc.) see a "fresh" file and pull updated data more reliably.
+
+on:
+  schedule:
+    - cron: '0 11 * * *'  # Daily at 11am UTC (~6am ET / ~3am PT)
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Bump DTSTAMP in meal-plan.ics
+        run: |
+          if [ ! -f meal-plan.ics ]; then
+            echo "No meal-plan.ics found, skipping"
+            exit 0
+          fi
+
+          # Generate fresh timestamp
+          NEW_STAMP=$(date -u +"%Y%m%dT%H%M%SZ")
+
+          # Replace all DTSTAMP lines with the new timestamp
+          sed -i "s/^DTSTAMP:.*/DTSTAMP:${NEW_STAMP}/" meal-plan.ics
+
+          echo "Updated DTSTAMP to ${NEW_STAMP}"
+
+      - name: Commit and push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add meal-plan.ics
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "chore: Daily cache refresh [skip ci]"
+          git push origin main
