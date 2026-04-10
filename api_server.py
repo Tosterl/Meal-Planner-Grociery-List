@@ -91,6 +91,8 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             self._handle_plan_get()
         elif path == "/api/recipes":
             self._handle_recipes_get()
+        elif path == "/api/userdata":
+            self._handle_userdata_get()
         elif path == "/api/store":
             self._handle_store(params)
         elif path == "/api/health":
@@ -111,6 +113,8 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             self._handle_store_set(body)
         elif path == "/api/publish":
             self._handle_publish(body)
+        elif path == "/api/userdata":
+            self._handle_userdata_save(body)
         else:
             self._error("Not found", 404)
 
@@ -282,6 +286,75 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
                 except (json.JSONDecodeError, IOError):
                     continue
         self._json_response({"recipes": recipes, "count": len(recipes)})
+
+    def _handle_userdata_get(self):
+        """Return saved user data (weight log, macro goals, ratings, favorites, etc.)."""
+        userdata_path = BASE_DIR / "userdata.json"
+        if userdata_path.exists():
+            try:
+                with open(userdata_path, encoding="utf-8") as f:
+                    data = json.load(f)
+                self._json_response(data)
+            except (json.JSONDecodeError, IOError) as e:
+                self._error(f"Failed to read userdata: {e}", 500)
+        else:
+            self._json_response({})
+
+    def _handle_userdata_save(self, body):
+        """Save user data to userdata.json and push to git."""
+        try:
+            data = json.loads(body) if body else {}
+        except json.JSONDecodeError:
+            self._error("Invalid JSON")
+            return
+
+        if not isinstance(data, dict):
+            self._error("Userdata must be an object")
+            return
+
+        # Add metadata
+        data["_updated"] = datetime.now().isoformat()
+
+        userdata_path = BASE_DIR / "userdata.json"
+
+        # Read existing to compare
+        existing = {}
+        if userdata_path.exists():
+            try:
+                with open(userdata_path, encoding="utf-8") as f:
+                    existing = json.load(f)
+            except (json.JSONDecodeError, IOError):
+                pass
+
+        # Compare ignoring metadata
+        existing_compare = {k: v for k, v in existing.items() if not k.startswith("_")}
+        new_compare = {k: v for k, v in data.items() if not k.startswith("_")}
+
+        if existing_compare == new_compare:
+            self._json_response({"ok": True, "message": "No changes", "changed": False})
+            return
+
+        # Write file
+        with open(userdata_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+
+        # Git add, commit, push (silent)
+        try:
+            subprocess.run(["git", "add", "userdata.json"],
+                           cwd=str(BASE_DIR), check=True, capture_output=True)
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+            subprocess.run(["git", "commit", "-m", f"chore: Update user data ({timestamp})"],
+                           cwd=str(BASE_DIR), check=True, capture_output=True)
+            result = subprocess.run(["git", "push"],
+                                    cwd=str(BASE_DIR), capture_output=True, text=True)
+            if result.returncode == 0:
+                self._json_response({"ok": True, "message": "Saved and pushed", "changed": True})
+            else:
+                self._json_response({"ok": True, "message": "Saved locally, push failed", "changed": True, "push_error": result.stderr})
+        except FileNotFoundError:
+            self._json_response({"ok": True, "message": "Saved locally, git not available", "changed": True})
+        except subprocess.CalledProcessError:
+            self._json_response({"ok": True, "message": "Saved locally", "changed": True})
 
     def _handle_publish(self, body):
         """Receive plan from UI, save as plan JSON, regenerate ICS, push to GitHub."""

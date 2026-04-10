@@ -2281,10 +2281,93 @@ const UNIT_TO_PRICE = {
 // ═══════════════════════════════════════════════════
 //  DATA LAYER (localStorage)
 // ═══════════════════════════════════════════════════
+// Keys that should be backed up to git via userdata.json
+const USERDATA_KEYS = [
+  'mp2_macro_goals',
+  'mp2_weight_log',
+  'mp2_tdee',
+  'mp2_ratings',
+  'mp2_favs',
+  'mp2_blocked',
+  'mp2_pantry',
+  'mp2_kroger_pantry',
+  'mp2_usage_history',
+  'mp2_theme'
+];
+
 const LS = {
   get: (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch { return d; } },
-  set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
+  set: (k, v) => {
+    localStorage.setItem(k, JSON.stringify(v));
+    if (USERDATA_KEYS.includes(k)) scheduleUserdataSave();
+  }
 };
+
+// ─── Userdata sync (backs up to userdata.json in git) ──
+let userdataSaveTimer = null;
+let suppressUserdataSave = false;
+
+function scheduleUserdataSave() {
+  if (suppressUserdataSave) return;
+  if (userdataSaveTimer) clearTimeout(userdataSaveTimer);
+  userdataSaveTimer = setTimeout(() => {
+    userdataSaveTimer = null;
+    saveUserdataToServer();
+  }, 5000); // 5s debounce
+}
+
+async function saveUserdataToServer() {
+  const data = {};
+  for (const key of USERDATA_KEYS) {
+    const val = localStorage.getItem(key);
+    if (val !== null) {
+      try { data[key] = JSON.parse(val); } catch { data[key] = val; }
+    }
+  }
+  try {
+    await fetch(`${API_BASE}/api/userdata`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  } catch {
+    // Server offline, that's fine
+  }
+}
+
+async function loadUserdataFromServer() {
+  try {
+    const res = await fetch(`${API_BASE}/api/userdata`, { signal: AbortSignal.timeout(3000) });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data || Object.keys(data).length === 0) return;
+
+    // Suppress auto-save while we load
+    suppressUserdataSave = true;
+    let loaded = 0;
+    for (const key of USERDATA_KEYS) {
+      if (data[key] !== undefined) {
+        const localVal = localStorage.getItem(key);
+        // If local is empty/null, use server value
+        if (!localVal || localVal === 'null' || localVal === '{}' || localVal === '[]') {
+          localStorage.setItem(key, JSON.stringify(data[key]));
+          loaded++;
+        }
+      }
+    }
+    suppressUserdataSave = false;
+
+    if (loaded > 0) {
+      console.log(`Synced ${loaded} userdata keys from server`);
+      // Re-render dependent views
+      if (document.getElementById('macros-view').classList.contains('active')) renderMacros();
+      if (document.getElementById('recipes-view').classList.contains('active')) renderRecipes();
+      if (document.getElementById('pantry-view').classList.contains('active')) renderPantry();
+    }
+  } catch {
+    // Server offline, work with local data
+  }
+}
 
 const getRecipes = () => LS.get('mp2_recipes', {});
 const setRecipes = v => LS.set('mp2_recipes', v);
@@ -5399,6 +5482,9 @@ async function syncFromServer() {
     // Check if server is running
     const healthRes = await fetch(`${API_BASE}/api/health`, { signal: AbortSignal.timeout(2000) });
     if (!healthRes.ok) return;
+
+    // Sync user data first (weight log, ratings, goals, etc.)
+    await loadUserdataFromServer();
 
     // Sync recipes from server (recipes/ folder on disk)
     try {
