@@ -1037,6 +1037,16 @@ textarea { resize: vertical; min-height: 60px; }
 .star-rating-display .star { font-size: 0.7rem; color: var(--border-dark); }
 .star-rating-display .star.filled { color: var(--gold); }
 
+/* ═══ PUBLISH STATUS ═══ */
+.publish-status { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.6rem; background: var(--bg-warm); border-radius: 50px; font-size: 0.72rem; }
+.publish-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.publish-dot.publish-saved { background: var(--green); }
+.publish-dot.publish-pending { background: var(--gold); animation: pulse 1.5s ease-in-out infinite; }
+.publish-dot.publish-publishing { background: var(--blue); animation: pulse 0.8s ease-in-out infinite; }
+.publish-dot.publish-error { background: var(--red); }
+.publish-dot.publish-offline { background: var(--ink-muted); }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
 /* ═══ THEME TOGGLE ═══ */
 .theme-toggle { background: none; border: 1px solid rgba(250,248,244,0.2); color: #faf8f4; cursor: pointer; padding: 0.35rem 0.7rem; border-radius: 50px; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.35rem; }
 .theme-toggle:hover { background: rgba(250,248,244,0.1); border-color: rgba(250,248,244,0.4); }
@@ -1382,7 +1392,11 @@ textarea { resize: vertical; min-height: 60px; }
         <button class="btn btn-secondary btn-sm" onclick="clearCurrentWeek()">Clear Week</button>
         <button class="btn btn-secondary btn-sm" onclick="openFamilyVote()" title="Let family vote on recipes">🗳️ Family Vote</button>
         <button class="btn btn-primary btn-sm" onclick="exportToCalendar()" title="Download .ics file">📅 Export .ics</button>
-        <button class="btn btn-primary btn-sm" id="publish-btn" onclick="publishToCalendar()" title="Push to Skylight / synced calendars" style="background:var(--green);">🚀 Publish to Skylight</button>
+        <button class="btn btn-primary btn-sm" id="publish-btn" onclick="publishToCalendar(false)" title="Push to Skylight / synced calendars" style="background:var(--green);">🚀 Publish Now</button>
+        <div class="publish-status" title="Auto-publishes 8s after any change">
+          <span class="publish-dot publish-saved" id="publish-status-dot"></span>
+          <span id="publish-status-label" style="font-size:0.72rem;color:var(--ink-muted);">Auto-save on</span>
+        </div>
       </div>
     </div>
 
@@ -1473,12 +1487,28 @@ textarea { resize: vertical; min-height: 60px; }
         <div class="subtitle" id="macros-subtitle">Track daily nutrition vs your goals</div>
       </div>
       <div class="btn-group">
-        <button class="btn btn-secondary btn-sm" onclick="openMacroGoals()">Set Goals</button>
+        <button class="btn btn-secondary btn-sm" onclick="openTDEECalculator()">📐 TDEE Calculator</button>
+        <button class="btn btn-secondary btn-sm" onclick="openMacroGoals()">⚙ Set Goals</button>
+        <button class="btn btn-secondary btn-sm" onclick="openWeightLog()">⚖ Log Weight</button>
       </div>
     </div>
-    <div class="macro-dashboard" id="macro-dashboard"></div>
+
+    <!-- Streak banner -->
+    <div id="streak-banner" style="display:none;margin-bottom:1rem;"></div>
+
+    <!-- Goals form (collapsible) -->
     <div id="macro-goals-panel" style="display:none;">
       <div class="macro-goals-form">
+        <label>Preset
+          <select id="goal-preset" onchange="applyMacroPreset(this.value)" style="padding:0.35rem 0.5rem;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:0.82rem;background:var(--bg-card);color:var(--ink);">
+            <option value="">Custom</option>
+            <option value="balanced">Balanced (40C/30P/30F)</option>
+            <option value="high_protein">High Protein (40P/30C/30F)</option>
+            <option value="low_carb">Low Carb (50F/30P/20C)</option>
+            <option value="keto">Keto (70F/25P/5C)</option>
+            <option value="lean_bulk">Lean Bulk (45C/30P/25F)</option>
+          </select>
+        </label>
         <label>Calories <input type="number" id="goal-cal" placeholder="2000"></label>
         <label>Protein (g) <input type="number" id="goal-protein" placeholder="150"></label>
         <label>Carbs (g) <input type="number" id="goal-carb" placeholder="250"></label>
@@ -1491,10 +1521,88 @@ textarea { resize: vertical; min-height: 60px; }
         <button class="btn btn-primary btn-sm" onclick="saveMacroGoals()">Save Goals</button>
       </div>
     </div>
-    <div class="macro-day-breakdown" id="macro-day-breakdown">
+
+    <!-- TDEE Calculator panel (collapsible) -->
+    <div id="tdee-panel" style="display:none;margin-bottom:1rem;padding:1rem;background:var(--bg-warm);border-radius:var(--radius);">
+      <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:0.75rem;">TDEE Calculator</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem;">
+        <label style="font-size:0.75rem;font-weight:600;display:flex;flex-direction:column;gap:0.25rem;">
+          Sex
+          <select id="tdee-sex" style="padding:0.4rem;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--bg-card);color:var(--ink);">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </label>
+        <label style="font-size:0.75rem;font-weight:600;display:flex;flex-direction:column;gap:0.25rem;">
+          Age (years)
+          <input type="number" id="tdee-age" placeholder="30" style="padding:0.4rem;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--bg-card);color:var(--ink);">
+        </label>
+        <label style="font-size:0.75rem;font-weight:600;display:flex;flex-direction:column;gap:0.25rem;">
+          Height (in)
+          <input type="number" id="tdee-height" placeholder="70" style="padding:0.4rem;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--bg-card);color:var(--ink);">
+        </label>
+        <label style="font-size:0.75rem;font-weight:600;display:flex;flex-direction:column;gap:0.25rem;">
+          Weight (lbs)
+          <input type="number" id="tdee-weight" placeholder="180" style="padding:0.4rem;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--bg-card);color:var(--ink);">
+        </label>
+        <label style="font-size:0.75rem;font-weight:600;display:flex;flex-direction:column;gap:0.25rem;">
+          Activity
+          <select id="tdee-activity" style="padding:0.4rem;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--bg-card);color:var(--ink);">
+            <option value="1.2">Sedentary (desk job)</option>
+            <option value="1.375">Light (1-3 days/wk)</option>
+            <option value="1.55" selected>Moderate (3-5 days/wk)</option>
+            <option value="1.725">Active (6-7 days/wk)</option>
+            <option value="1.9">Very Active (athlete)</option>
+          </select>
+        </label>
+        <label style="font-size:0.75rem;font-weight:600;display:flex;flex-direction:column;gap:0.25rem;">
+          Goal
+          <select id="tdee-goal" style="padding:0.4rem;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--bg-card);color:var(--ink);">
+            <option value="lose">Lose Weight (-500 cal)</option>
+            <option value="maintain" selected>Maintain</option>
+            <option value="gain">Gain Muscle (+300 cal)</option>
+          </select>
+        </label>
+      </div>
+      <div id="tdee-results" style="margin-top:0.75rem;padding:0.75rem;background:var(--bg-card);border-radius:var(--radius-sm);font-size:0.85rem;display:none;"></div>
+      <div style="display:flex;gap:0.5rem;margin-top:0.75rem;">
+        <button class="btn btn-primary btn-sm" onclick="calculateTDEE()">Calculate</button>
+        <button class="btn btn-secondary btn-sm" onclick="applyTDEEToGoals()" id="tdee-apply-btn" style="display:none;">Apply to Goals</button>
+      </div>
+    </div>
+
+    <!-- Weight log panel (collapsible) -->
+    <div id="weight-log-panel" style="display:none;margin-bottom:1rem;padding:1rem;background:var(--bg-warm);border-radius:var(--radius);">
+      <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:0.75rem;">Weight Log</h3>
+      <div style="display:flex;gap:0.5rem;align-items:end;flex-wrap:wrap;">
+        <label style="font-size:0.75rem;font-weight:600;display:flex;flex-direction:column;gap:0.25rem;">
+          Today's weight (lbs)
+          <input type="number" id="weight-input" step="0.1" placeholder="180.5" style="padding:0.4rem;border:1px solid var(--border);border-radius:var(--radius-xs);width:120px;background:var(--bg-card);color:var(--ink);">
+        </label>
+        <button class="btn btn-primary btn-sm" onclick="logWeight()">Log Weight</button>
+      </div>
+      <div id="weight-trend" style="margin-top:1rem;"></div>
+    </div>
+
+    <!-- Main macro rings -->
+    <div class="macro-dashboard" id="macro-dashboard"></div>
+
+    <!-- Weekly average summary -->
+    <div id="weekly-summary" style="margin-top:0.75rem;padding:0.85rem 1rem;background:var(--bg-warm);border-radius:var(--radius-sm);font-size:0.85rem;"></div>
+
+    <!-- Today's meals -->
+    <div class="macro-day-breakdown" id="macro-day-breakdown" style="margin-top:1.25rem;">
       <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:0.75rem;">Today's Meals</h3>
       <div id="macro-meals-list"></div>
     </div>
+
+    <!-- Recipes that fit -->
+    <div style="margin-top:1.5rem;">
+      <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:0.75rem;">🎯 Recipes That Fit Your Remaining Macros</h3>
+      <div id="recipes-that-fit" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem;"></div>
+    </div>
+
+    <!-- Weekly chart -->
     <div style="margin-top:1.5rem;">
       <h3 style="font-family:'Fraunces',serif;font-size:1rem;margin-bottom:0.75rem;">Weekly Overview</h3>
       <div id="macro-weekly-chart" style="display:grid;grid-template-columns:repeat(7,1fr);gap:0.5rem;"></div>
@@ -2181,7 +2289,39 @@ const LS = {
 const getRecipes = () => LS.get('mp2_recipes', {});
 const setRecipes = v => LS.set('mp2_recipes', v);
 const getPlan = () => LS.get('mp2_plan', {});
-const setPlan = v => LS.set('mp2_plan', v);
+const setPlan = v => { LS.set('mp2_plan', v); scheduleAutoPublish(); };
+
+// ─── Auto-publish ──────────────────────────────────────
+let autoPublishTimer = null;
+let autoPublishEnabled = true;
+let suppressAutoPublish = false; // Set when loading from server to avoid loops
+
+function scheduleAutoPublish() {
+  if (!autoPublishEnabled || suppressAutoPublish) return;
+  if (autoPublishTimer) clearTimeout(autoPublishTimer);
+  updatePublishStatus('pending');
+  autoPublishTimer = setTimeout(() => {
+    autoPublishTimer = null;
+    if (typeof publishToCalendar === 'function') {
+      publishToCalendar(true); // silent mode
+    }
+  }, 8000); // Wait 8s after last change
+}
+
+function updatePublishStatus(state) {
+  const dot = document.getElementById('publish-status-dot');
+  const label = document.getElementById('publish-status-label');
+  if (!dot || !label) return;
+  dot.className = 'publish-dot publish-' + state;
+  const labels = {
+    saved: '✓ Saved to Skylight',
+    pending: '⏳ Will auto-save in 8s',
+    publishing: '⟳ Saving...',
+    error: '⚠ Save failed',
+    offline: '⚪ Offline'
+  };
+  label.textContent = labels[state] || '';
+}
 const getFavs = () => LS.get('mp2_favs', []);
 const setFavs = v => LS.set('mp2_favs', v);
 const getPrices = () => LS.get('mp2_prices', DEFAULT_PRICES);
@@ -3662,17 +3802,20 @@ function exportToCalendar() {
   showToast('Calendar exported! Import into Google/Outlook/Apple Calendar');
 }
 
-async function publishToCalendar() {
+async function publishToCalendar(silent = false) {
   const plan = getPlan();
-  if (Object.keys(plan).length === 0) {
-    showToast('No meals planned! Fill the week first.', 'warning');
+  if (Object.keys(plan).filter(k => plan[k]).length === 0) {
+    if (!silent) showToast('No meals planned! Fill the week first.', 'warning');
     return;
   }
 
   const btn = document.getElementById('publish-btn');
-  const originalText = btn.innerHTML;
-  btn.innerHTML = '<span class="spinner"></span> Publishing...';
-  btn.classList.add('btn-loading');
+  const originalText = btn ? btn.innerHTML : '';
+  if (btn && !silent) {
+    btn.innerHTML = '<span class="spinner"></span> Publishing...';
+    btn.classList.add('btn-loading');
+  }
+  updatePublishStatus('publishing');
 
   try {
     const res = await fetch(`${API_BASE}/api/publish`, {
@@ -3683,15 +3826,20 @@ async function publishToCalendar() {
     const data = await res.json();
 
     if (data.ok) {
-      showToast(data.message || 'Published! Skylight will update soon.', 'success');
+      if (!silent) showToast(data.message || 'Published! Skylight will update soon.', 'success');
+      updatePublishStatus('saved');
     } else {
-      showToast(data.error || 'Publish failed', 'error');
+      if (!silent) showToast(data.error || 'Publish failed', 'error');
+      updatePublishStatus('error');
     }
   } catch (err) {
-    showToast('Could not connect to API server. Is api_server.py running?', 'error');
+    if (!silent) showToast('Could not connect to API server. Is api_server.py running?', 'error');
+    updatePublishStatus('offline');
   } finally {
-    btn.innerHTML = originalText;
-    btn.classList.remove('btn-loading');
+    if (btn && !silent) {
+      btn.innerHTML = originalText;
+      btn.classList.remove('btn-loading');
+    }
   }
 }
 
@@ -4788,6 +4936,12 @@ function renderMacros() {
     renderMacroRing(todayMacros.carb, goals.carb, 'var(--gold)', 'Carbs', 'g') +
     renderMacroRing(todayMacros.fat, goals.fat, 'var(--red)', 'Fat', 'g');
 
+  // Streak banner
+  renderStreakBanner();
+
+  // Weekly average summary
+  renderWeeklySummary();
+
   // Today's meal breakdown
   const mealsList = document.getElementById('macro-meals-list');
   if (todayMacros.meals.length) {
@@ -4805,6 +4959,9 @@ function renderMacros() {
   } else {
     mealsList.innerHTML = '<div style="color:var(--ink-muted);font-size:0.85rem;padding:0.5rem 0;">No meals planned for today. Add meals in the Planner tab.</div>';
   }
+
+  // Recipes that fit remaining macros
+  renderRecipesThatFit(todayMacros, goals);
 
   // Weekly chart
   const weekChart = document.getElementById('macro-weekly-chart');
@@ -4826,6 +4983,383 @@ function renderMacros() {
       <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;margin-top:0.25rem;color:var(--ink-light);">${dayMacros.cal}</div>
     </div>`;
   }
+
+  // Render weight trend if panel is open
+  if (document.getElementById('weight-log-panel').style.display !== 'none') {
+    renderWeightTrend();
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  TDEE CALCULATOR
+// ═══════════════════════════════════════════════════
+const getTDEEData = () => LS.get('mp2_tdee', null);
+const setTDEEData = v => LS.set('mp2_tdee', v);
+
+function openTDEECalculator() {
+  const panel = document.getElementById('tdee-panel');
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    // Pre-fill from saved data
+    const saved = getTDEEData();
+    if (saved) {
+      document.getElementById('tdee-sex').value = saved.sex || 'male';
+      document.getElementById('tdee-age').value = saved.age || '';
+      document.getElementById('tdee-height').value = saved.height || '';
+      document.getElementById('tdee-weight').value = saved.weight || '';
+      document.getElementById('tdee-activity').value = saved.activity || '1.55';
+      document.getElementById('tdee-goal').value = saved.goal || 'maintain';
+    }
+    // Pre-fill weight from latest log entry
+    const log = getWeightLog();
+    if (log.length && !document.getElementById('tdee-weight').value) {
+      document.getElementById('tdee-weight').value = log[log.length-1].weight;
+    }
+  }
+}
+
+function calculateTDEE() {
+  const sex = document.getElementById('tdee-sex').value;
+  const age = parseInt(document.getElementById('tdee-age').value);
+  const heightIn = parseFloat(document.getElementById('tdee-height').value);
+  const weightLb = parseFloat(document.getElementById('tdee-weight').value);
+  const activity = parseFloat(document.getElementById('tdee-activity').value);
+  const goal = document.getElementById('tdee-goal').value;
+
+  if (!age || !heightIn || !weightLb) {
+    showToast('Fill in age, height, and weight', 'warning');
+    return;
+  }
+
+  // Convert to metric
+  const heightCm = heightIn * 2.54;
+  const weightKg = weightLb * 0.453592;
+
+  // Mifflin-St Jeor BMR formula
+  let bmr;
+  if (sex === 'male') {
+    bmr = 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
+  } else {
+    bmr = 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+  }
+
+  const tdee = bmr * activity;
+  let targetCal = tdee;
+  if (goal === 'lose') targetCal = tdee - 500;
+  if (goal === 'gain') targetCal = tdee + 300;
+  targetCal = Math.round(targetCal);
+
+  // Recommended macro split: 30% protein, 40% carbs, 30% fat (slightly higher protein for lose/gain)
+  let proteinPct, carbPct, fatPct;
+  if (goal === 'lose') { proteinPct = 0.35; carbPct = 0.35; fatPct = 0.30; }
+  else if (goal === 'gain') { proteinPct = 0.30; carbPct = 0.45; fatPct = 0.25; }
+  else { proteinPct = 0.30; carbPct = 0.40; fatPct = 0.30; }
+
+  const protein = Math.round((targetCal * proteinPct) / 4); // 4 cal/g
+  const carb = Math.round((targetCal * carbPct) / 4);
+  const fat = Math.round((targetCal * fatPct) / 9); // 9 cal/g
+
+  // Save inputs
+  setTDEEData({ sex, age, height: heightIn, weight: weightLb, activity, goal });
+
+  // Stash for "Apply" button
+  window._tdeeResults = { cal: targetCal, protein, carb, fat, type: goal };
+
+  document.getElementById('tdee-results').style.display = 'block';
+  document.getElementById('tdee-results').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.75rem;text-align:center;">
+      <div><div style="font-size:0.68rem;color:var(--ink-muted);text-transform:uppercase;font-weight:700;">BMR</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;">${Math.round(bmr)}</div></div>
+      <div><div style="font-size:0.68rem;color:var(--ink-muted);text-transform:uppercase;font-weight:700;">TDEE</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;">${Math.round(tdee)}</div></div>
+      <div><div style="font-size:0.68rem;color:var(--ink-muted);text-transform:uppercase;font-weight:700;color:var(--accent);">Target Cal</div><div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--accent);">${targetCal}</div></div>
+      <div><div style="font-size:0.68rem;color:var(--blue);text-transform:uppercase;font-weight:700;">Protein</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;">${protein}g</div></div>
+      <div><div style="font-size:0.68rem;color:var(--gold);text-transform:uppercase;font-weight:700;">Carbs</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;">${carb}g</div></div>
+      <div><div style="font-size:0.68rem;color:var(--red);text-transform:uppercase;font-weight:700;">Fat</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;">${fat}g</div></div>
+    </div>
+  `;
+  document.getElementById('tdee-apply-btn').style.display = 'inline-flex';
+}
+
+function applyTDEEToGoals() {
+  if (!window._tdeeResults) return;
+  setMacroGoals(window._tdeeResults);
+  showToast('Goals updated from TDEE calculator!', 'success');
+  document.getElementById('tdee-panel').style.display = 'none';
+  renderMacros();
+}
+
+// ═══════════════════════════════════════════════════
+//  MACRO PRESETS
+// ═══════════════════════════════════════════════════
+function applyMacroPreset(preset) {
+  if (!preset) return;
+  const cal = parseInt(document.getElementById('goal-cal').value) || 2000;
+  let proteinPct, carbPct, fatPct;
+  switch (preset) {
+    case 'balanced':      proteinPct = 0.30; carbPct = 0.40; fatPct = 0.30; break;
+    case 'high_protein':  proteinPct = 0.40; carbPct = 0.30; fatPct = 0.30; break;
+    case 'low_carb':      proteinPct = 0.30; carbPct = 0.20; fatPct = 0.50; break;
+    case 'keto':          proteinPct = 0.25; carbPct = 0.05; fatPct = 0.70; break;
+    case 'lean_bulk':     proteinPct = 0.30; carbPct = 0.45; fatPct = 0.25; break;
+    default: return;
+  }
+  document.getElementById('goal-protein').value = Math.round((cal * proteinPct) / 4);
+  document.getElementById('goal-carb').value = Math.round((cal * carbPct) / 4);
+  document.getElementById('goal-fat').value = Math.round((cal * fatPct) / 9);
+}
+
+// ═══════════════════════════════════════════════════
+//  WEIGHT LOG
+// ═══════════════════════════════════════════════════
+const getWeightLog = () => LS.get('mp2_weight_log', []);
+const setWeightLog = v => LS.set('mp2_weight_log', v);
+
+function openWeightLog() {
+  const panel = document.getElementById('weight-log-panel');
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) renderWeightTrend();
+}
+
+function logWeight() {
+  const weight = parseFloat(document.getElementById('weight-input').value);
+  if (!weight || weight < 50 || weight > 800) {
+    showToast('Enter a valid weight', 'warning');
+    return;
+  }
+  const log = getWeightLog();
+  const today = formatDate(new Date());
+
+  // Replace today's entry if it exists
+  const existingIdx = log.findIndex(e => e.date === today);
+  if (existingIdx >= 0) {
+    log[existingIdx].weight = weight;
+  } else {
+    log.push({ date: today, weight });
+  }
+  log.sort((a, b) => a.date.localeCompare(b.date));
+  setWeightLog(log);
+  document.getElementById('weight-input').value = '';
+  showToast(`Logged: ${weight} lbs`, 'success');
+  renderWeightTrend();
+}
+
+function renderWeightTrend() {
+  const container = document.getElementById('weight-trend');
+  const log = getWeightLog();
+
+  if (!log.length) {
+    container.innerHTML = '<div style="color:var(--ink-muted);font-size:0.82rem;padding:0.5rem 0;">No weight logged yet. Log your first weight above!</div>';
+    return;
+  }
+
+  // Show last 30 entries
+  const recent = log.slice(-30);
+  const weights = recent.map(e => e.weight);
+  const minW = Math.min(...weights);
+  const maxW = Math.max(...weights);
+  const range = Math.max(maxW - minW, 1);
+  const padding = range * 0.1;
+
+  // Calculate trend
+  const first = recent[0].weight;
+  const last = recent[recent.length - 1].weight;
+  const change = last - first;
+  const changeStr = change > 0 ? `+${change.toFixed(1)}` : change.toFixed(1);
+  const changeColor = change > 0 ? 'var(--red)' : change < 0 ? 'var(--green)' : 'var(--ink-muted)';
+
+  // SVG line chart
+  const w = 600, h = 120, margin = 20;
+  const xStep = recent.length > 1 ? (w - margin*2) / (recent.length - 1) : 0;
+  const yScale = (val) => h - margin - ((val - minW + padding) / (range + padding*2)) * (h - margin*2);
+
+  const points = recent.map((e, i) => `${margin + i*xStep},${yScale(e.weight)}`).join(' ');
+  const areaPoints = `${margin},${h-margin} ${points} ${margin + (recent.length-1)*xStep},${h-margin}`;
+
+  container.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;">
+      <div>
+        <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;">${last} lbs</div>
+        <div style="font-size:0.78rem;color:var(--ink-muted);">Latest weight</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:${changeColor};">${changeStr} lbs</div>
+        <div style="font-size:0.72rem;color:var(--ink-muted);">${recent.length} entries</div>
+      </div>
+    </div>
+    <svg viewBox="0 0 ${w} ${h}" style="width:100%;height:120px;background:var(--bg-card);border-radius:var(--radius-sm);">
+      <polygon points="${areaPoints}" fill="var(--accent-light)" opacity="0.5"/>
+      <polyline points="${points}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      ${recent.map((e, i) => `<circle cx="${margin + i*xStep}" cy="${yScale(e.weight)}" r="3" fill="var(--accent)"><title>${e.date}: ${e.weight} lbs</title></circle>`).join('')}
+      <text x="${margin}" y="${h-2}" font-size="9" fill="var(--ink-muted)">${recent[0].date}</text>
+      <text x="${w-margin}" y="${h-2}" font-size="9" fill="var(--ink-muted)" text-anchor="end">${recent[recent.length-1].date}</text>
+    </svg>
+  `;
+}
+
+// ═══════════════════════════════════════════════════
+//  WEEKLY AVERAGES
+// ═══════════════════════════════════════════════════
+function renderWeeklySummary() {
+  const goals = getMacroGoals();
+  const ws = currentWeekStart;
+  let totalCal = 0, totalProtein = 0, totalCarb = 0, totalFat = 0, daysWithData = 0;
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(ws.getTime() + i * 86400000);
+    const dayMacros = getDayMacros(formatDate(d));
+    if (dayMacros.cal > 0) {
+      totalCal += dayMacros.cal;
+      totalProtein += dayMacros.protein;
+      totalCarb += dayMacros.carb;
+      totalFat += dayMacros.fat;
+      daysWithData++;
+    }
+  }
+
+  const container = document.getElementById('weekly-summary');
+  if (daysWithData === 0) {
+    container.innerHTML = '<div style="color:var(--ink-muted);">Plan some meals to see weekly averages.</div>';
+    return;
+  }
+
+  const avgCal = Math.round(totalCal / daysWithData);
+  const avgProtein = Math.round(totalProtein / daysWithData);
+  const avgCarb = Math.round(totalCarb / daysWithData);
+  const avgFat = Math.round(totalFat / daysWithData);
+  const calDiff = avgCal - goals.cal;
+  const calDiffStr = calDiff > 0 ? `+${calDiff}` : `${calDiff}`;
+  const calColor = Math.abs(calDiff) < 100 ? 'var(--green)' : calDiff > 0 ? 'var(--red)' : 'var(--blue)';
+
+  container.innerHTML = `
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+      <div>
+        <strong style="font-size:0.92rem;">Weekly Avg (${daysWithData} ${daysWithData === 1 ? 'day' : 'days'})</strong>
+      </div>
+      <div><span style="color:var(--accent);font-weight:600;">${avgCal} cal</span> <span style="color:${calColor};font-size:0.78rem;">(${calDiffStr} vs goal)</span></div>
+      <div><span style="color:var(--blue);font-weight:600;">${avgProtein}g</span> protein</div>
+      <div><span style="color:var(--gold);font-weight:600;">${avgCarb}g</span> carbs</div>
+      <div><span style="color:var(--red);font-weight:600;">${avgFat}g</span> fat</div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════
+//  RECIPES THAT FIT REMAINING MACROS
+// ═══════════════════════════════════════════════════
+function renderRecipesThatFit(todayMacros, goals) {
+  const container = document.getElementById('recipes-that-fit');
+  const remaining = {
+    cal: goals.cal - todayMacros.cal,
+    protein: goals.protein - todayMacros.protein,
+    carb: goals.carb - todayMacros.carb,
+    fat: goals.fat - todayMacros.fat
+  };
+
+  if (remaining.cal <= 100) {
+    container.innerHTML = '<div style="color:var(--ink-muted);font-size:0.85rem;grid-column:1/-1;">You\'ve hit your calorie goal for today! 🎯</div>';
+    return;
+  }
+
+  const recipes = getRecipes();
+  const scored = [];
+
+  for (const [slug, r] of Object.entries(recipes)) {
+    const nutri = getRecipeNutrition(r);
+    if (nutri.cal === 0 || nutri.matched === 0) continue;
+    const srv = r.servings || 1;
+    const perServing = {
+      cal: nutri.cal / srv,
+      protein: nutri.protein / srv,
+      carb: nutri.carb / srv,
+      fat: nutri.fat / srv
+    };
+
+    // Score = how well it fits remaining macros
+    // Penalize if it goes way over remaining cal
+    if (perServing.cal > remaining.cal * 1.2) continue;
+
+    let score = 0;
+    // Bonus for fitting cal closely without going over
+    score += (perServing.cal / remaining.cal) * 50;
+    // Bonus for protein content if protein is needed
+    if (remaining.protein > 0) {
+      score += Math.min((perServing.protein / remaining.protein) * 30, 30);
+    }
+    // Penalty for going over any macro
+    if (perServing.cal > remaining.cal) score -= 30;
+
+    scored.push({ slug, recipe: r, perServing, score });
+  }
+
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored.slice(0, 6);
+
+  if (!top.length) {
+    container.innerHTML = '<div style="color:var(--ink-muted);font-size:0.85rem;grid-column:1/-1;">No recipes match your remaining macros. Add more recipes with nutrition info.</div>';
+    return;
+  }
+
+  container.innerHTML = `<div style="grid-column:1/-1;font-size:0.78rem;color:var(--ink-muted);margin-bottom:0.25rem;">${remaining.cal} cal · ${Math.round(remaining.protein)}g protein remaining</div>` +
+    top.map(({ slug, recipe, perServing }) => {
+      const img = recipe.image_url ? `<img src="${recipe.image_url}" style="width:100%;height:80px;object-fit:cover;border-radius:var(--radius-sm) var(--radius-sm) 0 0;" onerror="this.style.display='none'">` : '';
+      return `<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;cursor:pointer;" onclick="showDetail('${slug}')">
+        ${img}
+        <div style="padding:0.6rem 0.75rem;">
+          <div style="font-family:'Fraunces',serif;font-size:0.88rem;font-weight:700;line-height:1.2;margin-bottom:0.35rem;">${recipe.name}</div>
+          <div style="display:flex;gap:0.5rem;font-size:0.72rem;font-family:'JetBrains Mono',monospace;flex-wrap:wrap;">
+            <span style="color:var(--accent);">${Math.round(perServing.cal)}c</span>
+            <span style="color:var(--blue);">${Math.round(perServing.protein)}p</span>
+            <span style="color:var(--gold);">${Math.round(perServing.carb)}cb</span>
+            <span style="color:var(--red);">${Math.round(perServing.fat)}f</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+//  STREAK TRACKING
+// ═══════════════════════════════════════════════════
+function calculateStreak() {
+  const goals = getMacroGoals();
+  let streak = 0;
+  // Check backwards from yesterday (can't count today since day isn't done)
+  for (let i = 1; i <= 60; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const macros = getDayMacros(formatDate(d));
+    if (macros.cal === 0) break; // No data, streak ends
+    // "Hit goal" = within 200 cal of target AND at least 80% of protein
+    const calOk = Math.abs(macros.cal - goals.cal) <= 200;
+    const proteinOk = macros.protein >= goals.protein * 0.8;
+    if (calOk && proteinOk) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+function renderStreakBanner() {
+  const streak = calculateStreak();
+  const banner = document.getElementById('streak-banner');
+  if (streak === 0) {
+    banner.style.display = 'none';
+    return;
+  }
+  banner.style.display = 'block';
+  const emoji = streak >= 30 ? '🏆' : streak >= 14 ? '🔥🔥' : streak >= 7 ? '🔥' : '⭐';
+  banner.innerHTML = `
+    <div style="background:linear-gradient(135deg,var(--gold-light),var(--accent-light));border:1px solid var(--gold);border-radius:var(--radius);padding:0.85rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+      <span style="font-size:1.75rem;">${emoji}</span>
+      <div>
+        <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;">${streak}-day streak!</div>
+        <div style="font-size:0.78rem;color:var(--ink-light);">Hit your calorie and protein goals ${streak} ${streak === 1 ? 'day' : 'days'} in a row. Keep it up!</div>
+      </div>
+    </div>
+  `;
 }
 
 // ═══════════════════════════════════════════════════
@@ -4900,10 +5434,13 @@ async function syncFromServer() {
         const serverKeys = Object.keys(serverPlan).filter(k => serverPlan[k]);
 
         if (localKeys.length === 0 && serverKeys.length > 0) {
-          // Local is empty, load from server
+          // Local is empty, load from server (don't trigger auto-publish loop)
+          suppressAutoPublish = true;
           setPlan(serverPlan);
+          suppressAutoPublish = false;
           renderWeeklyPlan();
           renderCalendar();
+          updatePublishStatus('saved');
           showToast(`Loaded meal plan from server (${planData.source})`, 'success');
         } else if (localKeys.length > 0 && serverKeys.length > 0) {
           // Both have data — check if they differ
@@ -4967,11 +5504,14 @@ function resolveSyncConflict(choice) {
   const { localPlan, serverPlan } = window._syncConflictData;
 
   if (choice === 'server') {
+    suppressAutoPublish = true;
     setPlan(serverPlan);
+    suppressAutoPublish = false;
+    updatePublishStatus('saved');
     showToast('Loaded plan from server', 'success');
   } else if (choice === 'local') {
-    // Keep local — no change needed
-    showToast('Keeping local plan', 'success');
+    // Keep local — trigger publish so server matches
+    showToast('Keeping local plan — publishing to server', 'success');
   } else if (choice === 'merge') {
     // Merge: local wins where it has data, server fills gaps
     const merged = { ...localPlan };
