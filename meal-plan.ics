@@ -25,19 +25,19 @@ RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:mealplan-20260413-breakfast-1@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260413T080000
-DTEND;TZID=America/New_York:20260413T090000
+UID:mealplan-20260420-breakfast-1@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260420T080000
+DTEND;TZID=America/New_York:20260420T090000
 SUMMARY:🍳 Breakfast: Overnight Oats
 DESCRIPTION:Recipe: Overnight Oats\nServings: 2\nPrep: 5 min | Total: 5 min\n\n--- Ingredients ---\n• 1 cup rolled oats\n• 1 cup milk\n• 0.5 cup greek yogurt\n• 2 tbsp honey\n• 0.5 cup blueberries\n• 2 tbsp chia seeds\n\n--- Steps ---\n1. Combine oats, milk, yogurt, honey, and chia seeds in a jar or container.\n2. Stir well, cover, and refrigerate overnight (or at least 4 hours).\n3. Top with blueberries before serving. Eat cold or microwave 1-2 min.\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260413-lunch-2@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260413T120000
-DTEND;TZID=America/New_York:20260413T130000
+UID:mealplan-20260420-lunch-2@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260420T120000
+DTEND;TZID=America/New_York:20260420T130000
 SUMMARY:🥗 Lunch: Honey Garlic Chicken
 DESCRIPTION:Recipe: Honey Garlic Chicken\nServings: 4\nPrep: 10 min | Cook: 18 min | Total: 28 min\n\n--- Ingredients ---\n• 0.333 cup honey\n• 2.0 tbsp soy sauce\n• 1.0 tbsp rice vinegar\n• 1.0 tsp sriracha\n• 2.0 tsp toasted sesame oil\n• 1.0 tbsp cornstarch\n• 2.0 boneless, skinless chicken breasts\n• 1.0 tsp salt\n• 0.5 tsp black pepper\n• 0.5 tsp garlic powder\n• 2.0 tbsp all-purpose flour\n• 3.0 tbsp olive oil\n• 2.0 tbsp vegan butter (Earth Balance)\n• 4.0 clove of garlic, minced\n• 2.0 green onions, sliced\n\n--- Steps ---\n1. Start by making the sauce. Combine the honey, soy sauce, rice vinegar, sriracha, toasted sesame oil, and cornstarch together in a small bowl. Set the sauce aside.\n2. Cut the chicken breasts into small 1/2 inch sized pieces. Season with salt, black pepper and garlic powder. Then toss the chicken pieces in the flour until each piece is evenly coated.\n3. Heat a large skillet over medium-high heat and add 2 Tbsp of oil. Swirl to coat the surface of the skillet. Once the skillet is hot, add half of the chicken and cook until browned on all sides and cooked through. Remove the chicken from the skillet onto a separate plate and set aside. Add the remaining 1 Tbsp of oil and repeat with cooking the 2nd batch of chicken until cooked through. Set all of the chicken aside.\n4. In the same skillet add the butter and lower the heat down to medium-low heat. Add the minced garlic cloves and saute for 30-60 seconds until fragrant.\n5. Next give the sauce another brief stir, then pour the sauce into the skillet with the garlic. Stir the sauce and scrape up any browned bits that are stuck at the bottom of the skillet. Let the sauce simmer for about 2 minutes to allow the cornstarch to activate and thicken the sauce.\n6. Now add the cooked chicken back to the skillet and stir with the sauce until all of the pieces are evenly coated. Continue to cook for 1-2 more minutes to allow the chicken to heat through.\n7. Remove the skillet from the heat, top with sliced green onions, and enjoy!\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This saucy Honey Garlic Chicken is a quick &amp; easy recipe with lots of chicken and an irresistible sweet &amp; tangy honey garlic sauce.\n\nSource: https://www.budgetbytes.com/honey-garlic-chicken/
 IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg
@@ -45,10 +45,10 @@ URL:https://www.budgetbytes.com/honey-garlic-chicken/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260413-dinner-3@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260413T183000
-DTEND;TZID=America/New_York:20260413T193000
+UID:mealplan-20260420-dinner-3@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260420T183000
+DTEND;TZID=America/New_York:20260420T193000
 SUMMARY:🍽️ Dinner: Honey Garlic Chicken (leftover)
 DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 18 min | Total: 28 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This saucy Honey Garlic Chicken is a quick &amp; easy recipe with lots of chicken and an irresistible sweet &amp; tangy honey garlic sauce.\n\nSource: https://www.budgetbytes.com/honey-garlic-chicken/
 IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg
@@ -56,19 +56,19 @@ URL:https://www.budgetbytes.com/honey-garlic-chicken/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260414-breakfast-4@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260414T080000
-DTEND;TZID=America/New_York:20260414T090000
+UID:mealplan-20260421-breakfast-4@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260421T080000
+DTEND;TZID=America/New_York:20260421T090000
 SUMMARY:🍳 Breakfast: Overnight Oats (leftover)
 DESCRIPTION:Recipe: Overnight Oats\n(Leftover - no cooking needed!)\nServings: 2\nPrep: 5 min | Total: 5 min\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260414-lunch-5@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260414T120000
-DTEND;TZID=America/New_York:20260414T130000
+UID:mealplan-20260421-lunch-5@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260421T120000
+DTEND;TZID=America/New_York:20260421T130000
 SUMMARY:🥗 Lunch: Honey Garlic Chicken (leftover)
 DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 18 min | Total: 28 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This saucy Honey Garlic Chicken is a quick &amp; easy recipe with lots of chicken and an irresistible sweet &amp; tangy honey garlic sauce.\n\nSource: https://www.budgetbytes.com/honey-garlic-chicken/
 IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg
@@ -76,10 +76,10 @@ URL:https://www.budgetbytes.com/honey-garlic-chicken/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260414-dinner-6@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260414T183000
-DTEND;TZID=America/New_York:20260414T193000
+UID:mealplan-20260421-dinner-6@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260421T183000
+DTEND;TZID=America/New_York:20260421T193000
 SUMMARY:🍽️ Dinner: Honey Garlic Chicken (leftover)
 DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 18 min | Total: 28 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This saucy Honey Garlic Chicken is a quick &amp; easy recipe with lots of chicken and an irresistible sweet &amp; tangy honey garlic sauce.\n\nSource: https://www.budgetbytes.com/honey-garlic-chicken/
 IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg
@@ -87,10 +87,39 @@ URL:https://www.budgetbytes.com/honey-garlic-chicken/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260415-breakfast-7@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260415T080000
-DTEND;TZID=America/New_York:20260415T090000
+UID:mealplan-20260422-breakfast-7@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260422T080000
+DTEND;TZID=America/New_York:20260422T090000
+SUMMARY:🍳 Breakfast: Breakfast Burrito
+DESCRIPTION:Recipe: Breakfast Burrito\nServings: 2\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\n--- Ingredients ---\n• 4 eggs\n• 2 large flour tortillas\n• 4 slice bacon\n• 0.5 cup shredded cheddar cheese\n• 0.25 cup salsa\n• 1 tbsp butter\n• 1 avocado\n\n--- Steps ---\n1. Cook bacon in a skillet until crispy. Remove and chop.\n2. Whisk eggs, melt butter in the same skillet, and scramble eggs over medium heat.\n3. Warm tortillas in microwave for 15 seconds.\n4. Fill each tortilla with eggs, bacon, cheese, sliced avocado, and salsa.\n5. Fold and roll into burritos. Optional: toast seam-side down in a dry pan for 1 minute.\n\nTip: Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260422-lunch-8@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260422T120000
+DTEND;TZID=America/New_York:20260422T130000
+SUMMARY:🥗 Lunch: Breakfast Burrito (leftover)
+DESCRIPTION:Recipe: Breakfast Burrito\n(Leftover - no cooking needed!)\nServings: 2\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\nTip: Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260422-dinner-9@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260422T183000
+DTEND;TZID=America/New_York:20260422T193000
+SUMMARY:🍽️ Dinner: One Pot Creamy Cajun Chicken Pasta
+DESCRIPTION:Recipe: One Pot Creamy Cajun Chicken Pasta\nServings: 4\nPrep: 10 min | Cook: 20 min | Total: 30 min\n\n--- Ingredients ---\n• 2.0 tsp smoked paprika\n• 1.0 tsp oregano\n• 1.0 tsp thyme\n• 0.5 tsp garlic powder\n• 0.5 tsp onion powder\n• 0.25 tsp cayenne pepper\n• 0.25 tsp black pepper\n• 0.25 tsp salt\n• 1.0 tbsp olive oil\n• 1.0 tbsp vegan butter (Earth Balance)\n• 1.0 lb boneless, skinless chicken breast\n• 1.0 yellow onion, diced\n• 0.5 lb penne pasta\n• 15.0 oz fire roasted diced tomatoes\n• 2.0 cup chicken broth\n• 2.0 oz dairy-free cream cheese (Kite Hill)\n• 3.0 green onions, sliced\n\n--- Steps ---\n1. Combine the ingredients for the Cajun seasoning in a small bowl. Cut the chicken into 1/2 to 3/4-inch cubes. Place the cubed chicken in a bowl, pour the Cajun seasoning over top, and stir to coat the chicken in spices.\n2. Add the olive oil and butter to a large deep skillet. Heat the oil and butter over medium-high until the skillet is very hot and the butter is melted and foamy. Add the seasoned chicken to the skillet and cook for a couple minutes on each side, or just until the outside gets some color. The chicken does not need to be cooked through at this point.\n3. Add the diced yellow onion to the skillet and continue to sauté for about 2 minutes more, or just until the onion begins to soften. Allow the moisture from the onion to dissolve any browned bits from the bottom of the skillet.\n4. Next, add the pasta, fire roasted diced tomatoes (with the juices), and chicken broth to the skillet. Stir just until everything is evenly combined, then place a lid on top and allow the broth to come up to a boil.\n5. Once boiling, turn the heat down to medium-low and let the pasta simmer for about ten minutes, stirring every couple of minutes, until the pasta is tender and the liquid is thick and saucy.\n6. Add the cream cheese to the skillet in chunks, then stir until it has melted into the sauce. Top the pasta with sliced green onions and serve.\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance); cream cheese → dairy-free cream cheese (Kite Hill). Cook a complete dinner in one pot with this Creamy Cajun Chicken Pasta, using mostly pantry-stable items. Perfect for busy weeknights!&nbsp;\n\nSource: https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2018/10/One-Pot-Creamy-Cajun-Chicken-Pasta-pan.jpg
+URL:https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260423-breakfast-10@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260423T080000
+DTEND;TZID=America/New_York:20260423T090000
 SUMMARY:🍳 Breakfast: Savory Oatmeal
 DESCRIPTION:Recipe: Savory Oatmeal\nServings: 1\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\n--- Ingredients ---\n• 1.0 clove garlic, minced\n• 0.5 tsp grated fresh ginger\n• 4.0 mushrooms\n• 1.0 tsp vegan butter (Earth Balance)\n• 1.0 cup vegetable broth\n• 0.5 cup old-fashioned rolled oats\n• 0.5 cup spinach\n• 0.5 tsp toasted sesame oil\n\n--- Steps ---\n1. Mince the garlic, grate the ginger, and slice the mushrooms.\n2. Add the butter, garlic, and ginger to a small saucepot. Sauté over medium heat for 1-2 minutes.\n3. Add the mushrooms and continue to sauté for a few minutes more, or until the mushrooms have wilted a bit.\n4. Add the vegetable broth to the saucepot, turn the heat up to medium-high, and bring the broth up to a boil.\n5. When the broth reaches a boil, add the rolled oats and stir to combine. Allow it to return to a boil, then reduce the heat to medium low. Let the oats simmer for about 5 minutes, or until thickened.\n6. While the oats are simmering, roughly chop the spinach. Stir the spinach into the thickened oats, along with the toasted sesame oil.\n7. Taste and add salt to your liking, if needed, then top it off with your favorite toppings. Serve hot!\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). Savory oatmeal is a delicious, hearty, and inexpensive meal that can be customized to use ingredients you have on hand.\n\nSource: https://www.budgetbytes.com/savory-oatmeal/
 IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2021/09/Savory-Oatmeal-above.jpg
@@ -98,10 +127,10 @@ URL:https://www.budgetbytes.com/savory-oatmeal/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260415-lunch-8@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260415T120000
-DTEND;TZID=America/New_York:20260415T130000
+UID:mealplan-20260423-lunch-11@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260423T120000
+DTEND;TZID=America/New_York:20260423T130000
 SUMMARY:🥗 Lunch: Chicken Stir Fry Recipe
 DESCRIPTION:Recipe: Chicken Stir Fry Recipe\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\n--- Ingredients ---\n• 0.33 cup soy sauce\n• 3.0 tbsp brown sugar\n• 2.0 tsp toasted sesame oil\n• 2.0 clove garlic, minced\n• 2.0 tsp grated fresh ginger\n• 1.0 ½ Tbsp cornstarch\n• 0.33 cup water\n• 1.0 tsp sriracha\n• 0.75 lb broccoli\n• 2.0 carrots\n• 1.0 red bell pepper\n• 1.0 small onion\n• 2.0 green onions\n• 2.0 boneless, skinless chicken breasts\n• 3.0 tbsp cooking oil, divided\n\n--- Steps ---\n1. Start by making the stir fry sauce. Combine the soy sauce, brown sugar, toasted sesame oil, garlic, ginger, sriracha, cornstarch and water in a small bowl. Set the sauce aside.\n2. Chop the broccoli into small florets. Slice the red bell pepper, onion, and carrots into similar sized pieces. Slice the green onions. Set all the vegetables aside.\n3. Next, cut the chicken breasts into small ½ inch sized pieces.\n4. Heat a very large skillet or wok over medium-high heat. Once hot add 2 Tbsp of cooking oil and swirl to coat the surface of the skillet. Add the chicken and cook until browned on all sides. Be careful not to overcook the chicken. Once the chicken is browned, remove it from the skillet onto a separate plate and set aside.\n5. In the same skillet, add the remaining 1 Tbsp of cooking oil along with the carrots and broccoli. Cook and stir for one minute, or just until the broccoli begins to turn bright green.\n6. Next, add the red bell pepper and onion to the skillet. Continue to cook and stir for 1-2 more minutes.\n7. Give the stir fry sauce another brief stir. Now add the cooked chicken back to the skillet, then pour the stir fry sauce over the chicken and vegetables. Give everything a stir and allow the sauce to come up to a simmer, at which point it will start to thicken and turn glossy. Continue to cook for 1-2 more minutes or until it has reached your desired doneness.\n8. Remove it from the heat, top with green onions and sesame seeds (optional) and serve!\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
 IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
@@ -109,130 +138,105 @@ URL:https://www.budgetbytes.com/chicken-stir-fry/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260415-dinner-9@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260415T183000
-DTEND;TZID=America/New_York:20260415T193000
-SUMMARY:🍽️ Dinner: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
+UID:mealplan-20260423-dinner-12@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260423T183000
+DTEND;TZID=America/New_York:20260423T193000
+SUMMARY:🍽️ Dinner: One Pot Creamy Cajun Chicken Pasta (leftover)
+DESCRIPTION:Recipe: One Pot Creamy Cajun Chicken Pasta\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 20 min | Total: 30 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance); cream cheese → dairy-free cream cheese (Kite Hill). Cook a complete dinner in one pot with this Creamy Cajun Chicken Pasta, using mostly pantry-stable items. Perfect for busy weeknights!&nbsp;\n\nSource: https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2018/10/One-Pot-Creamy-Cajun-Chicken-Pasta-pan.jpg
+URL:https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260416-breakfast-10@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260416T080000
-DTEND;TZID=America/New_York:20260416T090000
+UID:mealplan-20260424-breakfast-13@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260424T080000
+DTEND;TZID=America/New_York:20260424T090000
 SUMMARY:🍳 Breakfast: Breakfast Burrito
 DESCRIPTION:Recipe: Breakfast Burrito\nServings: 2\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\n--- Ingredients ---\n• 4 eggs\n• 2 large flour tortillas\n• 4 slice bacon\n• 0.5 cup shredded cheddar cheese\n• 0.25 cup salsa\n• 1 tbsp butter\n• 1 avocado\n\n--- Steps ---\n1. Cook bacon in a skillet until crispy. Remove and chop.\n2. Whisk eggs, melt butter in the same skillet, and scramble eggs over medium heat.\n3. Warm tortillas in microwave for 15 seconds.\n4. Fill each tortilla with eggs, bacon, cheese, sliced avocado, and salsa.\n5. Fold and roll into burritos. Optional: toast seam-side down in a dry pan for 1 minute.\n\nTip: Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260416-lunch-11@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260416T120000
-DTEND;TZID=America/New_York:20260416T130000
-SUMMARY:🥗 Lunch: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260416-dinner-12@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260416T183000
-DTEND;TZID=America/New_York:20260416T193000
-SUMMARY:🍽️ Dinner: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260417-breakfast-13@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260417T080000
-DTEND;TZID=America/New_York:20260417T090000
-SUMMARY:🍳 Breakfast: Breakfast Burrito (leftover)
+UID:mealplan-20260424-lunch-14@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260424T120000
+DTEND;TZID=America/New_York:20260424T130000
+SUMMARY:🥗 Lunch: Breakfast Burrito (leftover)
 DESCRIPTION:Recipe: Breakfast Burrito\n(Leftover - no cooking needed!)\nServings: 2\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\nTip: Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260417-lunch-14@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260417T120000
-DTEND;TZID=America/New_York:20260417T130000
-SUMMARY:🥗 Lunch: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
+UID:mealplan-20260424-dinner-15@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260424T183000
+DTEND;TZID=America/New_York:20260424T193000
+SUMMARY:🍽️ Dinner: One Pot Creamy Cajun Chicken Pasta (leftover)
+DESCRIPTION:Recipe: One Pot Creamy Cajun Chicken Pasta\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 20 min | Total: 30 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance); cream cheese → dairy-free cream cheese (Kite Hill). Cook a complete dinner in one pot with this Creamy Cajun Chicken Pasta, using mostly pantry-stable items. Perfect for busy weeknights!&nbsp;\n\nSource: https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2018/10/One-Pot-Creamy-Cajun-Chicken-Pasta-pan.jpg
+URL:https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260417-dinner-15@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260417T183000
-DTEND;TZID=America/New_York:20260417T193000
-SUMMARY:🍽️ Dinner: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260418-breakfast-16@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260418T080000
-DTEND;TZID=America/New_York:20260418T090000
+UID:mealplan-20260425-breakfast-16@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260425T080000
+DTEND;TZID=America/New_York:20260425T090000
 SUMMARY:🍳 Breakfast: Overnight Oats
 DESCRIPTION:Recipe: Overnight Oats\nServings: 2\nPrep: 5 min | Total: 5 min\n\n--- Ingredients ---\n• 1 cup rolled oats\n• 1 cup milk\n• 0.5 cup greek yogurt\n• 2 tbsp honey\n• 0.5 cup blueberries\n• 2 tbsp chia seeds\n\n--- Steps ---\n1. Combine oats, milk, yogurt, honey, and chia seeds in a jar or container.\n2. Stir well, cover, and refrigerate overnight (or at least 4 hours).\n3. Top with blueberries before serving. Eat cold or microwave 1-2 min.\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260418-lunch-17@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260418T120000
-DTEND;TZID=America/New_York:20260418T130000
-SUMMARY:🥗 Lunch: Chicken Stir Fry
-DESCRIPTION:Recipe: Chicken Stir Fry\nServings: 4\nPrep: 15 min | Cook: 10 min | Total: 25 min\n\n--- Ingredients ---\n• 1.5 lb chicken breast\n• 2 tbsp soy sauce\n• 1 tbsp sesame oil\n• 1 tbsp cornstarch\n• 2 cup broccoli florets\n• 1 red bell pepper\n• 2 clove garlic\n• 1 tbsp fresh ginger\n• 2 cup rice\n• 1 tbsp vegetable oil\n\n--- Steps ---\n1. Slice chicken breast into thin strips and toss with cornstarch, 1 tbsp soy sauce, and sesame oil.\n2. Cook rice according to package directions.\n3. Heat vegetable oil in a wok or large skillet over high heat.\n4. Add chicken and cook 4-5 minutes until golden. Remove and set aside.\n5. Add garlic, ginger, broccoli, and bell pepper. Stir fry 3-4 minutes.\n6. Return chicken to wok, add remaining soy sauce, toss to combine.\n7. Serve over rice.\n\nTip: Works great with any vegetables you have on hand. Snap peas and carrots are good swaps.
+UID:mealplan-20260425-lunch-17@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260425T120000
+DTEND;TZID=America/New_York:20260425T130000
+SUMMARY:🥗 Lunch: Chicken Stir Fry Recipe (leftover)
+DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
+URL:https://www.budgetbytes.com/chicken-stir-fry/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260418-dinner-18@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260418T183000
-DTEND;TZID=America/New_York:20260418T193000
-SUMMARY:🍽️ Dinner: Chicken Stir Fry (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 15 min | Cook: 10 min | Total: 25 min\n\nTip: Works great with any vegetables you have on hand. Snap peas and carrots are good swaps.
+UID:mealplan-20260425-dinner-18@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260425T183000
+DTEND;TZID=America/New_York:20260425T193000
+SUMMARY:🍽️ Dinner: One Pot Creamy Cajun Chicken Pasta (leftover)
+DESCRIPTION:Recipe: One Pot Creamy Cajun Chicken Pasta\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 20 min | Total: 30 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance); cream cheese → dairy-free cream cheese (Kite Hill). Cook a complete dinner in one pot with this Creamy Cajun Chicken Pasta, using mostly pantry-stable items. Perfect for busy weeknights!&nbsp;\n\nSource: https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2018/10/One-Pot-Creamy-Cajun-Chicken-Pasta-pan.jpg
+URL:https://www.budgetbytes.com/one-pot-creamy-cajun-chicken-pasta/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260419-breakfast-19@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260419T080000
-DTEND;TZID=America/New_York:20260419T090000
+UID:mealplan-20260426-breakfast-19@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260426T080000
+DTEND;TZID=America/New_York:20260426T090000
 SUMMARY:🍳 Breakfast: Overnight Oats (leftover)
 DESCRIPTION:Recipe: Overnight Oats\n(Leftover - no cooking needed!)\nServings: 2\nPrep: 5 min | Total: 5 min\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260419-lunch-20@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260419T120000
-DTEND;TZID=America/New_York:20260419T130000
-SUMMARY:🥗 Lunch: Chicken Stir Fry (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 15 min | Cook: 10 min | Total: 25 min\n\nTip: Works great with any vegetables you have on hand. Snap peas and carrots are good swaps.
+UID:mealplan-20260426-lunch-20@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260426T120000
+DTEND;TZID=America/New_York:20260426T130000
+SUMMARY:🥗 Lunch: Chicken Stir Fry Recipe (leftover)
+DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
+URL:https://www.budgetbytes.com/chicken-stir-fry/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260419-dinner-21@mealplanner
-DTSTAMP:20260419T112952Z
-DTSTART;TZID=America/New_York:20260419T183000
-DTEND;TZID=America/New_York:20260419T193000
-SUMMARY:🍽️ Dinner: Chicken Stir Fry (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 15 min | Cook: 10 min | Total: 25 min\n\nTip: Works great with any vegetables you have on hand. Snap peas and carrots are good swaps.
+UID:mealplan-20260426-dinner-21@mealplanner
+DTSTAMP:20260419T233342Z
+DTSTART;TZID=America/New_York:20260426T183000
+DTEND;TZID=America/New_York:20260426T193000
+SUMMARY:🍽️ Dinner: Chicken Stir Fry Recipe (leftover)
+DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
+URL:https://www.budgetbytes.com/chicken-stir-fry/
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR

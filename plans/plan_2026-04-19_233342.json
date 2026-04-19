@@ -1,0 +1,145 @@
+{
+  "created": "2026-04-19T23:33:42.939875",
+  "days": [
+    {
+      "day": "Monday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Honey Garlic Chicken",
+          "servings": 4
+        },
+        "dinner": {
+          "name": "Honey Garlic Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "lunch": {
+          "name": "Honey Garlic Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Honey Garlic Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Wednesday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "One Pot Creamy Cajun Chicken Pasta",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Thursday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Chicken Stir Fry Recipe",
+          "servings": 6
+        },
+        "dinner": {
+          "name": "One Pot Creamy Cajun Chicken Pasta (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Friday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "One Pot Creamy Cajun Chicken Pasta (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Saturday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Chicken Stir Fry Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "One Pot Creamy Cajun Chicken Pasta (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Sunday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "lunch": {
+          "name": "Chicken Stir Fry Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Chicken Stir Fry Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    }
+  ],
+  "strategy": "smart",
+  "stats": {
+    "unique_ingredients": 53,
+    "unique_recipes": 8,
+    "leftover_meals": 13,
+    "total_meals": 21,
+    "avg_ingredients_per_recipe": 10.1
+  }
+}
