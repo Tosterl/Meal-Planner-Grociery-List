@@ -1,0 +1,111 @@
+{
+  "name": "Easy Sesame Chicken",
+  "servings": 4,
+  "prep_time": 15,
+  "cook_time": 15,
+  "tags": [
+    "dinner",
+    "main course",
+    "asian",
+    "easy dinner",
+    "take out fake out",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 0.25,
+      "unit": "cup",
+      "item": "soy sauce"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "water"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "toasted sesame oil"
+    },
+    {
+      "qty": 3.0,
+      "unit": "tbsp",
+      "item": "brown sugar**"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "rice vinegar"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "grated fresh ginger***"
+    },
+    {
+      "qty": 2.0,
+      "unit": "clove",
+      "item": "garlic, minced"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tbsp",
+      "item": "cornstarch"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "sesame seeds"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "cooking oil"
+    },
+    {
+      "qty": 1.0,
+      "unit": "lb",
+      "item": "boneless skinless chicken thighs*"
+    },
+    {
+      "qty": 1.0,
+      "unit": "large",
+      "item": "egg"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "cornstarch"
+    },
+    {
+      "qty": 1.0,
+      "unit": "pinch",
+      "item": "each salt and pepper"
+    },
+    {
+      "qty": 4.0,
+      "unit": "cup",
+      "item": "cooked jasmine rice"
+    },
+    {
+      "qty": 2.0,
+      "unit": "whole",
+      "item": "green onions"
+    }
+  ],
+  "steps": [
+    "First, prepare the sauce. In a small bowl stir together the soy sauce, water, sesame oil, brown sugar, rice vinegar, fresh ginger, minced garlic, cornstarch, and sesame seeds. (Grate the ginger with a small-holed cheese grater). Set the sauce aside.",
+    "In a large bowl, whisk together the egg, 2 Tbsp cornstarch, and a pinch of salt and pepper. Trim any excess fat from the chicken thighs, then cut them into small 1 inch pieces. Toss the chicken in the egg and cornstarch mixture.",
+    "Add the cooking oil to a large skillet and heat it over medium flame. Wait until the skillet is very hot, then swirl the skillet to make sure the oil coats the entire surface. Add the batter coated chicken and spread it out into a single layer over the surface of the skillet.",
+    "Allow the chicken pieces to cook, undisturbed, until golden brown on the bottom. Then, carefully flip the chicken, breaking up the pieces into smaller clumps as you flip. Continue to cook the chicken until golden brown on the other side. Stir the chicken as little as possible to avoid breaking the egg coating from the surface of the chicken.",
+    "Once the chicken is cooked through and golden brown on all sides, pour the sauce over top. Toss the chicken to coat in the sauce. As the sauce comes up to a simmer, it will begin to thicken. Continue to gently stir the chicken in the sauce until it has thickened, then turn off the heat.",
+    "Serve the chicken over a bed of rice and sprinkle the sliced green onions over top."
+  ],
+  "notes": "This Easy Sesame Chicken recipe is faster and tastier than takeout. Tender chicken coated in a homemade sweet, savory, and tangy sauce.",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2018/07/Sesame-Chicken-Overhead.jpg",
+  "created": "2026-02-06T20:38:11.181228",
+  "source_url": "https://www.budgetbytes.com/easy-sesame-chicken/"
+}

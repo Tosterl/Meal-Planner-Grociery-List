@@ -1,0 +1,38 @@
+{
+  "created": "2026-02-06T19:54:17.286227",
+  "days": [
+    {
+      "day": "Monday",
+      "meals": {
+        "dinner": {
+          "name": "Ground Beef Tacos",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "meals": {
+        "dinner": {
+          "name": "Chicken Stir Fry",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Wednesday",
+      "meals": {
+        "dinner": {
+          "name": "Garlic Butter Pasta",
+          "servings": 4
+        }
+      }
+    }
+  ],
+  "strategy": "smart",
+  "stats": {
+    "unique_ingredients": 29,
+    "total_recipes": 3,
+    "avg_ingredients_per_recipe": 10.0
+  }
+}

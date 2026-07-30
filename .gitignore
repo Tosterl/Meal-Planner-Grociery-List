@@ -1,0 +1,20 @@
+# Secrets & tokens — never commit
+.env
+.kroger_token.json
+.kroger_user_token.json
+
+# Local state
+kroger_cache.json
+.zip_code
+pantry.json
+match_overrides.json
+web-sync-export.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS junk
+nul
+Thumbs.db

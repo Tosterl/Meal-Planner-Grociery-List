@@ -1,0 +1,53 @@
+{
+  "name": "Coconut Rice",
+  "servings": 6,
+  "prep_time": 5,
+  "cook_time": 25,
+  "tags": [
+    "side dish",
+    "asian",
+    "coconut rice",
+    "jasmine rice",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 1.5,
+      "unit": "cup",
+      "item": "long-grain jasmine rice"
+    },
+    {
+      "qty": 1.0,
+      "unit": "clove",
+      "item": "garlic"
+    },
+    {
+      "qty": 0.75,
+      "unit": "tsp",
+      "item": "salt"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "13.5oz. can coconut milk"
+    },
+    {
+      "qty": 1.0,
+      "unit": "cup",
+      "item": "water"
+    }
+  ],
+  "steps": [
+    "Rinse the jasmine rice using a wire mesh strainer or a bowl, making sure to pour off as much excess water as possible. Add the rinsed rice to a pot along with the minced garlic and salt.",
+    "Add the coconut milk and water to the pot. Give the rice a brief stir.",
+    "Place a lid on the pot, turn the heat up to high, and allow the liquid to come up to a full boil. Once it reaches a full boil, turn the heat down to low. Allow the rice to simmer over low for 15 minutes. Make sure the pot maintains a simmer. Do not stir or lift the lid as the rice simmers.",
+    "After simmering for 15 minutes, remove the pot from the heat and let the rice rest an additional 5 minutes without lifting the lid. Finally, after the rice has rested, you lift the lid and fluff with a fork. Serve hot."
+  ],
+  "notes": "This savory coconut rice features fragrant jasmine rice, rich coconut milk, and savory garlic for a simple yet delicious side dish.",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2022/04/Coconut-RIce-plate.jpg",
+  "created": "2026-02-06T20:40:59.370247",
+  "source_url": "https://www.budgetbytes.com/coconut-rice/"
+}

@@ -1,0 +1,144 @@
+{
+  "created": "2026-02-06T20:28:19.826810",
+  "days": [
+    {
+      "day": "Monday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Quick &amp; Easy Garlic Noodles",
+          "servings": 4
+        },
+        "dinner": {
+          "name": "Quick &amp; Easy Garlic Noodles (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Quick &amp; Easy Garlic Noodles (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Quick &amp; Easy Garlic Noodles (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Wednesday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "lunch": {
+          "name": "Spicy Sriracha Noodles",
+          "servings": 2
+        },
+        "dinner": {
+          "name": "Spicy Sriracha Noodles (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Thursday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Honey Garlic Chicken",
+          "servings": 4
+        },
+        "dinner": {
+          "name": "Honey Garlic Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Friday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "lunch": {
+          "name": "Honey Garlic Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Honey Garlic Chicken (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Saturday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Crockpot Beef Stew Recipe",
+          "servings": 8
+        },
+        "dinner": {
+          "name": "Crockpot Beef Stew Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Sunday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Crockpot Beef Stew Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    }
+  ],
+  "strategy": "smart",
+  "stats": {
+    "unique_ingredients": 54,
+    "unique_recipes": 9,
+    "leftover_meals": 12,
+    "total_meals": 21,
+    "avg_ingredients_per_recipe": 9.4
+  }
+}

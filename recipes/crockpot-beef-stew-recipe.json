@@ -1,0 +1,120 @@
+{
+  "name": "Crockpot Beef Stew Recipe",
+  "servings": 8,
+  "prep_time": 15,
+  "cook_time": 255,
+  "tags": [
+    "dinner",
+    "main course",
+    "american",
+    "beef stew recipe",
+    "crock pot",
+    "crock pot stew",
+    "slow cooker",
+    "slow cooker stew",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 2.0,
+      "unit": "lb",
+      "item": "red potatoes"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "yellow onion"
+    },
+    {
+      "qty": 3.0,
+      "unit": "",
+      "item": "carrots"
+    },
+    {
+      "qty": 4.0,
+      "unit": "stalk",
+      "item": "celery"
+    },
+    {
+      "qty": 4.0,
+      "unit": "clove",
+      "item": "garlic"
+    },
+    {
+      "qty": 1.5,
+      "unit": "lb",
+      "item": "beef stew meat"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "all-purpose flour"
+    },
+    {
+      "qty": 0.25,
+      "unit": "tsp",
+      "item": "salt"
+    },
+    {
+      "qty": 0.25,
+      "unit": "tsp",
+      "item": "Freshly cracked black pepper"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "cooking oil"
+    },
+    {
+      "qty": 2.0,
+      "unit": "cup",
+      "item": "beef broth"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "Dijon mustard"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "Worcestershire sauce"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "soy sauce"
+    },
+    {
+      "qty": 1.5,
+      "unit": "tsp",
+      "item": "brown sugar"
+    },
+    {
+      "qty": 1.5,
+      "unit": "tsp",
+      "item": "dried rosemary"
+    },
+    {
+      "qty": 1.5,
+      "unit": "tsp",
+      "item": "dried thyme"
+    }
+  ],
+  "steps": [
+    "Dice the onion and red potatoes. Slice the carrots and celery. Mince the garlic. Place the prepared vegetables in a four or five quart slow cooker.",
+    "Place the stew meat in a bowl and sprinkle the flour, salt, and pepper over top. Toss the meat until it&#39;s evenly coated in flour.",
+    "Heat a large skillet over medium-high. Once very hot, add the cooking oil and swirl to coat the surface of the skillet. Add the stew meat and cook, without stirring, until browned on the bottom. Stir and then allow the beef to brown on a second side. Transfer the meat to the slow cooker.",
+    "Turn the heat under the skillet down to medium-low. Add the broth, Dijon, Worcestershire sauce, soy sauce, brown sugar, rosemary, and thyme to the skillet. Stir and cook over medium-low until all the browned bits have dissolved off the bottom of the skillet.",
+    "Pour the broth over the ingredients in the slow cooker and everything a good stir.",
+    "Place the lid on the slow cooker and cook on high for four hours or low for eight hours.",
+    "After cooking the meat and vegetables should both be tender. Stir the stew well to allow the potatoes to slightly break down and thicken the gravy. Taste the stew and adjust the salt or other seasonings to your liking. Serve hot!"
+  ],
+  "notes": "This Crockpot Beef Stew is the perfect cozy meal for a cold winter day with tender pieces of beef, vegetables, and a flavorful gravy.",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2023/02/Slow-Cooker-Beef-Stew-inbowl.jpeg",
+  "created": "2026-02-06T20:43:38.457715",
+  "source_url": "https://www.budgetbytes.com/slow-cooker-beef-stew/"
+}

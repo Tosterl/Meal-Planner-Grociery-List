@@ -1,0 +1,108 @@
+{
+  "name": "Honey Garlic Chicken",
+  "servings": 4,
+  "prep_time": 10,
+  "cook_time": 18,
+  "tags": [
+    "dinner",
+    "lunch",
+    "american",
+    "honey garlic chicken",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "lunch",
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 0.333,
+      "unit": "cup",
+      "item": "honey"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "soy sauce"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "rice vinegar"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "sriracha"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tsp",
+      "item": "toasted sesame oil"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "cornstarch"
+    },
+    {
+      "qty": 2.0,
+      "unit": "",
+      "item": "boneless, skinless chicken breasts"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "salt"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "black pepper"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "garlic powder"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "all-purpose flour"
+    },
+    {
+      "qty": 3.0,
+      "unit": "tbsp",
+      "item": "olive oil"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "vegan butter (Earth Balance)",
+      "original": "butter"
+    },
+    {
+      "qty": 4.0,
+      "unit": "clove",
+      "item": "of garlic, minced"
+    },
+    {
+      "qty": 2.0,
+      "unit": "",
+      "item": "green onions, sliced"
+    }
+  ],
+  "steps": [
+    "Start by making the sauce. Combine the honey, soy sauce, rice vinegar, sriracha, toasted sesame oil, and cornstarch together in a small bowl. Set the sauce aside.",
+    "Cut the chicken breasts into small 1/2 inch sized pieces. Season with salt, black pepper and garlic powder. Then toss the chicken pieces in the flour until each piece is evenly coated.",
+    "Heat a large skillet over medium-high heat and add 2 Tbsp of oil. Swirl to coat the surface of the skillet. Once the skillet is hot, add half of the chicken and cook until browned on all sides and cooked through. Remove the chicken from the skillet onto a separate plate and set aside. Add the remaining 1 Tbsp of oil and repeat with cooking the 2nd batch of chicken until cooked through. Set all of the chicken aside.",
+    "In the same skillet add the butter and lower the heat down to medium-low heat. Add the minced garlic cloves and saute for 30-60 seconds until fragrant.",
+    "Next give the sauce another brief stir, then pour the sauce into the skillet with the garlic. Stir the sauce and scrape up any browned bits that are stuck at the bottom of the skillet. Let the sauce simmer for about 2 minutes to allow the cornstarch to activate and thicken the sauce.",
+    "Now add the cooked chicken back to the skillet and stir with the sauce until all of the pieces are evenly coated. Continue to cook for 1-2 more minutes to allow the chicken to heat through.",
+    "Remove the skillet from the heat, top with sliced green onions, and enjoy!"
+  ],
+  "notes": "\ud83e\udd5b DAIRY-FREE SWAPS: butter \u2192 vegan butter (Earth Balance). This saucy Honey Garlic Chicken is a quick &amp; easy recipe with lots of chicken and an irresistible sweet &amp; tangy honey garlic sauce.",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg",
+  "created": "2026-02-06T20:44:02.171979",
+  "source_url": "https://www.budgetbytes.com/honey-garlic-chicken/"
+}

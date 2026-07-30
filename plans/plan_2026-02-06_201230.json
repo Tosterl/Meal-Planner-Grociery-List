@@ -1,0 +1,62 @@
+{
+  "created": "2026-02-06T20:12:30.884160",
+  "days": [
+    {
+      "day": "Monday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Curried Chickpeas with Spinach",
+          "servings": 4
+        },
+        "dinner": {
+          "name": "Tomato Spinach One Pot Pasta",
+          "servings": 6
+        }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Spicy Sriracha Noodles",
+          "servings": 2
+        },
+        "dinner": {
+          "name": "Quick &amp; Easy Garlic Noodles",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Wednesday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Poor Man's Burrito Bowls",
+          "servings": 6
+        },
+        "dinner": {
+          "name": "Homemade Chicken Yakisoba",
+          "servings": 6
+        }
+      }
+    }
+  ],
+  "strategy": "smart",
+  "stats": {
+    "unique_ingredients": 65,
+    "total_recipes": 9,
+    "avg_ingredients_per_recipe": 9.0
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "name": "Curried Chickpeas with Spinach",
+  "servings": 4,
+  "prep_time": 5,
+  "cook_time": 20,
+  "tags": [
+    "main course",
+    "indian",
+    "curried chickpeas with spinach",
+    "easy",
+    "gluten free",
+    "quick",
+    "vegan",
+    "vegetarian",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "olive oil"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "yellow onion"
+    },
+    {
+      "qty": 2.0,
+      "unit": "",
+      "item": "garlic cloves"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "inch fresh ginger"
+    },
+    {
+      "qty": 1.5,
+      "unit": "tbsp",
+      "item": "curry powder"
+    },
+    {
+      "qty": 8.0,
+      "unit": "oz",
+      "item": "fresh spinach"
+    },
+    {
+      "qty": 15.0,
+      "unit": "oz",
+      "item": "can tomato sauce"
+    },
+    {
+      "qty": 2.0,
+      "unit": "",
+      "item": "15 oz. cans chickpeas"
+    }
+  ],
+  "steps": [
+    "Dice the onion, mince the garlic, and grate the ginger on a small holed cheese grater. Saut\u00e9 the onion, garlic, and ginger in a large skillet with the olive oil over medium heat until the onions have softened (3-5 minutes).",
+    "Add the curry powder and continue to saut\u00e9 with the onion mixture for one minute more. Add about 1/4 cup of water to the skillet along with the fresh spinach and continue to saut\u00e9 until the spinach has wilted. The water will help steam and wilt the spinach (no water needed if using frozen spinach).",
+    "Drain and rinse the chickpeas. Add them to the skillet along with the tomato sauce. Stir well to distribute the spices in the sauce and heat through (5 minutes). Serve over rice or with bread."
+  ],
+  "notes": "These super fast Curried Chickpeas with spinach are packed with flavor and nutrients, vegan, gluten-free, and filling! Plus they freeze great!",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2013/12/Curried-Cickpeas-with-Spinach-Finished.jpg",
+  "created": "2026-02-06T22:24:49.973057",
+  "source_url": "https://www.budgetbytes.com/curried-chickpeas-spinach/"
+}

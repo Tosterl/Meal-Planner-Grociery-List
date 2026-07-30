@@ -1,0 +1,144 @@
+{
+  "created": "2026-04-08T21:06:22.660481",
+  "days": [
+    {
+      "day": "Monday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "One Pot Chili Mac",
+          "servings": 6
+        }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Ground Beef Tacos",
+          "servings": 4
+        },
+        "dinner": {
+          "name": "One Pot Chili Mac (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Wednesday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Ground Beef Tacos (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "One Pot Chili Mac (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Thursday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "lunch": {
+          "name": "Ground Beef Tacos (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "One Pot Chili Mac (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Friday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "One Pot Chili Mac (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Saturday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Ground Beef Tacos (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "One Pot Chili Mac (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Sunday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Sheet Pan Chicken Fajitas",
+          "servings": 4
+        }
+      }
+    }
+  ],
+  "strategy": "smart",
+  "stats": {
+    "unique_ingredients": 53,
+    "unique_recipes": 9,
+    "leftover_meals": 12,
+    "total_meals": 21,
+    "avg_ingredients_per_recipe": 9.3
+  }
+}

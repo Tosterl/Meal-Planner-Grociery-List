@@ -1,0 +1,31 @@
+{
+  "name": "Ground Beef Tacos",
+  "servings": 4,
+  "prep_time": 10,
+  "cook_time": 15,
+  "tags": ["quick", "mexican", "beef", "family"],
+  "meal_types": ["lunch", "dinner"],
+  "ingredients": [
+    {"qty": 1, "unit": "lb", "item": "ground beef"},
+    {"qty": 8, "unit": "", "item": "small flour tortillas"},
+    {"qty": 1, "unit": "tbsp", "item": "chili powder"},
+    {"qty": 1, "unit": "tsp", "item": "cumin"},
+    {"qty": 0.5, "unit": "tsp", "item": "garlic powder"},
+    {"qty": 0.5, "unit": "tsp", "item": "onion powder"},
+    {"qty": 0.25, "unit": "cup", "item": "water"},
+    {"qty": 1, "unit": "cup", "item": "shredded cheddar cheese"},
+    {"qty": 1, "unit": "cup", "item": "lettuce"},
+    {"qty": 2, "unit": "", "item": "tomato"},
+    {"qty": 0.5, "unit": "cup", "item": "sour cream"},
+    {"qty": 1, "unit": "", "item": "lime"}
+  ],
+  "steps": [
+    "Brown ground beef in a skillet over medium-high heat, breaking it up as it cooks.",
+    "Drain excess fat. Add chili powder, cumin, garlic powder, onion powder, and water.",
+    "Simmer 5 minutes until sauce thickens.",
+    "Warm tortillas in a dry skillet or microwave.",
+    "Assemble tacos with beef, cheese, lettuce, diced tomato, sour cream, and lime juice."
+  ],
+  "notes": "Works great with ground turkey too. Add jalapeño for heat.",
+  "created": "2025-02-06T12:00:00"
+}

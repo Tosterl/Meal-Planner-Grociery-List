@@ -1,0 +1,74 @@
+{
+  "name": "One Pot Lemon Pepper Chicken with Orzo",
+  "servings": 4,
+  "prep_time": 10,
+  "cook_time": 35,
+  "tags": [
+    "dinner",
+    "main course",
+    "american",
+    "chicken and orzo",
+    "lemon pepper chicken",
+    "one pot meal",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 4.0,
+      "unit": "",
+      "item": "chicken thighs*"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "lemon pepper seasoning"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "cooking oil"
+    },
+    {
+      "qty": 2.0,
+      "unit": "clove",
+      "item": "garlic"
+    },
+    {
+      "qty": 2.0,
+      "unit": "cup",
+      "item": "chicken broth"
+    },
+    {
+      "qty": 0.25,
+      "unit": "cup",
+      "item": "chopped parsley"
+    },
+    {
+      "qty": 1.5,
+      "unit": "cup",
+      "item": "orzo"
+    },
+    {
+      "qty": 2.0,
+      "unit": "oz",
+      "item": "feta, crumbled"
+    }
+  ],
+  "steps": [
+    "Blot the chicken thighs dry with a paper towel, then season both sides liberally with lemon pepper seasoning (about 2 Tbsp lemon pepper total).",
+    "Heat a large deep skillet over medium. Once hot, add the cooking oil. Add the seasoned chicken thighs, skin side down, and let them cook undisturbed until browned (about 6-8 minutes for bone-in skin-on thighs). Flip the chicken thighs and cook until browned on the second side. The chicken will be cooked most of the way through at this point but will finish cooking when simmered with the orzo. Remove the chicken to a clean plate.",
+    "While the chicken is browning, roughly chop about 1/4 bunch of parsley and mince two cloves of garlic. After removing the chicken from the skillet, turn the heat down to low, add the minced garlic, and saut\u00e9 the garlic in the residual fat for about a minute.",
+    "Add 2 cups of chicken broth to the skillet and stir to dissolve the crispy browned bits from the bottom of the pan.",
+    "Add the orzo and half of the chopped parsley. Stir to combine. Finally, return the chicken to the skillet, skin side up.",
+    "Place a lid on the skillet, turn the heat up to high, and let the broth come to a full boil. Once it reaches a boil, turn the heat down to low. Let the skillet simmer on low for about 15 minutes, or until most of the broth has been absorbed. Make sure it\u2019s simmering the whole time. If it stops simmering, increase the heat slightly until it just starts to simmer again.",
+    "After about 15 minutes the orzo should be tender and most of the broth absorbed but there will still be a little sauce in the skillet.",
+    "Fluff the orzo around the chicken a bit with a fork, then top with the remaining parsley and the crumbled feta. Serve and enjoy!"
+  ],
+  "notes": "Lemon Pepper Chicken with Orzo is a zesty one-pot meal featuring juicy chicken thighs, orzo, feta, and lemon pepper for tons of flavor!",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2022/07/One-Pot-Lemon-Pepper-Chicken-and-Orzo-H.jpg",
+  "created": "2026-02-06T20:44:16.763439",
+  "source_url": "https://www.budgetbytes.com/lemon-pepper-chicken/"
+}

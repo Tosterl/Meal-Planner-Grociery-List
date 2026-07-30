@@ -1,0 +1,74 @@
+{
+  "created": "2026-02-06T20:05:38.907384",
+  "days": [
+    {
+      "day": "Monday",
+      "meals": {
+        "dinner": {
+          "name": "Creamy Garlic Chicken Recipe",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "meals": {
+        "dinner": {
+          "name": "Honey Garlic Chicken",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Wednesday",
+      "meals": {
+        "dinner": {
+          "name": "Crockpot Beef Stew Recipe",
+          "servings": 8
+        }
+      }
+    },
+    {
+      "day": "Thursday",
+      "meals": {
+        "dinner": {
+          "name": "One Pot Creamy Cajun Chicken Pasta",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Friday",
+      "meals": {
+        "dinner": {
+          "name": "Turkey Taco Skillet",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Saturday",
+      "meals": {
+        "dinner": {
+          "name": "Sheet Pan Chicken Fajitas",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Sunday",
+      "meals": {
+        "dinner": {
+          "name": "Cilantro Lime Rice",
+          "servings": 6
+        }
+      }
+    }
+  ],
+  "strategy": "smart",
+  "stats": {
+    "unique_ingredients": 63,
+    "total_recipes": 7,
+    "avg_ingredients_per_recipe": 13.7
+  }
+}

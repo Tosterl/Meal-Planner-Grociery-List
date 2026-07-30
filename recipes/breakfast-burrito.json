@@ -1,0 +1,26 @@
+{
+  "name": "Breakfast Burrito",
+  "servings": 2,
+  "prep_time": 5,
+  "cook_time": 10,
+  "tags": ["quick", "breakfast", "protein"],
+  "meal_types": ["breakfast", "lunch"],
+  "ingredients": [
+    {"qty": 4, "unit": "", "item": "eggs"},
+    {"qty": 2, "unit": "", "item": "large flour tortillas"},
+    {"qty": 4, "unit": "slice", "item": "bacon"},
+    {"qty": 0.5, "unit": "cup", "item": "shredded cheddar cheese"},
+    {"qty": 0.25, "unit": "cup", "item": "salsa"},
+    {"qty": 1, "unit": "tbsp", "item": "butter"},
+    {"qty": 1, "unit": "", "item": "avocado"}
+  ],
+  "steps": [
+    "Cook bacon in a skillet until crispy. Remove and chop.",
+    "Whisk eggs, melt butter in the same skillet, and scramble eggs over medium heat.",
+    "Warm tortillas in microwave for 15 seconds.",
+    "Fill each tortilla with eggs, bacon, cheese, sliced avocado, and salsa.",
+    "Fold and roll into burritos. Optional: toast seam-side down in a dry pan for 1 minute."
+  ],
+  "notes": "Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.",
+  "created": "2025-02-06T12:00:00"
+}

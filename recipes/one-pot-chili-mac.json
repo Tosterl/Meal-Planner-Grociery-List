@@ -1,0 +1,98 @@
+{
+  "name": "One Pot Chili Mac",
+  "servings": 6,
+  "prep_time": 5,
+  "cook_time": 30,
+  "tags": [
+    "dinner",
+    "main course",
+    "american",
+    "chili mac",
+    "hamburger helper",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "yellow onion"
+    },
+    {
+      "qty": 2.0,
+      "unit": "clove",
+      "item": "garlic"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "olive oil"
+    },
+    {
+      "qty": 1.0,
+      "unit": "lb",
+      "item": "ground beef"
+    },
+    {
+      "qty": 2.0,
+      "unit": "tbsp",
+      "item": "all-purpose flour"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "chili powder"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "smoked paprika"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "garlic powder"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "dried oregano"
+    },
+    {
+      "qty": 8.0,
+      "unit": "oz",
+      "item": "tomato sauce"
+    },
+    {
+      "qty": 3.0,
+      "unit": "cup",
+      "item": "beef broth"
+    },
+    {
+      "qty": 0.5,
+      "unit": "lb",
+      "item": "uncooked macaroni"
+    },
+    {
+      "qty": 1.0,
+      "unit": "cup",
+      "item": "dairy-free alternative",
+      "original": "shredded cheddar"
+    }
+  ],
+  "steps": [
+    "Dice the yellow onion and mince the garlic. Add the onion and garlic to a large deep skillet or Dutch oven with the olive oil and saut\u00e9 over medium heat until the onions are soft and translucent (about 5 minutes).",
+    "Add the ground beef to the skillet and continue to stir and cook until the beef is cooked through. If using a higher fat content ground beef, you may want to drain off the excess fat at this point.",
+    "Add the flour, chili powder, smoked paprika, garlic powder, and oregano to the skillet with the beef and onions. Continue to cook and stir for about two minutes, allowing the flour and spices to coat the bottom of the skillet, but not burn.",
+    "Add the tomato sauce and beef broth to the skillet and stir well to combine, making sure to scrape and dissolve any browned bits off the bottom of the skillet.",
+    "Add the uncooked macaroni and stir to combine. Place a lid on the skillet and turn the heat up to medium-high. Allow the broth to come up to a full boil. Once boiling, give the pasta a quick stir to loosen any that is stuck to the bottom, turn the heat down to medium-low, and place the lid back on top.",
+    "Allow the macaroni to simmer, stirring every few minutes and always replacing the lid, until the macaroni is tender and the broth has reduced to a rich red gravy (about 10 minutes).",
+    "Stir half of the shredded cheese into the sauce until melted, and sprinkle the remainder on top. Place a lid on the pot, turn the heat off, and allow the residual heat to melt the cheese on top. Serve hot and enjoy!"
+  ],
+  "notes": "\ud83e\udd5b DAIRY-FREE SWAPS: shredded cheddar \u2192 dairy-free alternative. This super filling comfort food classic, One Pot Chili Mac, is like the hamburger helper of your childhood but all grown up and 100% from scratch!",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2024/01/Chili-Mac-Bowl.jpg",
+  "created": "2026-02-06T22:25:10.715209",
+  "source_url": "https://www.budgetbytes.com/chili-cheese-beef-n-mac/"
+}

@@ -1,0 +1,102 @@
+{
+  "name": "Turkey Taco Skillet",
+  "servings": 4,
+  "prep_time": 5,
+  "cook_time": 12,
+  "tags": [
+    "dinner",
+    "main course",
+    "american",
+    "southwest",
+    "easy dinner recipes",
+    "fast dinner",
+    "taco night",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "chili powder"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "smoked paprika"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "ground cumin"
+    },
+    {
+      "qty": 0.25,
+      "unit": "tsp",
+      "item": "cayenne pepper"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "dried oregano"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "salt"
+    },
+    {
+      "qty": 0.25,
+      "unit": "tsp",
+      "item": "freshly cracked black pepper"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tbsp",
+      "item": "cooking oil"
+    },
+    {
+      "qty": 1.0,
+      "unit": "lb",
+      "item": "ground turkey"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "yellow onion"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "10oz. can diced tomatoes with green chiles"
+    },
+    {
+      "qty": 1.0,
+      "unit": "",
+      "item": "15oz. can black beans"
+    },
+    {
+      "qty": 1.0,
+      "unit": "cup",
+      "item": "frozen corn"
+    },
+    {
+      "qty": 0.5,
+      "unit": "bunch",
+      "item": "green onions"
+    }
+  ],
+  "steps": [
+    "Combine the spices for the homemade taco seasoning, then set the seasoning aside.",
+    "Add the cooking oil and ground turkey to a large skillet. Begin to cook the turkey over medium heat, breaking it up into pieces as it cooks.",
+    "While the turkey is cooking, dice the onion. Add the onion to the skillet with the turkey and continue to stir and cook until the onions are soft. Add the prepared taco seasoning, then continue to stir and cook for 1-2 minutes more.",
+    "Drain the black beans then add them to the skillet with the diced tomatoes (with juices) and frozen corn (no need to thaw). Stir the ingredients in the skillet to combine, then heat through over medium.",
+    "While the mixture is heating, slice the green onions. Stir the green onions into the skillet just before serving."
+  ],
+  "notes": "This easy and versatile Turkey Taco Skillet takes about 20 minutes to make, is freezer friendly, and can be served several different ways.",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2020/02/Turkey-Taco-Skillet-above.jpg",
+  "created": "2026-02-06T20:45:02.567513",
+  "source_url": "https://www.budgetbytes.com/turkey-taco-skillet/"
+}

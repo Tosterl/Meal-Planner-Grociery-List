@@ -1,0 +1,79 @@
+{
+  "name": "Savory Oatmeal",
+  "servings": 1,
+  "prep_time": 5,
+  "cook_time": 10,
+  "tags": [
+    "breakfast",
+    "dinner",
+    "lunch",
+    "main course",
+    "american",
+    "asian",
+    "breakfast recipes",
+    "healthy breakfast",
+    "oatmeal recipe",
+    "dairy-free"
+  ],
+  "meal_types": [
+    "breakfast",
+    "lunch",
+    "dinner"
+  ],
+  "ingredients": [
+    {
+      "qty": 1.0,
+      "unit": "clove",
+      "item": "garlic, minced"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "grated fresh ginger"
+    },
+    {
+      "qty": 4.0,
+      "unit": "",
+      "item": "mushrooms"
+    },
+    {
+      "qty": 1.0,
+      "unit": "tsp",
+      "item": "vegan butter (Earth Balance)",
+      "original": "butter"
+    },
+    {
+      "qty": 1.0,
+      "unit": "cup",
+      "item": "vegetable broth"
+    },
+    {
+      "qty": 0.5,
+      "unit": "cup",
+      "item": "old-fashioned rolled oats"
+    },
+    {
+      "qty": 0.5,
+      "unit": "cup",
+      "item": "spinach"
+    },
+    {
+      "qty": 0.5,
+      "unit": "tsp",
+      "item": "toasted sesame oil"
+    }
+  ],
+  "steps": [
+    "Mince the garlic, grate the ginger, and slice the mushrooms.",
+    "Add the butter, garlic, and ginger to a small saucepot. Saut\u00e9 over medium heat for 1-2 minutes.",
+    "Add the mushrooms and continue to saut\u00e9 for a few minutes more, or until the mushrooms have wilted a bit.",
+    "Add the vegetable broth to the saucepot, turn the heat up to medium-high, and bring the broth up to a boil.",
+    "When the broth reaches a boil, add the rolled oats and stir to combine. Allow it to return to a boil, then reduce the heat to medium low. Let the oats simmer for about 5 minutes, or until thickened.",
+    "While the oats are simmering, roughly chop the spinach. Stir the spinach into the thickened oats, along with the toasted sesame oil.",
+    "Taste and add salt to your liking, if needed, then top it off with your favorite toppings. Serve hot!"
+  ],
+  "notes": "\ud83e\udd5b DAIRY-FREE SWAPS: butter \u2192 vegan butter (Earth Balance). Savory oatmeal is a delicious, hearty, and inexpensive meal that can be customized to use ingredients you have on hand.",
+  "image_url": "https://www.budgetbytes.com/wp-content/uploads/2021/09/Savory-Oatmeal-above.jpg",
+  "created": "2026-02-06T20:44:38.326650",
+  "source_url": "https://www.budgetbytes.com/savory-oatmeal/"
+}
