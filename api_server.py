@@ -16,15 +16,18 @@ import io
 import json
 import argparse
 import subprocess
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
 from datetime import datetime, timedelta
 
-# Set UTF-8 encoding for Windows console
-if sys.platform == "win32" and hasattr(sys.stdout, 'buffer') and getattr(sys.stdout, 'encoding', '') != 'utf-8':
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+# Set UTF-8 encoding for Windows console (reconfigure is idempotent-safe)
+if sys.platform == "win32":
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding='utf-8', errors='replace')
+        except (AttributeError, ValueError):
+            pass
 
 BASE_DIR = Path(__file__).parent
 sys.path.insert(0, str(BASE_DIR))
@@ -83,7 +86,21 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
         self._cors_headers()
         self.end_headers()
 
+    def _dispatch(self, handler, *args):
+        """Run a route handler; convert uncaught errors to a JSON 500."""
+        try:
+            handler(*args)
+        except Exception as e:
+            print(f"❌ Unhandled error on {self.path}: {type(e).__name__}: {e}")
+            try:
+                self._error(f"Server error: {type(e).__name__}: {e}", 500)
+            except Exception:
+                pass  # client already gone / headers already sent
+
     def do_GET(self):
+        self._dispatch(self._route_get)
+
+    def _route_get(self):
         parsed = urlparse(self.path)
         path = parsed.path
         params = parse_qs(parsed.query)
@@ -114,6 +131,9 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             self._error("Not found", 404)
 
     def do_POST(self):
+        self._dispatch(self._route_post)
+
+    def _route_post(self):
         parsed = urlparse(self.path)
         path = parsed.path
 
@@ -138,6 +158,9 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             self._error("Not found", 404)
 
     def do_DELETE(self):
+        self._dispatch(self._route_delete)
+
+    def _route_delete(self):
         parsed = urlparse(self.path)
         path = parsed.path
         params = parse_qs(parsed.query)
@@ -519,7 +542,9 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             if not query:
                 continue
 
-            product = search_product(query, location_id)
+            # search_product returns a list of matches — take the top result
+            results = search_product(query, location_id) or []
+            product = results[0] if results else None
             if product and product.get("upc"):
                 cart_items.append({
                     "upc": product["upc"],
@@ -816,7 +841,7 @@ def main():
         else:
             print(f"  ⚠️  No store found for zip {DEFAULT_ZIP}")
 
-    server = HTTPServer((args.host, args.port), KrogerAPIHandler)
+    server = ThreadingHTTPServer((args.host, args.port), KrogerAPIHandler)
     public_host = "your-deployment-url" if is_cloud else f"localhost:{args.port}"
     print(f"\n🛒 Kroger API Server running on {args.host}:{args.port}")
     if not is_cloud:

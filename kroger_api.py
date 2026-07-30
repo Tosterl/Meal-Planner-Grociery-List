@@ -25,10 +25,13 @@ import argparse
 from pathlib import Path
 from datetime import datetime, timedelta
 
-# Fix Windows console encoding
-if sys.platform == "win32" and hasattr(sys.stdout, 'buffer') and getattr(sys.stdout, 'encoding', '') != 'utf-8':
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+# Fix Windows console encoding (reconfigure is idempotent-safe)
+if sys.platform == "win32":
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding='utf-8', errors='replace')
+        except (AttributeError, ValueError):
+            pass
 
 try:
     import requests
@@ -56,8 +59,14 @@ KROGER_PROFILE_URL = "https://api.kroger.com/v1/identity/profile"
 KROGER_SCOPES = "product.compact"
 # User OAuth scopes for cart access
 KROGER_USER_SCOPES = "product.compact cart.basic:write profile.compact"
-# Default redirect URI for the local API server
-KROGER_REDIRECT_URI = "http://localhost:8099/api/kroger/callback"
+# Default redirect URI for the local API server (override via env for deploys)
+KROGER_REDIRECT_URI = os.environ.get(
+    "KROGER_REDIRECT_URI", "http://localhost:8099/api/kroger/callback"
+)
+
+# Timeout for all outbound Kroger HTTP calls — without one, a hung call
+# freezes the whole (single-process) API server indefinitely
+HTTP_TIMEOUT = 15
 
 # Load credentials from environment or .env file
 def load_credentials():
@@ -110,7 +119,8 @@ def get_access_token():
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": f"Basic {credentials}"
         },
-        data={"grant_type": "client_credentials", "scope": KROGER_SCOPES}
+        data={"grant_type": "client_credentials", "scope": KROGER_SCOPES},
+        timeout=HTTP_TIMEOUT,
     )
 
     if response.status_code != 200:
@@ -169,6 +179,7 @@ def exchange_code_for_token(code: str, redirect_uri: str = None):
             "code": code,
             "redirect_uri": redirect_uri or KROGER_REDIRECT_URI,
         },
+        timeout=HTTP_TIMEOUT,
     )
 
     if response.status_code != 200:
@@ -227,6 +238,7 @@ def refresh_user_token():
             "grant_type": "refresh_token",
             "refresh_token": saved["refresh_token"],
         },
+        timeout=HTTP_TIMEOUT,
     )
 
     if response.status_code != 200:
@@ -337,7 +349,8 @@ def find_nearest_store(zipcode: str = None):
     response = requests.get(
         KROGER_LOCATIONS_URL,
         headers={"Authorization": f"Bearer {token}"},
-        params=params
+        params=params,
+        timeout=HTTP_TIMEOUT,
     )
 
     if response.status_code == 200:
@@ -817,7 +830,8 @@ def search_product(query: str, location_id: str = None):
     response = requests.get(
         KROGER_PRODUCTS_URL,
         headers={"Authorization": f"Bearer {token}"},
-        params=params
+        params=params,
+        timeout=HTTP_TIMEOUT,
     )
 
     if response.status_code != 200:
@@ -1011,7 +1025,8 @@ def get_product_location(product_id: str, location_id: str):
     response = requests.get(
         f"{KROGER_PRODUCTS_URL}/{product_id}",
         headers={"Authorization": f"Bearer {token}"},
-        params={"filter.locationId": location_id}
+        params={"filter.locationId": location_id},
+        timeout=HTTP_TIMEOUT,
     )
 
     if response.status_code == 200:
@@ -1083,6 +1098,7 @@ def add_to_cart(items: list, access_token: str = None):
             "Content-Type": "application/json",
         },
         json={"items": items},
+        timeout=HTTP_TIMEOUT,
     )
 
     if response.status_code == 204:
