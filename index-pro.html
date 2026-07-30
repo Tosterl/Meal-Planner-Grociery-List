@@ -354,6 +354,19 @@ main { max-width: 1280px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
   animation: modalIn 0.2s ease-out;
 }
 
+/* Timer + sync modals use .modal-content; give it the same base styling
+   as .modal (previously only styled inside @media, so it rendered
+   transparent on desktop) */
+.modal-content {
+  background: var(--bg-card);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 660px;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn 0.2s ease-out;
+  padding: 1.25rem 1.5rem;
+}
+
 @keyframes modalIn { from { opacity:0; transform:translateY(16px) scale(0.98); } to { opacity:1; transform:translateY(0) scale(1); } }
 
 .modal-header {
@@ -472,7 +485,7 @@ input, select, textarea {
   padding: 0.55rem 0.75rem;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  background: white;
+  background: var(--bg-card);
   color: var(--ink);
   transition: border-color 0.15s;
 }
@@ -2574,7 +2587,7 @@ function getRecipeCategories(recipe) {
 
 function recordUsage(recipeNames) {
   const history = getUsageHistory();
-  const today = new Date().toISOString().split('T')[0];
+  const today = formatDate(new Date());
   recipeNames.forEach(name => {
     const slug = slugify(name);
     if (!history[slug]) history[slug] = [];
@@ -3075,7 +3088,12 @@ function getMonday(d) {
   return new Date(dt.setDate(diff));
 }
 
-function formatDate(d) { return d.toISOString().split('T')[0]; }
+// Local-date string (YYYY-MM-DD). toISOString() is UTC — in US timezones
+// after ~7pm it rolls to tomorrow, shifting the whole plan by a day.
+function formatDate(d) {
+  const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
 
 function changeWeek(dir) {
   currentWeekStart = new Date(currentWeekStart.getTime() + dir * 7 * 86400000);
@@ -4543,7 +4561,7 @@ async function confirmPantrySweep() {
   _sweepSelectedManual = new Set();
 
   // Mark sweep as done today
-  LS.set('mp2_last_sweep', new Date().toISOString().split('T')[0]);
+  LS.set('mp2_last_sweep', formatDate(new Date()));
 
   closeModal('pantry-sweep-modal');
   renderPantry();
