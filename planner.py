@@ -7,14 +7,19 @@ A CLI tool to manage recipes, plan weekly meals, and generate consolidated groce
 import sys
 import io
 
-# Fix Windows console encoding for emoji support
-if sys.platform == "win32" and getattr(sys.stdout, 'encoding', '') != 'utf-8':
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+# Fix Windows console encoding for emoji support. reconfigure() is idempotent —
+# unlike re-wrapping stdout, it can't double-wrap when modules import each other.
+if sys.platform == "win32":
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding='utf-8', errors='replace')
+        except (AttributeError, ValueError):
+            pass
 
 import json
 import os
 import random
+import re
 import argparse
 from datetime import datetime, timedelta
 from collections import defaultdict
@@ -944,8 +949,14 @@ def smart_select_recipe(candidates: list[dict], selected_recipes: list[dict],
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
 def slugify(name: str) -> str:
-    """Convert a recipe name to a filename-safe slug."""
-    return name.lower().strip().replace(" ", "-").replace("'", "").replace('"', "")
+    """Convert a recipe name to a filename-safe slug.
+
+    Whitelist approach: anything that isn't a-z/0-9 collapses to a hyphen,
+    so names with /, &, : etc. can never escape the recipes/ directory.
+    """
+    slug = name.lower().strip().replace("'", "").replace('"', "")
+    slug = re.sub(r"[^a-z0-9]+", "-", slug).strip("-")
+    return slug or "recipe"
 
 
 def normalize_unit(unit: str) -> str:
@@ -955,7 +966,8 @@ def normalize_unit(unit: str) -> str:
 
 
 def parse_ingredient(line: str) -> dict | None:
-    """Parse an ingredient string like '2 cups rice' or '1/2 lb chicken breast'."""
+    """Parse an ingredient string like '2 cups rice', '1/2 lb chicken',
+    or a mixed number like '1 1/2 lb chicken breast'."""
     parts = line.strip().split()
     if len(parts) < 2:
         return None
@@ -968,18 +980,29 @@ def parse_ingredient(line: str) -> dict | None:
             qty = float(num) / float(den)
         else:
             qty = float(qty_str)
-    except ValueError:
+    except (ValueError, ZeroDivisionError):
         # Entire line might be the item with no qty
         return {"qty": 1, "unit": "", "item": line.strip()}
 
-    # Check if second part is a unit
-    potential_unit = parts[1].lower().rstrip(".")
+    # Mixed number: '1 1/2 lb chicken' — fold the fraction into the qty
+    idx = 1
+    if idx < len(parts) and re.fullmatch(r"\d+/\d+", parts[idx]):
+        num, den = parts[idx].split("/")
+        if float(den) != 0:
+            qty += float(num) / float(den)
+        idx += 1
+
+    if idx >= len(parts):
+        return None
+
+    # Check if next part is a unit
+    potential_unit = parts[idx].lower().rstrip(".")
     if potential_unit in UNIT_ALIASES or potential_unit in UNIT_ALIASES.values():
         unit = normalize_unit(potential_unit)
-        item = " ".join(parts[2:])
+        item = " ".join(parts[idx + 1:])
     else:
         unit = ""
-        item = " ".join(parts[1:])
+        item = " ".join(parts[idx:])
 
     if not item:
         return None

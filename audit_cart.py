@@ -24,6 +24,7 @@ from __future__ import annotations
 import argparse
 import io
 import json
+import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -34,12 +35,12 @@ sys.path.insert(0, str(BASE_DIR))
 
 def _setup_stdout_utf8():
     """Set Windows console to UTF-8. Only call when running as __main__."""
-    if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
+    if sys.platform == "win32":
         try:
-            sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-            sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
         except (ValueError, AttributeError):
-            pass  # Already wrapped or unavailable
+            pass  # Unavailable (e.g. redirected stream without reconfigure)
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -97,7 +98,10 @@ def load_kroger_pantry() -> list[dict]:
 
 
 def slugify(name: str) -> str:
-    return name.lower().strip().replace(" ", "-").replace("'", "").replace('"', "")
+    """Filename-safe slug: non-alphanumerics collapse to hyphens."""
+    slug = name.lower().strip().replace("'", "").replace('"', "")
+    slug = re.sub(r"[^a-z0-9]+", "-", slug).strip("-")
+    return slug or "recipe"
 
 
 def normalize_unit(u: str) -> str:

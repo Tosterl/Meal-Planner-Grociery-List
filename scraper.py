@@ -14,11 +14,16 @@ Usage:
 import sys
 import io
 
-# Fix Windows console encoding for emoji support
+# Fix Windows console encoding for emoji support. reconfigure() is idempotent —
+# unlike re-wrapping stdout, it can't double-wrap when modules import each other.
 if sys.platform == "win32":
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding='utf-8', errors='replace')
+        except (AttributeError, ValueError):
+            pass
 
+import html
 import json
 import re
 import argparse
@@ -330,8 +335,24 @@ def find_recipe_in_jsonld(data) -> list:
     return results
 
 
+def unescape_strings(value):
+    """Recursively HTML-unescape all strings in a scraped structure.
+
+    JSON-LD text is frequently HTML-escaped ("Quick &amp; Easy ...");
+    without this the entities leak into recipe names, slugs, and filenames.
+    """
+    if isinstance(value, str):
+        return html.unescape(value)
+    if isinstance(value, list):
+        return [unescape_strings(v) for v in value]
+    if isinstance(value, dict):
+        return {k: unescape_strings(v) for k, v in value.items()}
+    return value
+
+
 def parse_schema_recipe(data: dict) -> dict:
     """Parse a Schema.org Recipe into our format."""
+    data = unescape_strings(data)
     name = data.get("name", "Untitled Recipe")
 
     # Parse times
@@ -683,7 +704,10 @@ def guess_meal_types(name: str, tags: list) -> list:
 
 
 def slugify(name: str) -> str:
-    return name.lower().strip().replace(" ", "-").replace("'", "").replace('"', "")
+    """Filename-safe slug: non-alphanumerics collapse to hyphens."""
+    slug = name.lower().strip().replace("'", "").replace('"', "")
+    slug = re.sub(r"[^a-z0-9]+", "-", slug).strip("-")
+    return slug or "recipe"
 
 
 # ─── CLI ──────────────────────────────────────────────────────────────────────
