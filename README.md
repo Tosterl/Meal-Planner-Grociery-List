@@ -25,11 +25,14 @@ A complete meal planning toolkit: recipe scraper, dairy-free adaptation, weekly/
 
 **Option 2 — Command Prompt:**
 ```
-cd "C:\Users\Tosterloh\OneDrive - Caster Connection, Inc\Documents\Meal Planner Grocery List"
+cd "C:\Users\travi\OneDrive\Documents\ClaudeProjects\Meal-Planner-Grociery-List"
 python api_server.py --zip YOUR_ZIP
 ```
 
-Then open `index-pro.html` in your browser.
+Then open http://localhost:8099/ in your browser. (The server now serves the
+app itself and injects a local access token — opening `index-pro.html`
+directly from the file system still works, but read-only unless you set the
+token shown at server startup.)
 
 ### What the API Server Does
 

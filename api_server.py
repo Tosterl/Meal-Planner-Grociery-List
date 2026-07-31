@@ -14,8 +14,11 @@ Usage:
 import sys
 import io
 import json
+import os
 import argparse
+import secrets
 import subprocess
+import time
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
@@ -47,6 +50,62 @@ DEFAULT_ZIP = None
 CACHED_LOCATION_ID = None
 CACHED_STORE_NAME = None
 
+# Filled in by main() once the port is known; used for CORS checks
+SERVER_PORT = 8099
+
+# Pending OAuth state values → issued-at timestamp (login CSRF protection)
+OAUTH_STATES = {}
+OAUTH_STATE_TTL = 600  # seconds
+
+TOKEN_FILE = BASE_DIR / ".api_token"
+
+# Static files the server is allowed to serve (no path traversal possible —
+# anything not in this map is a 404)
+STATIC_FILES = {
+    "/": ("index-pro.html", "text/html; charset=utf-8"),
+    "/index.html": ("index-pro.html", "text/html; charset=utf-8"),
+    "/index-pro.html": ("index-pro.html", "text/html; charset=utf-8"),
+    "/vote.html": ("vote.html", "text/html; charset=utf-8"),
+    "/meal-planner.ico": ("meal-planner.ico", "image/x-icon"),
+    "/favicon.ico": ("meal-planner.ico", "image/x-icon"),
+    "/meal-plan.ics": ("meal-plan.ics", "text/calendar; charset=utf-8"),
+}
+
+
+def load_or_create_api_token():
+    """Persistent random token gating all state-changing endpoints.
+
+    The token is injected into the HTML the server serves, so pages loaded
+    from http://localhost:<port>/ authenticate automatically. Random web
+    pages can't read it (CORS) and so can't POST to the API.
+    """
+    try:
+        token = TOKEN_FILE.read_text(encoding="utf-8").strip()
+        if token:
+            return token
+    except OSError:
+        pass
+    token = secrets.token_hex(16)
+    TOKEN_FILE.write_text(token, encoding="utf-8")
+    return token
+
+
+API_TOKEN = load_or_create_api_token()
+
+
+def allowed_origins():
+    origins = {
+        f"http://localhost:{SERVER_PORT}",
+        f"http://127.0.0.1:{SERVER_PORT}",
+        # file:// pages send "Origin: null"; kept so the old workflow still
+        # reads data. Mutations still require the token either way.
+        "null",
+    }
+    extra = os.environ.get("ALLOWED_ORIGIN")
+    if extra:
+        origins.add(extra.rstrip("/"))
+    return origins
+
 
 def get_location_id(zip_code=None):
     """Get and cache the store location ID."""
@@ -67,9 +126,20 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
     """Handle API requests from the web UI."""
 
     def _cors_headers(self):
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        # Echo the origin only if it's on the allowlist; unknown origins get
+        # no CORS headers, so their browsers block both reads and writes.
+        origin = self.headers.get("Origin")
+        if origin and origin in allowed_origins():
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type, X-MP-Token")
+
+    def _check_auth(self):
+        """True if the request carries the local API token."""
+        return secrets.compare_digest(
+            self.headers.get("X-MP-Token", ""), API_TOKEN
+        )
 
     def _json_response(self, data, status=200):
         self.send_response(status)
@@ -100,12 +170,37 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self._dispatch(self._route_get)
 
+    def _serve_static(self, path):
+        filename, content_type = STATIC_FILES[path]
+        file_path = BASE_DIR / filename
+        if not file_path.exists():
+            self._error("Not found", 404)
+            return
+        data = file_path.read_bytes()
+        if content_type.startswith("text/html"):
+            # Inject the API token so same-origin pages authenticate
+            # automatically; file:// opens skip this and stay read-only.
+            data = data.replace(
+                b"<meta charset=\"UTF-8\">",
+                b"<meta charset=\"UTF-8\">\n"
+                + f'<meta name="mp-token" content="{API_TOKEN}">'.encode("utf-8"),
+                1,
+            )
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(data)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(data)
+
     def _route_get(self):
         parsed = urlparse(self.path)
         path = parsed.path
         params = parse_qs(parsed.query)
 
-        if path == "/api/search":
+        if path in STATIC_FILES:
+            self._serve_static(path)
+        elif path == "/api/search":
             self._handle_search(params)
         elif path == "/api/pantry":
             self._handle_pantry_get()
@@ -137,6 +232,10 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path
 
+        if not self._check_auth():
+            self._error("Unauthorized — missing or invalid X-MP-Token", 401)
+            return
+
         content_length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(content_length) if content_length else b""
 
@@ -164,6 +263,10 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path
         params = parse_qs(parsed.query)
+
+        if not self._check_auth():
+            self._error("Unauthorized — missing or invalid X-MP-Token", 401)
+            return
 
         if path == "/api/pantry":
             self._handle_pantry_remove(params)
@@ -451,7 +554,14 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
     # ─── Kroger OAuth (user-level cart access) ──────────────────────────────
     def _handle_kroger_login(self):
         """Return the Kroger authorize URL so the UI can redirect the user."""
-        url = build_authorize_url()
+        state = secrets.token_urlsafe(16)
+        now = time.time()
+        # Drop expired states, then register this one
+        for s, ts in list(OAUTH_STATES.items()):
+            if now - ts > OAUTH_STATE_TTL:
+                del OAUTH_STATES[s]
+        OAUTH_STATES[state] = now
+        url = build_authorize_url(state=state)
         if not url:
             self._error("Kroger credentials not configured")
             return
@@ -461,6 +571,16 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
         """OAuth redirect target — exchange the code for a user token."""
         code = params.get("code", [None])[0]
         error = params.get("error", [None])[0]
+        state = params.get("state", [None])[0]
+
+        # Reject callbacks we didn't initiate (login CSRF)
+        issued_at = OAUTH_STATES.pop(state, None) if state else None
+        if issued_at is None or time.time() - issued_at > OAUTH_STATE_TTL:
+            self._html_response(self._oauth_result_html(
+                ok=False,
+                message="Login session expired or invalid — please try connecting again.",
+            ))
+            return
 
         if error:
             self._html_response(self._oauth_result_html(
@@ -810,7 +930,6 @@ button {{ margin-top: 1.5rem; padding: 0.6rem 1.4rem; border: none; border-radiu
 
 
 def main():
-    import os
     # Cloud hosts (Render, Railway, Fly, Heroku) inject PORT and require 0.0.0.0
     env_port = os.environ.get("PORT")
     is_cloud = bool(env_port)
@@ -823,8 +942,9 @@ def main():
     parser.add_argument("--zip", help="Default zip code for Kroger store")
     args = parser.parse_args()
 
-    global DEFAULT_ZIP
+    global DEFAULT_ZIP, SERVER_PORT
     DEFAULT_ZIP = args.zip or os.environ.get("DEFAULT_ZIP")
+    SERVER_PORT = args.port
 
     # Pre-check Kroger credentials (optional — server works without them for sync/publish)
     token = get_access_token()
@@ -842,10 +962,12 @@ def main():
             print(f"  ⚠️  No store found for zip {DEFAULT_ZIP}")
 
     server = ThreadingHTTPServer((args.host, args.port), KrogerAPIHandler)
-    public_host = "your-deployment-url" if is_cloud else f"localhost:{args.port}"
-    print(f"\n🛒 Kroger API Server running on {args.host}:{args.port}")
+    print(f"\n🛒 Meal Planner server running on {args.host}:{args.port}")
     if not is_cloud:
-        print(f"   Open index-pro.html in your browser — Pantry tab can now search Kroger!")
+        print(f"   Open http://localhost:{args.port}/ in your browser.")
+        print(f"   (Opening index-pro.html directly still works read-only; to enable")
+        print(f"   editing from file://, run this once in the browser console:")
+        print(f"   localStorage.setItem('mp2_api_token', '{API_TOKEN}') )")
     print(f"   Press Ctrl+C to stop.\n")
 
     try:

@@ -2,6 +2,7 @@
 .env
 .kroger_token.json
 .kroger_user_token.json
+.api_token
 
 # Local state
 kroger_cache.json

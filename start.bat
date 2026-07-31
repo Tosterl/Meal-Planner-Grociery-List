@@ -51,11 +51,10 @@ echo.
 echo  Opening Meal Planner in your browser...
 echo.
 
-:: Open the browser first
-start "" "%~dp0index-pro.html"
-
-:: Small delay so browser opens before server output floods the screen
-timeout /t 2 >nul
+:: Open the browser after a short delay so the server is up first.
+:: The app is now served by the API server itself (enables Kroger
+:: features + auto-authentication) instead of opening the file directly.
+start "" cmd /c "timeout /t 3 >nul & start "" http://localhost:8099/"
 
 echo  Starting API server on http://localhost:8099 ...
 echo  Keep this window open while using the app.

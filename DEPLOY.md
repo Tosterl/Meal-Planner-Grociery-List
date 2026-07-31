@@ -8,16 +8,26 @@ Three options for putting `api_server.py` on the internet so your phone (or any 
 | **Render free tier** | $0 | 15 min | ~30s | "I want 24/7 but can wait" |
 | **Railway hobby** | $5/mo | 15 min | None | "I want it instant" |
 
-After any of these, **two more steps are required regardless**:
+After any of these, **these steps are required regardless**:
 
 1. Add the new public URL as a Kroger OAuth redirect URI:
    `https://<your-deployed-url>/api/kroger/callback`
    → done at [developer.kroger.com](https://developer.kroger.com) → your app → Web Redirect URI
-2. Tell the frontend to use the deployed URL:
-   - Open the app in any browser
+2. Set env vars on the host:
+   - `KROGER_REDIRECT_URI=https://<your-deployed-url>/api/kroger/callback`
+   - `ALLOWED_ORIGIN=https://<your-deployed-url>` (CORS allowlist — without it,
+     browsers block cross-origin API calls to the deployed server)
+3. Prefer opening the app at `https://<your-deployed-url>/` directly (the server
+   serves it with the access token injected). If you instead load the app from
+   somewhere else, tell it where the API is:
    - Open browser console (F12)
    - Run: `localStorage.setItem('mp2_api_base', 'https://your-deployed-url')`
+   - And set the token: `localStorage.setItem('mp2_api_token', '<contents of .api_token on the server>')`
    - Hard refresh
+
+Note: state-changing endpoints (pantry, publish, cart) now require the
+`X-MP-Token` header. The token lives in `.api_token` next to the server and is
+injected automatically into pages the server itself serves.
 
 ---
 
