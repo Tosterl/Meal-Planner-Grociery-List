@@ -12,17 +12,6 @@ Usage:
 """
 
 import sys
-import io
-
-# Fix Windows console encoding for emoji support. reconfigure() is idempotent —
-# unlike re-wrapping stdout, it can't double-wrap when modules import each other.
-if sys.platform == "win32":
-    for stream in (sys.stdout, sys.stderr):
-        try:
-            stream.reconfigure(encoding='utf-8', errors='replace')
-        except (AttributeError, ValueError):
-            pass
-
 import html
 import json
 import re
@@ -35,11 +24,15 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 
-# ─── Config ───────────────────────────────────────────────────────────────────
-BASE_DIR = Path(__file__).parent
-RECIPES_DIR = BASE_DIR / "recipes"
-RECIPES_DIR.mkdir(exist_ok=True)
+from mealplanner import (
+    setup_utf8_console,
+    parse_ingredient_string,
+    save_recipe,
+)
 
+setup_utf8_console()
+
+# ─── Config ───────────────────────────────────────────────────────────────────
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -543,140 +536,27 @@ def extract_meta(soup: BeautifulSoup, url: str) -> dict | None:
 # ─── Parsing Helpers ──────────────────────────────────────────────────────────
 
 def parse_duration(iso_str) -> int | None:
-    """Parse ISO 8601 duration (PT1H30M) to minutes."""
+    """Parse an ISO 8601 duration to whole minutes.
+
+    Accepts an optional date part and seconds ("P0DT1H30M", "PT1H30M",
+    "PT90S"). Seconds >= 30 round up to one extra minute (closer to the
+    true time than truncating); smaller remainders are ignored.
+    Fallbacks: None/empty -> None, plain number string -> int minutes,
+    anything unparseable -> None.
+    """
     if not iso_str:
         return None
-    match = re.match(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", str(iso_str))
+    s = str(iso_str).strip().upper()
+    match = re.match(r"^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$", s)
     if not match:
-        # Try plain number
-        nums = re.findall(r"\d+", str(iso_str))
+        # Try plain number ("45", "45 minutes")
+        nums = re.findall(r"\d+", s)
         return int(nums[0]) if nums else None
-    hours = int(match.group(1) or 0)
-    minutes = int(match.group(2) or 0)
-    return hours * 60 + minutes if (hours or minutes) else None
-
-
-def parse_ingredient_string(text: str) -> dict:
-    """Parse a natural language ingredient string into structured data."""
-    text = text.strip()
-    text = re.sub(r"\s+", " ", text)
-
-    # Common fraction patterns: ½, ¼, ¾, ⅓, ⅔, 1/2, etc
-    unicode_fracs = {"½": 0.5, "¼": 0.25, "¾": 0.75, "⅓": 0.33, "⅔": 0.67,
-                     "⅛": 0.125, "⅜": 0.375, "⅝": 0.625, "⅞": 0.875}
-
-    qty = 0
-    rest = text
-
-    # Try to extract leading number(s)
-    # Patterns: "1 1/2", "1½", "1/2", "1.5", "1"
-    m = re.match(r"^(\d+)\s+(\d+/\d+)\s+(.*)", text)
-    if m:
-        qty = int(m.group(1)) + eval_fraction(m.group(2))
-        rest = m.group(3)
-    else:
-        m = re.match(r"^(\d+)([½¼¾⅓⅔⅛⅜⅝⅞])\s+(.*)", text)
-        if m:
-            qty = int(m.group(1)) + unicode_fracs.get(m.group(2), 0)
-            rest = m.group(3)
-        else:
-            m = re.match(r"^([½¼¾⅓⅔⅛⅜⅝⅞])\s+(.*)", text)
-            if m:
-                qty = unicode_fracs.get(m.group(1), 0)
-                rest = m.group(2)
-            else:
-                m = re.match(r"^(\d+/\d+)\s+(.*)", text)
-                if m:
-                    qty = eval_fraction(m.group(1))
-                    rest = m.group(2)
-                else:
-                    m = re.match(r"^(\d+\.?\d*)\s+(.*)", text)
-                    if m:
-                        qty = float(m.group(1))
-                        rest = m.group(2)
-                    else:
-                        return {"qty": 1, "unit": "", "item": text}
-
-    # Now extract unit from rest
-    unit = ""
-    known_units = [
-        "tablespoons", "tablespoon", "tbsp", "tbs",
-        "teaspoons", "teaspoon", "tsp",
-        "cups", "cup",
-        "ounces", "ounce", "oz",
-        "pounds", "pound", "lbs", "lb",
-        "cloves", "clove",
-        "cans", "can",
-        "slices", "slice",
-        "pieces", "piece",
-        "pinch", "pinches",
-        "dash", "dashes",
-        "bunch", "bunches",
-        "head", "heads",
-        "stalk", "stalks",
-        "sprig", "sprigs",
-        "large", "medium", "small",
-        "whole",
-        "quart", "quarts", "qt",
-        "pint", "pints", "pt",
-        "gallon", "gallons", "gal",
-        "liter", "liters", "ml", "milliliters",
-        "gram", "grams", "g", "kg", "kilogram",
-        "package", "packages", "pkg",
-        "container", "containers",
-        "jar", "jars",
-        "bottle", "bottles",
-        "bag", "bags",
-        "box", "boxes",
-    ]
-
-    UNIT_NORMALIZE = {
-        "tablespoons": "tbsp", "tablespoon": "tbsp", "tbs": "tbsp",
-        "teaspoons": "tsp", "teaspoon": "tsp",
-        "cups": "cup",
-        "ounces": "oz", "ounce": "oz",
-        "pounds": "lb", "pound": "lb", "lbs": "lb",
-        "cloves": "clove",
-        "cans": "can",
-        "slices": "slice",
-        "pieces": "piece",
-        "pinches": "pinch",
-        "dashes": "dash",
-        "bunches": "bunch",
-        "heads": "head",
-        "stalks": "stalk",
-        "sprigs": "sprig",
-    }
-
-    rest_words = rest.split()
-    if rest_words:
-        first = rest_words[0].lower().rstrip(".,")
-        if first in known_units:
-            unit = UNIT_NORMALIZE.get(first, first)
-            rest = " ".join(rest_words[1:])
-
-    # Clean up item name
-    item = rest.strip().rstrip(".,")
-    # Remove parenthetical notes for cleaner item names but keep them in mind
-    item_clean = re.sub(r"\s*\(.*?\)\s*", " ", item).strip()
-
-    if not item_clean:
-        item_clean = item
-
-    return {
-        "qty": round(qty, 3) if qty else 1,
-        "unit": unit,
-        "item": item_clean,
-    }
-
-
-def eval_fraction(frac_str: str) -> float:
-    """Safely evaluate a fraction string like '1/2'."""
-    try:
-        parts = frac_str.split("/")
-        return float(parts[0]) / float(parts[1])
-    except (ValueError, ZeroDivisionError, IndexError):
-        return 0
+    days, hours, minutes, seconds = (int(g or 0) for g in match.groups())
+    total = days * 1440 + hours * 60 + minutes
+    if seconds >= 30:
+        total += 1
+    return total or None
 
 
 def guess_meal_types(name: str, tags: list) -> list:
@@ -701,13 +581,6 @@ def guess_meal_types(name: str, tags: list) -> list:
 
     types.append("dinner")  # Almost everything can be dinner
     return list(dict.fromkeys(types))
-
-
-def slugify(name: str) -> str:
-    """Filename-safe slug: non-alphanumerics collapse to hyphens."""
-    slug = name.lower().strip().replace("'", "").replace('"', "")
-    slug = re.sub(r"[^a-z0-9]+", "-", slug).strip("-")
-    return slug or "recipe"
 
 
 # ─── CLI ──────────────────────────────────────────────────────────────────────
@@ -775,7 +648,7 @@ Supported sites (any site with Schema.org Recipe data):
             print_recipe(recipe)
 
         if args.save:
-            save_recipe(recipe)
+            save_scraped_recipe(recipe)
 
     elif args.command == "bulk":
         # Bulk import
@@ -784,7 +657,7 @@ Supported sites (any site with Schema.org Recipe data):
             print(f"❌ File not found: {args.file}")
             sys.exit(1)
 
-        urls = [line.strip() for line in filepath.read_text().splitlines() if line.strip() and not line.startswith("#")]
+        urls = [line.strip() for line in filepath.read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")]
         print(f"📋 Found {len(urls)} URLs to scrape\n")
 
         success = 0
@@ -795,7 +668,7 @@ Supported sites (any site with Schema.org Recipe data):
                 if args.dairy_free:
                     recipe = adapt_recipe_dairy_free(recipe)
                 if args.save:
-                    save_recipe(recipe)
+                    save_scraped_recipe(recipe)
                 success += 1
             time.sleep(1)  # Be polite
 
@@ -859,16 +732,10 @@ def print_recipe(recipe: dict):
     print()
 
 
-def save_recipe(recipe: dict):
-    """Save recipe to the recipes directory."""
-    slug = slugify(recipe["name"])
-    filepath = RECIPES_DIR / f"{slug}.json"
-
-    # Remove internal tracking fields before saving
-    save_data = {k: v for k, v in recipe.items() if k != "dairy_subs"}
-
-    with open(filepath, "w") as f:
-        json.dump(save_data, f, indent=2)
+def save_scraped_recipe(recipe: dict):
+    """Persist via shared storage; dairy_subs is display-only, not saved."""
+    recipe.pop("dairy_subs", None)
+    filepath = save_recipe(recipe)
     print(f"  💾 Saved: {filepath}")
 
 

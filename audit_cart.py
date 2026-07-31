@@ -22,9 +22,7 @@ Examples:
 from __future__ import annotations
 
 import argparse
-import io
 import json
-import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -32,49 +30,29 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent
 sys.path.insert(0, str(BASE_DIR))
 
-
-def _setup_stdout_utf8():
-    """Set Windows console to UTF-8. Only call when running as __main__."""
-    if sys.platform == "win32":
-        try:
-            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-        except (ValueError, AttributeError):
-            pass  # Unavailable (e.g. redirected stream without reconfigure)
+from mealplanner import (
+    categorize,
+    list_recipes,
+    load_latest_plan,
+    normalize_unit,
+    setup_utf8_console,
+    slugify,
+)
 
 
 # ────────────────────────────────────────────────────────────────────────────
 # Data loaders
 # ────────────────────────────────────────────────────────────────────────────
 
-def load_latest_plan() -> dict | None:
-    plans_dir = BASE_DIR / "plans"
-    if not plans_dir.exists():
-        return None
-    plans = sorted(plans_dir.glob("plan_*.json"), reverse=True)
-    if not plans:
-        return None
-    with open(plans[0], encoding="utf-8") as f:
-        return json.load(f)
-
-
-def load_recipes() -> dict[str, dict]:
-    """Load recipes from /recipes folder, keyed by slug."""
-    recipes_dir = BASE_DIR / "recipes"
+def build_recipe_lookup() -> dict[str, dict]:
+    """Index recipes by slug (and lowercased-name key) to match plan entries."""
     out = {}
-    if not recipes_dir.exists():
-        return out
-    for fp in recipes_dir.glob("*.json"):
-        try:
-            with open(fp, encoding="utf-8") as f:
-                recipe = json.load(f)
-            out[fp.stem] = recipe
-            # Also key by lowercased name to match plan entries
-            name_key = recipe.get("name", "").lower().replace(" ", "-")
-            if name_key:
-                out[name_key] = recipe
-        except (json.JSONDecodeError, OSError):
-            continue
+    for recipe in list_recipes():
+        name = recipe.get("name", "")
+        out[slugify(name)] = recipe
+        name_key = name.lower().replace(" ", "-")
+        if name_key:
+            out[name_key] = recipe
     return out
 
 
@@ -95,17 +73,6 @@ def load_kroger_pantry() -> list[dict]:
         return []
     # Filter to dict entries only
     return [p for p in data if isinstance(p, dict)]
-
-
-def slugify(name: str) -> str:
-    """Filename-safe slug: non-alphanumerics collapse to hyphens."""
-    slug = name.lower().strip().replace("'", "").replace('"', "")
-    slug = re.sub(r"[^a-z0-9]+", "-", slug).strip("-")
-    return slug or "recipe"
-
-
-def normalize_unit(u: str) -> str:
-    return (u or "").strip().lower()
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -141,8 +108,13 @@ def collect_meals_for_window(plan: dict, days: int) -> list[str]:
     return recipes_in_window
 
 
-def aggregate_ingredients(recipe_names: list[str], recipes: dict) -> dict[str, dict[str, float]]:
-    """Sum ingredients across all planned recipes. Returns { item: { unit: qty } }."""
+def aggregate_ingredients(
+    recipe_names: list[str], recipes: dict
+) -> tuple[dict[str, dict[str, float]], list[str]]:
+    """Sum ingredients across all planned recipes.
+
+    Returns ({ item: { unit: qty } }, [missing recipe names]).
+    """
     grocery: dict[str, dict[str, float]] = {}
     missing_recipes = []
 
@@ -209,36 +181,6 @@ def format_needed(units: dict[str, float]) -> str:
 
 
 # ────────────────────────────────────────────────────────────────────────────
-# Categorization (for nicer report output)
-# ────────────────────────────────────────────────────────────────────────────
-
-CATEGORIES = {
-    "Meat & Protein": ["chicken", "beef", "pork", "turkey", "salmon", "shrimp",
-                        "fish", "sausage", "bacon", "steak", "ground", "tofu",
-                        "tempeh", "egg"],
-    "Produce": ["onion", "garlic", "tomato", "pepper", "lettuce", "spinach",
-                 "carrot", "celery", "broccoli", "avocado", "lemon", "lime",
-                 "ginger", "parsley", "cilantro", "basil", "potato", "blueberries",
-                 "strawberries", "banana", "apple"],
-    "Dairy": ["milk", "butter", "cheese", "yogurt", "cream"],
-    "Bread & Grains": ["bread", "tortilla", "rice", "oats", "pasta", "spaghetti",
-                        "noodle", "flour"],
-    "Pantry": ["oil", "vinegar", "soy sauce", "honey", "sugar", "salt", "pepper",
-                "salsa", "broth", "stock", "seeds", "chia", "vanilla", "cornstarch"],
-    "Spices": ["cumin", "paprika", "chili powder", "garlic powder", "onion powder",
-                "oregano", "thyme", "rosemary", "sesame", "red pepper"],
-}
-
-
-def categorize(item: str) -> str:
-    item_l = item.lower()
-    for cat, keywords in CATEGORIES.items():
-        if any(kw in item_l for kw in keywords):
-            return cat
-    return "Other"
-
-
-# ────────────────────────────────────────────────────────────────────────────
 # Live Kroger lookup (optional — needs --kroger)
 # ────────────────────────────────────────────────────────────────────────────
 
@@ -267,7 +209,7 @@ def build_audit(days: int, live: bool, zip_code: str | None) -> dict:
     if not plan:
         return {"error": "No meal plan found in plans/ — run 'python publish.py' first"}
 
-    recipes = load_recipes()
+    recipes = build_recipe_lookup()
     if not recipes:
         return {"error": "No recipes found in recipes/"}
 
@@ -474,5 +416,5 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    _setup_stdout_utf8()
+    setup_utf8_console()
     sys.exit(main())

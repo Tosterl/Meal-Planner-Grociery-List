@@ -1,82 +1,103 @@
 # 🛒 Grocery List
-Generated: 2026-02-06 20:05
+Generated: 2026-07-30 20:29
 
 ## 🍞 Bread & Bakery
-- [ ] 6-Inch Tortillas — 8
+- [ ] Large Flour Tortillas — 24
+- [ ] Old-Fashioned Rolled Oats — 2½ cup
+- [ ] Rolled Oats — 12 cup
+- [ ] Small Flour Tortillas — 24
 
-## 🛍️ Other
-- [ ] Dijon Mustard — 2 tbsp
-- [ ] Dried Rosemary — 1½ tsp
-- [ ] Italian Seasoning — ½ tsp
-- [ ] Sriracha — 1 tsp
-- [ ] Worcestershire Sauce — 1 tbsp
+## 🛒 Other
+- [ ] Chopped Peanuts — ½ cup
+- [ ] Kimchi** Plus 2-4 Tbsp Kimchi Juice — 2 cup
+- [ ] Sriracha — 6 tbsp + 4 tsp
+- [ ] Water — 1.4 cup + 2 tbsp
 
 ## 🥩 Meat & Protein
-- [ ] Beef Broth — 2 cup
-- [ ] Beef Stew Meat — 1½ lb
-- [ ] Boneless, Skinless Chicken Breast — 1 lb
-- [ ] Boneless, Skinless Chicken Breasts — 2
-- [ ] Boneless, Skinless Chicken Breasts * — 2
-- [ ] Chicken Breast — 1 lb
-- [ ] Chicken Broth — 6 cup
-- [ ] Ground Cumin — 1 tsp
-- [ ] Ground Turkey — 1 lb
+- [ ] Bacon — 48 slice
+- [ ] Boneless Skinless Chicken Thighs* — 1 lb
+- [ ] Boneless, Skinless Chicken Breast — 2
+- [ ] Boneless, Skinless Chicken Breasts — 8
+- [ ] Chicken Breast — 4½ lb
+- [ ] Egg — 1 large
+- [ ] Eggs — 48 + 6 large
+- [ ] Ground Beef — 3 lb
 
 ## 🥫 Pantry
-- [ ] 15Oz. Can Black Beans — 1
-- [ ] All-Purpose Flour — ¼ cup + 4 tbsp
-- [ ] Brown Sugar — 1½ tsp
-- [ ] Cooking Oil — 5 tbsp
-- [ ] Honey — ⅓ cup
-- [ ] Long Grain White Rice — 2 cup
-- [ ] Olive Oil — 8 tbsp
-- [ ] Penne Pasta — ½ lb
-- [ ] Rice Vinegar — 1 tbsp
-- [ ] Soy Sauce — 3 tbsp
-- [ ] Sugar — 1 tsp
-- [ ] Toasted Sesame Oil — 2 tsp
+- [ ] 13.5 Oz. Can Coconut Milk — 2
+- [ ] All-Purpose Flour — 4 tbsp
+- [ ] Brown Sugar — 11 tbsp
+- [ ] Brown Sugar** — 3 tbsp
+- [ ] Chia Seeds — 24 tbsp
+- [ ] Cooked Jasmine Rice — 4 cup
+- [ ] Cooked, Day-Old Rice — 8 cup
+- [ ] Cooking Oil — 4 tbsp
+- [ ] Cooking Oil, Divided — 6 tbsp
+- [ ] Cornstarch — 7½ tbsp
+- [ ] Honey — 24 tbsp + ⅔ cup
+- [ ] Light Cooking Oil — 4 tbsp
+- [ ] Lo Mein Noodles — 4 oz
+- [ ] Noodles* — 16 oz
+- [ ] Olive Oil — 9 tbsp
+- [ ] Rice — 6 cup
+- [ ] Rice Vinegar — 3 tbsp
+- [ ] Salsa — 3 cup
+- [ ] Smooth Natural-Style Peanut Butter — ⅔ cup
+- [ ] Soy Sauce — 15 tbsp + 0.9 cup
+- [ ] Spaghetti — 3 lb
+- [ ] Vegetable Broth — 5 cup
+- [ ] Vegetable Oil — 3 tbsp
+- [ ] ½ Tbsp Cornstarch — 2
 
 ## 🥬 Produce
-- [ ] 10Oz. Can Diced Tomatoes With Green Chiles — 1
-- [ ] Bell Peppers, Any Color — 3
-- [ ] Black Pepper — ¾ tsp
-- [ ] Carrots — 3
-- [ ] Cayenne Pepper — ⅔ tsp
-- [ ] Celery — 4 stalk
-- [ ] Cilantro — ¼ bunch
-- [ ] Cornstarch — 1 tbsp
-- [ ] Fire Roasted Diced Tomatoes — 15 oz
-- [ ] Fresh Cilantro — ½ bunch
-- [ ] Freshly Cracked Black Pepper — ¾ tsp
-- [ ] Frozen Corn — 1 cup
-- [ ] Garlic — 4 clove
-- [ ] Garlic Bulb ** — 1 whole
-- [ ] Garlic Powder — 1¾ tsp
-- [ ] Green Onions — ½ bunch
-- [ ] Green Onions, Sliced — 5
-- [ ] Lime — 2
-- [ ] Of Garlic, Minced — 4 clove
-- [ ] Onion Powder — 1 tsp
-- [ ] Red Potatoes — 2 lb
-- [ ] Salt And Pepper To Taste ($0.04) — 1
-- [ ] Yellow Onion — 2
-- [ ] Yellow Onion, Diced — 1
-- [ ] Yellow Onions — 2 small
+- [ ] Avocado — 12
+- [ ] Blueberries — 6 cup
+- [ ] Broccoli — 1½ lb
+- [ ] Broccoli Florets — 6 cup
+- [ ] Carrot — 2
+- [ ] Carrots — 4
+- [ ] Chopped Cilantro — ½ cup
+- [ ] Fresh Ginger — 3 tbsp
+- [ ] Fresh Lime — 2
+- [ ] Fresh Parsley — ¾ cup
+- [ ] Garlic — 24 clove
+- [ ] Garlic, Minced — 13 clove
+- [ ] Grated Fresh Ginger — 8½ tsp
+- [ ] Grated Fresh Ginger*** — 1 tsp
+- [ ] Green Onion, Sliced — 1
+- [ ] Green Onions — 12 + 2 whole
+- [ ] Green Onions, Sliced — 4
+- [ ] Handful Fresh Cilantro — 1
+- [ ] Inch Broccoli Stem * — 12
+- [ ] Lemon — 3
+- [ ] Lettuce — 3 cup
+- [ ] Lime — 3
+- [ ] Mushrooms — 20
+- [ ] Of Garlic, Minced — 8 clove
+- [ ] Onion — 2 small
+- [ ] Red Bell Pepper — 5
+- [ ] Spinach — 2½ cup
+- [ ] Tomato — 6
 
 ## 🧀 Dairy
-- [ ] Butter — 3 tbsp
-- [ ] Butter, Divided — 2 tbsp
-- [ ] Cream Cheese — 2 oz
-- [ ] Heavy Cream — ¾ cup
-- [ ] Sour Cream — ½ cup
+- [ ] Butter — 24 tbsp
+- [ ] Greek Yogurt — 6 cup
+- [ ] Milk — 12 cup
+- [ ] Parmesan Cheese — 1½ cup
+- [ ] Shredded Cheddar Cheese — 9 cup
+- [ ] Sour Cream — 1½ cup
+- [ ] Vegan Butter (Earth Balance) — 5 tsp + 6 tbsp
 
 ## 🧂 Spices & Seasonings
-- [ ] Chili Powder — 2 tbsp
-- [ ] Cumin — ¼ tsp
-- [ ] Dried Oregano — ½ tsp
-- [ ] Dried Thyme — 1½ tsp
-- [ ] Oregano — 1 tsp
-- [ ] Paprika — ½ tbsp
-- [ ] Salt — 3 tsp
-- [ ] Smoked Paprika — 3 tsp
-- [ ] Thyme — 1 tsp
+- [ ] Black Pepper — 1 tsp
+- [ ] Chili Powder — 3 tbsp
+- [ ] Crushed Red Pepper — ¼ tsp
+- [ ] Cumin — 3 tsp
+- [ ] Each Salt And Pepper — 1 pinch
+- [ ] Garlic Powder — 2½ tsp
+- [ ] Onion Powder — 1½ tsp
+- [ ] Red Pepper Flakes — 1½ tsp
+- [ ] Salt — 2 tsp
+- [ ] Sesame Oil — 3 tbsp
+- [ ] Sesame Seeds — 1 tbsp
+- [ ] Toasted Sesame Oil — 12½ tsp + 1 tbsp

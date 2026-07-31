@@ -4,94 +4,54 @@ Meal Planner & Grocery List Generator
 A CLI tool to manage recipes, plan weekly meals, and generate consolidated grocery lists.
 """
 
-import sys
-import io
-
-# Fix Windows console encoding for emoji support. reconfigure() is idempotent —
-# unlike re-wrapping stdout, it can't double-wrap when modules import each other.
-if sys.platform == "win32":
-    for stream in (sys.stdout, sys.stderr):
-        try:
-            stream.reconfigure(encoding='utf-8', errors='replace')
-        except (AttributeError, ValueError):
-            pass
-
 import json
-import os
 import random
-import re
 import argparse
 from datetime import datetime, timedelta
 from collections import defaultdict
 from pathlib import Path
 
+from mealplanner import (
+    BASE_DIR,
+    RECIPES_DIR,
+    PLANS_DIR,
+    HISTORY_FILE,
+    UNIT_ALIASES,
+    CATEGORY_EMOJI,
+    categorize,
+    delete_recipe,
+    list_recipes,
+    load_latest_plan,
+    load_recipe,
+    load_usage_history,
+    normalize_unit,
+    parse_ingredient_string,
+    record_usage,
+    save_recipe,
+    save_usage_history,
+    setup_utf8_console,
+    slugify,
+)
+
+# Fix Windows console encoding for emoji support (idempotent).
+setup_utf8_console()
+
 # ─── Config ───────────────────────────────────────────────────────────────────
-BASE_DIR = Path(__file__).parent
-RECIPES_DIR = BASE_DIR / "recipes"
-PLANS_DIR = BASE_DIR / "plans"
 FAVORITES_FILE = BASE_DIR / "favorites.json"
-HISTORY_FILE = BASE_DIR / "usage_history.json"
 BLOCKED_FILE = BASE_DIR / "blocked.json"
-
-RECIPES_DIR.mkdir(exist_ok=True)
-PLANS_DIR.mkdir(exist_ok=True)
-
-# Ingredient unit normalization map
-UNIT_ALIASES = {
-    "tablespoon": "tbsp", "tablespoons": "tbsp",
-    "teaspoon": "tsp", "teaspoons": "tsp",
-    "cup": "cup", "cups": "cup",
-    "ounce": "oz", "ounces": "oz",
-    "pound": "lb", "pounds": "lb",
-    "clove": "clove", "cloves": "clove",
-    "can": "can", "cans": "can",
-    "piece": "piece", "pieces": "piece",
-    "slice": "slice", "slices": "slice",
-    "whole": "whole",
-}
 
 MEAL_SLOTS = ["breakfast", "lunch", "dinner"]
 DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 
 # ─── Recipe Management ────────────────────────────────────────────────────────
+# Storage (load/save/list/delete) lives in mealplanner.storage; CLI feedback is
+# printed at the call sites below.
 
-def load_recipe(name: str) -> dict | None:
-    """Load a single recipe by name."""
-    filepath = RECIPES_DIR / f"{slugify(name)}.json"
-    if filepath.exists():
-        with open(filepath) as f:
-            return json.load(f)
-    return None
-
-
-def save_recipe(recipe: dict):
-    """Save a recipe to disk."""
-    filepath = RECIPES_DIR / f"{slugify(recipe['name'])}.json"
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(recipe, f, indent=2)
+def save_recipe_with_feedback(recipe: dict):
+    """Save a recipe and print user feedback."""
+    save_recipe(recipe)
     print(f"✅ Recipe saved: {recipe['name']}")
-
-
-def list_recipes(tag_filter: str = None) -> list[dict]:
-    """List all recipes, optionally filtered by tag."""
-    recipes = []
-    for f in sorted(RECIPES_DIR.glob("*.json")):
-        with open(f) as fh:
-            recipe = json.load(fh)
-            if tag_filter is None or tag_filter.lower() in [t.lower() for t in recipe.get("tags", [])]:
-                recipes.append(recipe)
-    return recipes
-
-
-def delete_recipe(name: str):
-    """Delete a recipe by name."""
-    filepath = RECIPES_DIR / f"{slugify(name)}.json"
-    if filepath.exists():
-        filepath.unlink()
-        print(f"🗑️  Deleted: {name}")
-    else:
-        print(f"❌ Recipe not found: {name}")
 
 
 def add_recipe_interactive():
@@ -163,7 +123,7 @@ def add_recipe_interactive():
         "created": datetime.now().isoformat(),
     }
 
-    save_recipe(recipe)
+    save_recipe_with_feedback(recipe)
 
 
 def show_recipe(name: str):
@@ -399,15 +359,6 @@ def print_plan(plan: dict):
         print(f"     • {stats.get('total_meals', stats.get('unique_recipes', 0))} total meals")
         print(f"     • {stats['unique_ingredients']} unique grocery items")
         print(f"     • {stats['avg_ingredients_per_recipe']} avg ingredients/recipe")
-
-
-def load_latest_plan() -> dict | None:
-    """Load the most recent plan."""
-    plans = sorted(PLANS_DIR.glob("plan_*.json"), reverse=True)
-    if plans:
-        with open(plans[0]) as f:
-            return json.load(f)
-    return None
 
 
 # ─── Grocery List ─────────────────────────────────────────────────────────────
@@ -704,39 +655,16 @@ def export_grocery_markdown(grocery: dict, sections: dict, filepath: Path, scale
 
 
 def categorize_groceries(grocery: dict) -> dict:
-    """Simple keyword-based categorization of grocery items."""
-    categories = {
-        "🥩 Meat & Protein": ["chicken", "beef", "pork", "turkey", "salmon", "shrimp", "fish", "sausage",
-                               "bacon", "steak", "ground", "tofu", "tempeh", "egg"],
-        "🥬 Produce": ["onion", "garlic", "tomato", "pepper", "lettuce", "spinach", "carrot", "celery",
-                        "potato", "broccoli", "mushroom", "avocado", "lemon", "lime", "ginger",
-                        "cilantro", "parsley", "basil", "jalapeño", "cucumber", "zucchini", "corn",
-                        "bell pepper", "green onion", "scallion"],
-        "🧀 Dairy": ["milk", "cheese", "butter", "cream", "yogurt", "sour cream", "egg"],
-        "🍞 Bread & Bakery": ["bread", "tortilla", "bun", "roll", "pita", "naan"],
-        "🥫 Pantry": ["rice", "pasta", "flour", "sugar", "oil", "vinegar", "soy sauce", "broth",
-                       "stock", "can", "bean", "lentil", "chickpea", "tomato sauce", "tomato paste",
-                       "coconut milk", "honey", "maple syrup", "peanut butter"],
-        "🧂 Spices & Seasonings": ["salt", "pepper", "cumin", "paprika", "oregano", "thyme",
-                                     "cinnamon", "chili powder", "cayenne", "turmeric", "curry",
-                                     "garlic powder", "onion powder"],
-    }
+    """Group grocery items into emoji-labeled store sections.
 
+    Returns {"🥩 Meat & Protein": {item, ...}, ...} — same shape callers
+    (generate_grocery_list, export_grocery_markdown, publish.py) expect.
+    """
     result = defaultdict(set)
-    categorized = set()
-
     for item in grocery:
-        item_lower = item.lower()
-        placed = False
-        for section, keywords in categories.items():
-            if any(kw in item_lower for kw in keywords):
-                result[section].add(item)
-                placed = True
-                categorized.add(item)
-                break
-        if not placed:
-            result["🛍️ Other"].add(item)
-
+        category = categorize(item)
+        emoji = CATEGORY_EMOJI.get(category, CATEGORY_EMOJI["Other"])
+        result[f"{emoji} {category}"].add(item)
     return dict(result)
 
 
@@ -763,7 +691,7 @@ def toggle_favorite(name: str):
 
 def load_favorites() -> list:
     if FAVORITES_FILE.exists():
-        with open(FAVORITES_FILE) as f:
+        with open(FAVORITES_FILE, encoding="utf-8") as f:
             return json.load(f)
     return []
 
@@ -773,7 +701,7 @@ def load_favorites() -> list:
 def load_blocked() -> list:
     """Load list of blocked recipe slugs."""
     if BLOCKED_FILE.exists():
-        with open(BLOCKED_FILE) as f:
+        with open(BLOCKED_FILE, encoding="utf-8") as f:
             return json.load(f)
     return []
 
@@ -785,37 +713,8 @@ def save_blocked(blocked: list):
 
 
 # ─── Usage History & Smart Planning ───────────────────────────────────────────
-
-def load_usage_history() -> dict:
-    """Load recipe usage history. Format: {recipe_slug: [list of ISO date strings]}"""
-    if HISTORY_FILE.exists():
-        with open(HISTORY_FILE) as f:
-            return json.load(f)
-    return {}
-
-
-def save_usage_history(history: dict):
-    """Save recipe usage history."""
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(history, f, indent=2)
-
-
-def record_usage(recipe_names: list[str], date: str = None):
-    """Record that recipes were used on a given date."""
-    history = load_usage_history()
-    date = date or datetime.now().strftime("%Y-%m-%d")
-
-    for name in recipe_names:
-        slug = slugify(name)
-        if slug not in history:
-            history[slug] = []
-        if date not in history[slug]:
-            history[slug].append(date)
-            # Keep only last 90 days of history
-            history[slug] = sorted(history[slug])[-90:]
-
-    save_usage_history(history)
-
+# load_usage_history / save_usage_history / record_usage come from
+# mealplanner.storage; record_usage prunes entries older than 90 days by date.
 
 def days_since_last_used(recipe_name: str, history: dict) -> int:
     """Return number of days since recipe was last used. Returns 999 if never used."""
@@ -948,66 +847,20 @@ def smart_select_recipe(candidates: list[dict], selected_recipes: list[dict],
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
-def slugify(name: str) -> str:
-    """Convert a recipe name to a filename-safe slug.
-
-    Whitelist approach: anything that isn't a-z/0-9 collapses to a hyphen,
-    so names with /, &, : etc. can never escape the recipes/ directory.
-    """
-    slug = name.lower().strip().replace("'", "").replace('"', "")
-    slug = re.sub(r"[^a-z0-9]+", "-", slug).strip("-")
-    return slug or "recipe"
-
-
-def normalize_unit(unit: str) -> str:
-    """Normalize unit strings."""
-    unit = unit.lower().strip().rstrip(".")
-    return UNIT_ALIASES.get(unit, unit)
-
-
 def parse_ingredient(line: str) -> dict | None:
-    """Parse an ingredient string like '2 cups rice', '1/2 lb chicken',
-    or a mixed number like '1 1/2 lb chicken breast'."""
-    parts = line.strip().split()
-    if len(parts) < 2:
+    """Parse an ingredient line via mealplanner.parse_ingredient_string.
+
+    Preserves the legacy contract: returns None when the line is blank,
+    a single word, or has no item text; unparseable quantities fall back to
+    {"qty": 1, "unit": "", "item": line}.
+    """
+    line = line.strip()
+    if len(line.split()) < 2:
         return None
-
-    # Parse quantity (handle fractions like 1/2)
-    qty_str = parts[0]
-    try:
-        if "/" in qty_str:
-            num, den = qty_str.split("/")
-            qty = float(num) / float(den)
-        else:
-            qty = float(qty_str)
-    except (ValueError, ZeroDivisionError):
-        # Entire line might be the item with no qty
-        return {"qty": 1, "unit": "", "item": line.strip()}
-
-    # Mixed number: '1 1/2 lb chicken' — fold the fraction into the qty
-    idx = 1
-    if idx < len(parts) and re.fullmatch(r"\d+/\d+", parts[idx]):
-        num, den = parts[idx].split("/")
-        if float(den) != 0:
-            qty += float(num) / float(den)
-        idx += 1
-
-    if idx >= len(parts):
+    parsed = parse_ingredient_string(line)
+    if not parsed.get("item"):
         return None
-
-    # Check if next part is a unit
-    potential_unit = parts[idx].lower().rstrip(".")
-    if potential_unit in UNIT_ALIASES or potential_unit in UNIT_ALIASES.values():
-        unit = normalize_unit(potential_unit)
-        item = " ".join(parts[idx + 1:])
-    else:
-        unit = ""
-        item = " ".join(parts[idx:])
-
-    if not item:
-        return None
-
-    return {"qty": qty, "unit": unit, "item": item}
+    return parsed
 
 
 def format_qty(qty: float) -> str:
@@ -1135,7 +988,10 @@ Examples:
         show_recipe(args.name)
 
     elif args.command == "delete":
-        delete_recipe(args.name)
+        if delete_recipe(args.name):
+            print(f"🗑️  Deleted: {args.name}")
+        else:
+            print(f"❌ Recipe not found: {args.name}")
 
     elif args.command == "plan":
         generate_plan(days=args.days, meals=args.meals, strategy=args.strategy,
@@ -1182,9 +1038,9 @@ Examples:
 
     elif args.command == "import":
         try:
-            with open(args.filepath) as f:
+            with open(args.filepath, encoding="utf-8") as f:
                 recipe = json.load(f)
-            save_recipe(recipe)
+            save_recipe_with_feedback(recipe)
         except Exception as e:
             print(f"❌ Import failed: {e}")
 
@@ -1271,7 +1127,7 @@ Examples:
                 recipes = data.get("recipes", data if isinstance(data, list) else [data])
                 for recipe in recipes:
                     if recipe.get("name"):
-                        save_recipe(recipe)
+                        save_recipe_with_feedback(recipe)
                         imported += 1
 
                 # Merge usage history
