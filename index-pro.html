@@ -2520,6 +2520,14 @@ const LS = {
   set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
 };
 
+// XSS-escaping helpers: use esc() for any dynamic string interpolated into innerHTML,
+// escAttr() at attribute sites, safeUrl() for src/href values, encJs() for strings
+// passed through inline event-handler attributes (decode with decodeURIComponent).
+function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function escAttr(s){ return esc(s); }
+function safeUrl(u){ u = String(u ?? '').trim(); return /^https?:\/\//i.test(u) ? u : ''; }
+function encJs(s){ return encodeURIComponent(String(s ?? '')).replace(/'/g,'%27'); }
+
 const getRecipes = () => LS.get('mp2_recipes', {});
 const setRecipes = v => LS.set('mp2_recipes', v);
 const getPlan = () => LS.get('mp2_plan', {});
@@ -2814,7 +2822,7 @@ function renderRecipes() {
   fb.innerHTML = '';
   if (allTags.size) {
     fb.innerHTML = `<button class="filter-btn ${!tagFilter?'active':''}" onclick="tagFilter=null;renderRecipes()">All</button>`
-      + [...allTags].sort().map(t => `<button class="filter-btn ${tagFilter===t?'active':''}" onclick="tagFilter='${t}';renderRecipes()">${t}</button>`).join('');
+      + [...allTags].sort().map(t => `<button class="filter-btn ${tagFilter===t?'active':''}" onclick="tagFilter=decodeURIComponent('${encJs(t)}');renderRecipes()">${esc(t)}</button>`).join('');
   }
 
   const filtered = keys.filter(k => !tagFilter || (recipes[k].tags||[]).includes(tagFilter));
@@ -2829,8 +2837,8 @@ function renderRecipes() {
     const isFav = favs.includes(slug);
     const isBlocked = blocked.includes(slug);
     const total = (r.prep_time||0)+(r.cook_time||0);
-    const tags = (r.meal_types||[]).map(m=>`<span class="tag tag-meal">${m}</span>`).join('')
-      + (r.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+    const tags = (r.meal_types||[]).map(m=>`<span class="tag tag-meal">${esc(m)}</span>`).join('')
+      + (r.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('');
 
     // Cost estimate (Kroger as default)
     const cost = getRecipeCost(r, 'kroger');
@@ -2846,19 +2854,19 @@ function renderRecipes() {
 
     // Image
     const imgHtml = r.image_url
-      ? `<img class="recipe-card-img" src="${r.image_url}" alt="${r.name}" onerror="this.outerHTML='<div class=recipe-card-img-placeholder>🍲</div>'">`
+      ? `<img class="recipe-card-img" src="${escAttr(safeUrl(r.image_url))}" alt="${escAttr(r.name)}" onerror="this.outerHTML='<div class=recipe-card-img-placeholder>🍲</div>'">`
       : `<div class="recipe-card-img-placeholder">🍲</div>`;
 
-    return `<div class="card recipe-card ${isBlocked?'blocked':''}" onclick="showDetail('${slug}')">
+    return `<div class="card recipe-card ${isBlocked?'blocked':''}" onclick="showDetail('${escAttr(slug)}')">
       <div class="card-actions">
-        <button class="card-action-btn ${isFav?'fav-active':''}" onclick="event.stopPropagation();toggleFav('${slug}')">${isFav?'❤️':'🤍'}</button>
-        <button class="card-action-btn" onclick="event.stopPropagation();openEditRecipe('${slug}')">✏️</button>
-        <button class="card-action-btn" onclick="event.stopPropagation();toggleBlocked('${slug}')" title="${isBlocked?'Unblock':'Block from auto-fill'}">${isBlocked?'🔓':'🚫'}</button>
-        <button class="card-action-btn" onclick="event.stopPropagation();deleteRecipe('${slug}')">🗑️</button>
+        <button class="card-action-btn ${isFav?'fav-active':''}" onclick="event.stopPropagation();toggleFav('${escAttr(slug)}')">${isFav?'❤️':'🤍'}</button>
+        <button class="card-action-btn" onclick="event.stopPropagation();openEditRecipe('${escAttr(slug)}')">✏️</button>
+        <button class="card-action-btn" onclick="event.stopPropagation();toggleBlocked('${escAttr(slug)}')" title="${isBlocked?'Unblock':'Block from auto-fill'}">${isBlocked?'🔓':'🚫'}</button>
+        <button class="card-action-btn" onclick="event.stopPropagation();deleteRecipe('${escAttr(slug)}')">🗑️</button>
       </div>
       ${imgHtml}
       <div class="recipe-card-body">
-        <div class="recipe-name">${r.name}</div>
+        <div class="recipe-name">${esc(r.name)}</div>
         <div class="recipe-meta">${total?`<span>⏱ ${total}min</span>`:''}  <span>🍽 ${r.servings} svg</span>${nutriStr?`<span>🔥 ${nutriStr}</span>`:''}${cardStars}</div>
         ${costStr?`<div class="recipe-cost">💰 ${costStr}</div>`:''}
         <div class="recipe-tags-row">${tags}</div>
@@ -2879,16 +2887,16 @@ function showDetail(slug) {
   if(total) meta.push(`⏱ Total: ${total}min`);
   meta.push(`🍽 ${r.servings} servings`);
 
-  const tags = [...(r.meal_types||[]).map(m=>`<span class="tag tag-meal">${m}</span>`),
-    ...(r.tags||[]).map(t=>`<span class="tag">${t}</span>`)].join(' ');
+  const tags = [...(r.meal_types||[]).map(m=>`<span class="tag tag-meal">${esc(m)}</span>`),
+    ...(r.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`)].join(' ');
 
   const ings = (r.ingredients||[]).map(i => {
-    const q=formatQty(i.qty), u=i.unit?` ${i.unit}`:'';
-    return `<li><span class="qty">${q}${u}</span><span>${i.item}</span></li>`;
+    const q=formatQty(i.qty), u=i.unit?` ${esc(i.unit)}`:'';
+    return `<li><span class="qty">${q}${u}</span><span>${esc(i.item)}</span></li>`;
   }).join('');
 
-  const steps = (r.steps||[]).map(s=>`<li>${s}</li>`).join('');
-  const notes = r.notes?`<div class="modal-section"><div class="recipe-notes">💡 ${r.notes}</div></div>`:'';
+  const steps = (r.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('');
+  const notes = r.notes?`<div class="modal-section"><div class="recipe-notes">💡 ${esc(r.notes)}</div></div>`:'';
 
   // Cost comparison
   const costs = STORES.map(s => ({ store:s, ...getRecipeCost(r,s) }));
@@ -2903,7 +2911,7 @@ function showDetail(slug) {
     </div>
   </div>`;
 
-  const imgHtml = r.image_url ? `<img class="detail-image" src="${r.image_url}" onerror="this.style.display='none'">` : '';
+  const imgHtml = r.image_url ? `<img class="detail-image" src="${escAttr(safeUrl(r.image_url))}" onerror="this.style.display='none'">` : '';
 
   // Nutrition
   const nutri = getRecipeNutrition(r);
@@ -2933,15 +2941,15 @@ function showDetail(slug) {
   const starsHtml = `<div class="modal-section" style="display:flex;align-items:center;gap:0.75rem;">
     <span style="font-size:0.82rem;font-weight:600;">Rate:</span>
     <div class="star-rating" id="detail-stars">${[1,2,3,4,5].map(s =>
-      `<span class="star ${s<=rating?'filled':''}" onclick="rateRecipe('${slug}',${s})" onmouseover="previewStars(${s})" onmouseout="resetStars('${slug}')">${s<=rating?'★':'☆'}</span>`
+      `<span class="star ${s<=rating?'filled':''}" onclick="rateRecipe('${escAttr(slug)}',${s})" onmouseover="previewStars(${s})" onmouseout="resetStars('${escAttr(slug)}')">${s<=rating?'★':'☆'}</span>`
     ).join('')}</div>
     ${rating ? `<span style="font-size:0.78rem;color:var(--gold);font-weight:600;">${rating}/5</span>` : ''}
   </div>`;
 
   // Timer buttons
   const timerBtns = (r.prep_time || r.cook_time) ? `<div class="modal-section" style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-    ${r.prep_time ? `<button class="btn btn-secondary btn-sm" onclick="startTimer('${r.name} — Prep',${r.prep_time})">⏱ Prep Timer (${r.prep_time}m)</button>` : ''}
-    ${r.cook_time ? `<button class="btn btn-secondary btn-sm" onclick="startTimer('${r.name} — Cook',${r.cook_time})">🔥 Cook Timer (${r.cook_time}m)</button>` : ''}
+    ${r.prep_time ? `<button class="btn btn-secondary btn-sm" onclick="startTimer(decodeURIComponent('${encJs(r.name + ' — Prep')}'),${r.prep_time})">⏱ Prep Timer (${r.prep_time}m)</button>` : ''}
+    ${r.cook_time ? `<button class="btn btn-secondary btn-sm" onclick="startTimer(decodeURIComponent('${encJs(r.name + ' — Cook')}'),${r.cook_time})">🔥 Cook Timer (${r.cook_time}m)</button>` : ''}
     <button class="btn btn-ghost btn-sm" onclick="openTimerModal()">Custom Timer</button>
   </div>` : `<div class="modal-section"><button class="btn btn-ghost btn-sm" onclick="openTimerModal()">⏱ Set Timer</button></div>`;
 
@@ -3013,14 +3021,14 @@ function openEditRecipe(slug) {
 function addIngRow(d) {
   const e=document.getElementById('ing-editor'), row=document.createElement('div');
   row.className='ing-row';
-  row.innerHTML=`<input type="text" placeholder="Qty" value="${d?d.qty:''}"><input type="text" placeholder="Unit" value="${d?(d.unit||''):''}"><input type="text" placeholder="Ingredient" value="${d?d.item:''}"><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>`;
+  row.innerHTML=`<input type="text" placeholder="Qty" value="${escAttr(d?d.qty:'')}"><input type="text" placeholder="Unit" value="${escAttr(d?(d.unit||''):'')}"><input type="text" placeholder="Ingredient" value="${escAttr(d?d.item:'')}"><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>`;
   e.appendChild(row);
 }
 
 function addStepRow(t) {
   const e=document.getElementById('steps-editor'), n=e.children.length+1, row=document.createElement('div');
   row.className='step-row';
-  row.innerHTML=`<span class="step-num">${n}</span><textarea placeholder="Step...">${t||''}</textarea><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()" style="margin-top:0.35rem">✕</button>`;
+  row.innerHTML=`<span class="step-num">${n}</span><textarea placeholder="Step...">${esc(t||'')}</textarea><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()" style="margin-top:0.35rem">✕</button>`;
   e.appendChild(row);
 }
 
@@ -3126,7 +3134,7 @@ function renderWeeklyPlan() {
           const cost = recipe ? getRecipeCost(recipe, 'kroger') : null;
           return `<div class="plan-slot filled" onclick="openPicker(event,'${key}')">
             <div class="slot-label">${meal}</div>
-            <div class="slot-recipe">${recipeName}</div>
+            <div class="slot-recipe">${esc(recipeName)}</div>
             ${cost?`<div class="slot-cost">$${cost.total.toFixed(2)}</div>`:''}
             <button class="slot-clear" onclick="event.stopPropagation();clearSlot('${key}')">✕</button>
           </div>`;
@@ -3343,8 +3351,8 @@ function openPicker(e, key) {
       const r=recipes[k]; return r.name.toLowerCase().includes(fl)||(r.tags||[]).some(t=>t.includes(fl));
     }).map(k=>{
       const r=recipes[k];
-      const img=r.image_url?`<img src="${r.image_url}" onerror="this.style.display='none'">`:'';
-      return `<div class="picker-item" onclick="pickRecipe('${k}')">${img}<div class="picker-item-text"><div>${r.name}</div><div class="picker-tags">${(r.tags||[]).join(', ')}</div></div></div>`;
+      const img=r.image_url?`<img src="${escAttr(safeUrl(r.image_url))}" onerror="this.style.display='none'">`:'';
+      return `<div class="picker-item" onclick="pickRecipe('${escAttr(k)}')">${img}<div class="picker-item-text"><div>${esc(r.name)}</div><div class="picker-tags">${esc((r.tags||[]).join(', '))}</div></div></div>`;
     }).join('');
     const s=renderArr(suitable),o=renderArr(others);
     list.innerHTML=(s||'')+(o?(s?'<hr style="margin:0.3rem 0;border:none;border-top:1px solid var(--border)">':'')+o:'');
@@ -3429,7 +3437,7 @@ function renderCalendar() {
     // Get meals for this date
     const meals = MEALS.map(meal => {
       const name = plan[`${dateStr}-${meal}`];
-      return name ? `<div class="cal-meal-chip ${meal}" title="${name}" onclick="event.stopPropagation();showDetail('${slugify(name)}')">${name}</div>` : '';
+      return name ? `<div class="cal-meal-chip ${meal}" title="${escAttr(name)}" onclick="event.stopPropagation();showDetail('${escAttr(slugify(name))}')">${esc(name)}</div>` : '';
     }).join('');
 
     html += `<div class="cal-cell ${isOther?'other-month':''} ${isToday?'today':''}" onclick="jumpToDate('${dateStr}')">
@@ -3466,7 +3474,7 @@ function calAddMeal(dateStr, btn) {
       const r=recipes[k]; return r.name.toLowerCase().includes(fl)||(r.tags||[]).some(t=>t.includes(fl));
     }).map(k=>{
       const r=recipes[k];
-      return `<div class="picker-item" onclick="pickRecipe('${k}')"><div class="picker-item-text"><div>${r.name}</div><div class="picker-tags">${(r.tags||[]).join(', ')}</div></div></div>`;
+      return `<div class="picker-item" onclick="pickRecipe('${escAttr(k)}')"><div class="picker-item-text"><div>${esc(r.name)}</div><div class="picker-tags">${esc((r.tags||[]).join(', '))}</div></div></div>`;
     }).join('') || '<div style="padding:0.5rem;color:var(--ink-muted);">No recipes</div>';
   }
 
@@ -3511,9 +3519,9 @@ function renderPricing() {
             const min = Math.min(p.kroger||999, p.wholefoods||999, p.costco||999);
             const cheapest = STORES.filter(s=>p[s]===min).map(s=>STORE_LABELS[s]).join(', ');
             return `<tr>
-              <td style="font-weight:600;text-transform:capitalize;">${item}</td>
-              <td style="color:var(--ink-muted);font-size:0.8rem;">${p.unit}</td>
-              ${STORES.map(s=>`<td><input class="price-input" type="number" step="0.01" min="0" value="${p[s]||''}" onchange="updatePrice('${item}','${s}',this.value)"></td>`).join('')}
+              <td style="font-weight:600;text-transform:capitalize;">${esc(item)}</td>
+              <td style="color:var(--ink-muted);font-size:0.8rem;">${esc(p.unit)}</td>
+              ${STORES.map(s=>`<td><input class="price-input" type="number" step="0.01" min="0" value="${p[s]||''}" onchange="updatePrice(decodeURIComponent('${encJs(item)}'),'${s}',this.value)"></td>`).join('')}
               <td class="cheapest">${min>0?`$${min.toFixed(2)} (${cheapest})`:'—'}</td>
             </tr>`;
           }).join('')}
@@ -3730,14 +3738,14 @@ function generateGroceryList() {
       }
       totalCost += price;
 
-      return `<div class="grocery-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span class="item-qty">${parts.join(' + ')}</span><span>${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}${pantryNote}</span><span class="item-price">${price>0?'$'+price.toFixed(2):'—'}</span></div>`;
+      return `<div class="grocery-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span class="item-qty">${esc(parts.join(' + '))}</span><span>${esc(item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' '))}${pantryNote}</span><span class="item-price">${price>0?'$'+price.toFixed(2):'—'}</span></div>`;
     }).join('');
     return `<div class="grocery-section"><h3>${section}</h3>${items}</div>`;
   }).join('');
 
   const coveredHtml = coveredItems.length ? `<div class="grocery-section" style="opacity:0.5;">
     <h3>✅ In Pantry — No Need to Buy</h3>
-    ${coveredItems.sort().map(item=>`<div class="grocery-item checked"><input type="checkbox" checked disabled><span class="item-qty" style="color:var(--green);">✓ have it</span><span style="text-decoration:line-through;">${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</span></div>`).join('')}
+    ${coveredItems.sort().map(item=>`<div class="grocery-item checked"><input type="checkbox" checked disabled><span class="item-qty" style="color:var(--green);">✓ have it</span><span style="text-decoration:line-through;">${esc(item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' '))}</span></div>`).join('')}
   </div>` : '';
 
   content.innerHTML = sectionHtml + coveredHtml + `<div style="text-align:right;margin-top:1rem;padding:1rem;background:var(--bg-warm);border-radius:var(--radius);font-family:'Fraunces',serif;">
@@ -4233,7 +4241,7 @@ function renderPantry() {
           : item.stock_level === 'TEMPORARILY_OUT_OF_STOCK' ? '❌ Out' : '';
         const meta = [item.brand, item.size, aisle, stock].filter(Boolean).join(' · ');
         const itemImg = item.image_url
-          ? `<img src="${item.image_url}" alt="" class="kroger-pantry-img" onerror="this.style.display='none'">`
+          ? `<img src="${escAttr(safeUrl(item.image_url))}" alt="" class="kroger-pantry-img" onerror="this.style.display='none'">`
           : `<div style="width:80px;height:80px;border-radius:8px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;font-size:2rem;">🛒</div>`;
         const isPending = item.status === 'pending_pickup';
         const orderedAgo = item.ordered_at ? formatRelativeTime(new Date(item.ordered_at)) : '';
@@ -4251,8 +4259,8 @@ function renderPantry() {
           ${pendingBadge}
           <button class="btn btn-danger btn-xs kroger-pantry-remove" onclick="removeKrogerPantryItem(${i})">✕</button>
           ${itemImg}
-          <div class="pantry-item-name" title="${item.name}">${item.name}</div>
-          <div class="kroger-pantry-meta">${meta}</div>
+          <div class="pantry-item-name" title="${escAttr(item.name)}">${esc(item.name)}</div>
+          <div class="kroger-pantry-meta">${esc(meta)}</div>
           <div class="kroger-pantry-bottom">
             <div style="display:flex;align-items:center;gap:0.25rem;">
               <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();updateKrogerQty(${i},-1)" style="font-size:0.9rem;padding:0.15rem 0.4rem;">−</button>
@@ -4272,15 +4280,15 @@ function renderPantry() {
       }
       html += keys.map(item => {
         const p = pantry[item];
-        const esc = item.replace(/'/g,"\\'");
+        const iq = encJs(item);
         return `<div class="pantry-item">
-          <div class="pantry-item-name">${item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</div>
+          <div class="pantry-item-name">${esc(item.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' '))}</div>
           <div style="display:flex;align-items:center;gap:0.3rem;">
-            <button class="btn btn-ghost btn-xs" onclick="updateManualQty('${esc}',-1)" style="font-size:0.9rem;padding:0.15rem 0.4rem;">−</button>
-            <span class="pantry-item-qty" style="min-width:35px;text-align:center;">${formatQty(p.qty)} ${p.unit}</span>
-            <button class="btn btn-ghost btn-xs" onclick="updateManualQty('${esc}',1)" style="font-size:0.9rem;padding:0.15rem 0.4rem;">+</button>
+            <button class="btn btn-ghost btn-xs" onclick="updateManualQty(decodeURIComponent('${iq}'),-1)" style="font-size:0.9rem;padding:0.15rem 0.4rem;">−</button>
+            <span class="pantry-item-qty" style="min-width:35px;text-align:center;">${formatQty(p.qty)} ${esc(p.unit)}</span>
+            <button class="btn btn-ghost btn-xs" onclick="updateManualQty(decodeURIComponent('${iq}'),1)" style="font-size:0.9rem;padding:0.15rem 0.4rem;">+</button>
           </div>
-          <button class="btn btn-danger btn-xs" onclick="removePantryItem('${esc}')">✕</button>
+          <button class="btn btn-danger btn-xs" onclick="removePantryItem(decodeURIComponent('${iq}'))">✕</button>
         </div>`;
       }).join('');
     }
@@ -4485,13 +4493,13 @@ function renderPantrySweep() {
     html += krogerItems.map((item, i) => {
       const sel = _sweepSelectedKroger.has(i);
       const img = item.image_url
-        ? `<img src="${item.image_url}" style="width:40px;height:40px;object-fit:contain;border-radius:4px;background:white;" onerror="this.style.display='none'">`
+        ? `<img src="${escAttr(safeUrl(item.image_url))}" style="width:40px;height:40px;object-fit:contain;border-radius:4px;background:white;" onerror="this.style.display='none'">`
         : `<div style="width:40px;height:40px;border-radius:4px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;">🛒</div>`;
       return `<div onclick="toggleSweepKroger(${i})" style="cursor:pointer;padding:0.5rem;border-radius:8px;border:2px solid ${sel ? 'var(--red)' : 'var(--border)'};background:${sel ? 'var(--red-light,#fef2f2)' : 'white'};display:flex;gap:0.5rem;align-items:center;${sel ? 'opacity:0.7;' : ''}">
         ${img}
         <div style="flex:1;min-width:0;">
-          <div style="font-size:0.78rem;font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;${sel ? 'text-decoration:line-through;' : ''}">${item.name}</div>
-          <div style="font-size:0.68rem;color:var(--ink-muted);">${[item.size, `${item.qty || 1}×`].filter(Boolean).join(' · ')}</div>
+          <div style="font-size:0.78rem;font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;${sel ? 'text-decoration:line-through;' : ''}">${esc(item.name)}</div>
+          <div style="font-size:0.68rem;color:var(--ink-muted);">${esc([item.size, `${item.qty || 1}×`].filter(Boolean).join(' · '))}</div>
         </div>
         <div style="font-size:1.1rem;color:${sel ? 'var(--red)' : 'var(--ink-muted)'};">${sel ? '✓' : ''}</div>
       </div>`;
@@ -4503,10 +4511,10 @@ function renderPantrySweep() {
     html += manualKeys.map(key => {
       const sel = _sweepSelectedManual.has(key);
       const item = manualPantry[key];
-      const escKey = key.replace(/'/g, "\\'");
-      return `<div onclick="toggleSweepManual('${escKey}')" style="cursor:pointer;padding:0.5rem;border-radius:8px;border:2px solid ${sel ? 'var(--red)' : 'var(--border)'};background:${sel ? 'var(--red-light,#fef2f2)' : 'white'};display:flex;align-items:center;justify-content:space-between;${sel ? 'opacity:0.7;' : ''}">
-        <div style="font-size:0.82rem;font-weight:600;${sel ? 'text-decoration:line-through;' : ''}">${key.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</div>
-        <div style="font-size:0.7rem;color:var(--ink-muted);">${formatQty(item.qty)} ${item.unit || ''}</div>
+      const escKey = encJs(key);
+      return `<div onclick="toggleSweepManual(decodeURIComponent('${escKey}'))" style="cursor:pointer;padding:0.5rem;border-radius:8px;border:2px solid ${sel ? 'var(--red)' : 'var(--border)'};background:${sel ? 'var(--red-light,#fef2f2)' : 'white'};display:flex;align-items:center;justify-content:space-between;${sel ? 'opacity:0.7;' : ''}">
+        <div style="font-size:0.82rem;font-weight:600;${sel ? 'text-decoration:line-through;' : ''}">${esc(key.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' '))}</div>
+        <div style="font-size:0.7rem;color:var(--ink-muted);">${formatQty(item.qty)} ${esc(item.unit || '')}</div>
         <div style="font-size:1.1rem;color:${sel ? 'var(--red)' : 'var(--ink-muted)'};margin-left:0.4rem;">${sel ? '✓' : ''}</div>
       </div>`;
     }).join('');
@@ -4706,14 +4714,14 @@ function openSubstituteModal(index) {
 
   const orig = document.getElementById('substitute-original');
   const img = item.image_url
-    ? `<img src="${item.image_url}" style="width:48px;height:48px;object-fit:contain;border-radius:6px;background:white;border:1px solid var(--border);" onerror="this.style.display='none'">`
+    ? `<img src="${escAttr(safeUrl(item.image_url))}" style="width:48px;height:48px;object-fit:contain;border-radius:6px;background:white;border:1px solid var(--border);" onerror="this.style.display='none'">`
     : `<div style="width:48px;height:48px;border-radius:6px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;">🛒</div>`;
   orig.innerHTML = `<div style="display:flex;gap:0.6rem;align-items:center;">
     ${img}
     <div style="flex:1;min-width:0;">
       <div style="font-size:0.75rem;color:var(--ink-muted);">You ordered:</div>
-      <div style="font-weight:600;font-size:0.85rem;line-height:1.25;">${item.name}</div>
-      <div style="font-size:0.72rem;color:var(--ink-muted);">${[item.brand, item.size].filter(Boolean).join(' · ')}</div>
+      <div style="font-weight:600;font-size:0.85rem;line-height:1.25;">${esc(item.name)}</div>
+      <div style="font-size:0.72rem;color:var(--ink-muted);">${esc([item.brand, item.size].filter(Boolean).join(' · '))}</div>
     </div>
   </div>`;
 
@@ -4745,13 +4753,13 @@ async function runSubstituteSearch() {
         const price = p.price ? `$${p.price.toFixed(2)}` : '';
         const stock = p.stock_level === 'TEMPORARILY_OUT_OF_STOCK' ? ' · ❌' : p.stock_level === 'LOW' ? ' · ⚠️' : '';
         const img = p.image_url
-          ? `<img src="${p.image_url}" style="width:50px;height:50px;object-fit:contain;background:white;border-radius:4px;" onerror="this.style.display='none'">`
+          ? `<img src="${escAttr(safeUrl(p.image_url))}" style="width:50px;height:50px;object-fit:contain;background:white;border-radius:4px;" onerror="this.style.display='none'">`
           : `<div style="width:50px;height:50px;background:var(--bg-warm);border-radius:4px;display:flex;align-items:center;justify-content:center;">🛒</div>`;
         return `<div onclick="applySubstitute(${i})" style="cursor:pointer;padding:0.5rem;border:1.5px solid var(--border);border-radius:6px;display:flex;gap:0.5rem;align-items:center;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--kroger-color)';this.style.background='var(--blue-light)';" onmouseout="this.style.borderColor='var(--border)';this.style.background='';">
           ${img}
           <div style="flex:1;min-width:0;">
-            <div style="font-size:0.78rem;font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${p.name}</div>
-            <div style="font-size:0.7rem;color:var(--ink-muted);">${[p.brand, p.size, price].filter(Boolean).join(' · ')}${stock}</div>
+            <div style="font-size:0.78rem;font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${esc(p.name)}</div>
+            <div style="font-size:0.7rem;color:var(--ink-muted);">${esc([p.brand, p.size, price].filter(Boolean).join(' · '))}${stock}</div>
           </div>
         </div>`;
       }).join('')}
@@ -4759,7 +4767,7 @@ async function runSubstituteSearch() {
     // Stash results for the click handler
     window._substituteResults = data.results;
   } catch (err) {
-    results.innerHTML = `<div style="padding:1.5rem;text-align:center;color:var(--red);">Search failed: ${err.message}</div>`;
+    results.innerHTML = `<div style="padding:1.5rem;text-align:center;color:var(--red);">Search failed: ${esc(err.message)}</div>`;
   }
 }
 
@@ -4875,8 +4883,29 @@ const API_BASE = (() => {
   } catch (_) {}
   const meta = document.querySelector('meta[name="api-base"]');
   if (meta && meta.content) return meta.content.replace(/\/$/, '');
+  // Served by api_server.py itself → same origin is the API
+  if (location.protocol.startsWith('http')) return location.origin;
   return 'http://localhost:8099';
 })();
+
+// Access token for state-changing endpoints. The server injects it as a
+// <meta> tag when it serves this page; file:// opens can set
+// localStorage 'mp2_api_token' (value printed at server startup).
+const API_TOKEN = (() => {
+  const meta = document.querySelector('meta[name="mp-token"]');
+  if (meta && meta.content) return meta.content;
+  try { return localStorage.getItem('mp2_api_token') || ''; } catch (_) { return ''; }
+})();
+
+// Attach the token to every API request in one place rather than at each
+// of the ~30 fetch sites.
+const _origFetch = window.fetch.bind(window);
+window.fetch = (url, opts = {}) => {
+  if (API_TOKEN && String(url).startsWith(API_BASE)) {
+    opts = { ...opts, headers: { ...(opts.headers || {}), 'X-MP-Token': API_TOKEN } };
+  }
+  return _origFetch(url, opts);
+};
 let krogerServerOnline = false;
 console.log('[API] Using base:', API_BASE);
 
@@ -5003,14 +5032,14 @@ async function runCartAudit() {
     const data = await res.json();
     renderCartAudit(data);
   } catch (err) {
-    body.innerHTML = `<div style="color:var(--red);padding:1rem;">Failed to run audit: ${err.message}</div>`;
+    body.innerHTML = `<div style="color:var(--red);padding:1rem;">Failed to run audit: ${esc(err.message)}</div>`;
   }
 }
 
 function renderCartAudit(audit) {
   const body = document.getElementById('cart-audit-body');
   if (audit.error) {
-    body.innerHTML = `<div style="color:var(--red);padding:1rem;">${audit.error}</div>`;
+    body.innerHTML = `<div style="color:var(--red);padding:1rem;">${esc(audit.error)}</div>`;
     return;
   }
 
@@ -5036,7 +5065,7 @@ function renderCartAudit(audit) {
   if (audit.missing_recipes && audit.missing_recipes.length) {
     html += `<div style="background:#fef3c7;border:1px solid #fbbf24;border-radius:6px;padding:0.5rem 0.75rem;margin-bottom:1rem;font-size:0.8rem;">
       ⚠️ <strong>${audit.missing_recipes.length} recipe${audit.missing_recipes.length !== 1 ? 's' : ''} not on disk:</strong>
-      ${audit.missing_recipes.slice(0, 5).join(', ')}${audit.missing_recipes.length > 5 ? '…' : ''}
+      ${esc(audit.missing_recipes.slice(0, 5).join(', '))}${audit.missing_recipes.length > 5 ? '…' : ''}
     </div>`;
   }
 
@@ -5046,18 +5075,18 @@ function renderCartAudit(audit) {
     html += `<div style="padding:1rem;color:var(--ink-muted);text-align:center;">Nothing to order — pantry covers the plan!</div>`;
   } else {
     for (const cat of Object.keys(byCat).sort()) {
-      html += `<div style="font-weight:600;font-size:0.85rem;margin-top:1rem;color:var(--kroger-color);">${cat}</div>`;
+      html += `<div style="font-weight:600;font-size:0.85rem;margin-top:1rem;color:var(--kroger-color);">${esc(cat)}</div>`;
       for (const item of byCat[cat]) {
         const price = item.match_price != null ? `$${item.match_price.toFixed(2)}` : '';
         const lineTotal = item.match_price != null ? `$${(item.match_price * item.package_qty).toFixed(2)}` : '';
         const matchInfo = item.match
-          ? `<div style="font-size:0.75rem;color:var(--ink-muted);margin-top:0.15rem;">→ ${item.match} <span style="color:var(--ink-muted);">(${item.match_size || ''}${price ? ' · ' + price : ''}${lineTotal ? ' · line ' + lineTotal : ''})</span></div>`
+          ? `<div style="font-size:0.75rem;color:var(--ink-muted);margin-top:0.15rem;">→ ${esc(item.match)} <span style="color:var(--ink-muted);">(${esc(item.match_size || '')}${price ? ' · ' + price : ''}${lineTotal ? ' · line ' + lineTotal : ''})</span></div>`
           : `<div style="font-size:0.72rem;color:var(--ink-muted);font-style:italic;">no live match (run with live prices on)</div>`;
         html += `<div style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:0.6rem;">
           <div style="background:var(--kroger-color);color:white;font-weight:700;border-radius:4px;padding:0.15rem 0.45rem;font-size:0.78rem;min-width:2.2rem;text-align:center;flex-shrink:0;">${item.package_qty}×</div>
           <div style="flex:1;min-width:0;">
-            <div style="font-weight:600;font-size:0.85rem;">${item.item}</div>
-            <div style="font-size:0.72rem;color:var(--ink-muted);">need: ${item.needed}</div>
+            <div style="font-weight:600;font-size:0.85rem;">${esc(item.item)}</div>
+            <div style="font-size:0.72rem;color:var(--ink-muted);">need: ${esc(item.needed)}</div>
             ${matchInfo}
           </div>
         </div>`;
@@ -5074,9 +5103,9 @@ function renderCartAudit(audit) {
       <div style="padding-top:0.5rem;">
         ${audit.pantry_skipped.map(it => `
           <div style="padding:0.4rem 0.75rem;border-bottom:1px solid var(--border);font-size:0.82rem;">
-            <strong>${it.item}</strong>
-            <span style="color:var(--ink-muted);"> — need ${it.needed}, have ${it.have_qty}× of</span>
-            <span style="font-style:italic;color:var(--green-dark);">${it.covered_by}</span>
+            <strong>${esc(it.item)}</strong>
+            <span style="color:var(--ink-muted);"> — need ${esc(it.needed)}, have ${esc(it.have_qty)}× of</span>
+            <span style="font-style:italic;color:var(--green-dark);">${esc(it.covered_by)}</span>
           </div>
         `).join('')}
       </div>
@@ -5148,7 +5177,7 @@ function showKrogerSendSuccess({ added, notFound, pantryAdded, cartTotal, modali
         <div style="font-size:3.5rem;margin-bottom:0.5rem;">🎉</div>
         <h2 style="font-size:1.4rem;margin:0 0 0.5rem;color:var(--green-dark);">Cart submitted!</h2>
         <p style="font-size:0.95rem;color:var(--ink-light);margin-bottom:0.25rem;">
-          ${added} item${added !== 1 ? 's' : ''} added to your Kroger ${modality.toLowerCase()} cart.
+          ${added} item${added !== 1 ? 's' : ''} added to your Kroger ${esc(modality.toLowerCase())} cart.
         </p>
         <p style="font-size:0.82rem;color:var(--ink-muted);margin-bottom:1.25rem;">
           Estimated total: <strong style="font-family:'JetBrains Mono',monospace;color:var(--green-dark);">$${cartTotal.toFixed(2)}</strong>
@@ -5298,7 +5327,7 @@ async function sendGroceryToKroger() {
     renderKrogerReview();
   } catch (err) {
     document.getElementById('kroger-review-list').innerHTML =
-      `<div style="padding:2rem;text-align:center;color:var(--red);">Failed to load matches: ${err.message}</div>`;
+      `<div style="padding:2rem;text-align:center;color:var(--red);">Failed to load matches: ${esc(err.message)}</div>`;
   }
 }
 
@@ -5319,22 +5348,22 @@ function renderKrogerReview() {
   list.innerHTML = state.items.map((it, i) => {
     if (it.skipped) {
       return `<div style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);opacity:0.4;display:flex;justify-content:space-between;align-items:center;">
-        <span style="text-decoration:line-through;font-size:0.85rem;">${it.raw}</span>
+        <span style="text-decoration:line-through;font-size:0.85rem;">${esc(it.raw)}</span>
         <button class="btn btn-ghost btn-xs" onclick="restoreKrogerReviewItem(${i})">↺ Restore</button>
       </div>`;
     }
 
-    const needHint = it.needed ? `<span style="color:var(--blue,#2563eb);font-weight:600;"> · Need ${it.needed}</span>` : '';
+    const needHint = it.needed ? `<span style="color:var(--blue,#2563eb);font-weight:600;"> · Need ${esc(it.needed)}</span>` : '';
 
     // Pinned (already in user's Kroger pantry — skip alternatives UI)
     if (it.pinned) {
       return `<div style="padding:0.6rem 0.75rem;border-bottom:1px solid var(--border);display:flex;gap:0.6rem;align-items:center;">
         ${it.pinned_image
-          ? `<img src="${it.pinned_image}" style="width:48px;height:48px;object-fit:contain;border-radius:6px;background:white;border:1px solid var(--border);">`
+          ? `<img src="${escAttr(safeUrl(it.pinned_image))}" style="width:48px;height:48px;object-fit:contain;border-radius:6px;background:white;border:1px solid var(--border);">`
           : `<div style="width:48px;height:48px;border-radius:6px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;">📌</div>`}
         <div style="flex:1;min-width:0;">
-          <div style="font-size:0.8rem;color:var(--ink-muted);">For: ${it.raw}${needHint}</div>
-          <div style="font-weight:600;font-size:0.85rem;">${it.pinned_name || it.raw}</div>
+          <div style="font-size:0.8rem;color:var(--ink-muted);">For: ${esc(it.raw)}${needHint}</div>
+          <div style="font-weight:600;font-size:0.85rem;">${esc(it.pinned_name || it.raw)}</div>
           <div style="font-size:0.72rem;color:var(--green);">📌 Pinned from your pantry</div>
         </div>
         ${qtyControls(i, it.quantity)}
@@ -5347,7 +5376,7 @@ function renderKrogerReview() {
       return `<div style="padding:0.6rem 0.75rem;border-bottom:1px solid var(--border);display:flex;gap:0.6rem;align-items:center;background:var(--red-light,#fef2f2);">
         <div style="width:48px;height:48px;border-radius:6px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;font-size:1.3rem;">❓</div>
         <div style="flex:1;min-width:0;">
-          <div style="font-weight:600;font-size:0.85rem;">${it.raw}${needHint}</div>
+          <div style="font-weight:600;font-size:0.85rem;">${esc(it.raw)}${needHint}</div>
           <div style="font-size:0.75rem;color:var(--red);">No Kroger match found</div>
         </div>
         <button class="btn btn-secondary btn-xs" onclick="searchKrogerReviewItem(${i})">🔍 Search</button>
@@ -5373,12 +5402,12 @@ function renderKrogerReview() {
 
     return `<div style="padding:0.6rem 0.75rem;border-bottom:1px solid var(--border);display:flex;gap:0.6rem;align-items:center;">
       ${sel.image_url
-        ? `<img src="${sel.image_url}" style="width:48px;height:48px;object-fit:contain;border-radius:6px;background:white;border:1px solid var(--border);" onerror="this.style.display='none'">`
+        ? `<img src="${escAttr(safeUrl(sel.image_url))}" style="width:48px;height:48px;object-fit:contain;border-radius:6px;background:white;border:1px solid var(--border);" onerror="this.style.display='none'">`
         : `<div style="width:48px;height:48px;border-radius:6px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;">🛒</div>`}
       <div style="flex:1;min-width:0;">
-        <div style="font-size:0.72rem;color:var(--ink-muted);">For: ${it.raw}${needHint}</div>
-        <div style="font-weight:600;font-size:0.85rem;line-height:1.25;">${sel.name}${learnedBadge}</div>
-        <div style="font-size:0.72rem;color:var(--ink-muted);margin-top:0.1rem;">${[sel.brand, sel.size, price, stock].filter(Boolean).join(' · ')}</div>
+        <div style="font-size:0.72rem;color:var(--ink-muted);">For: ${esc(it.raw)}${needHint}</div>
+        <div style="font-weight:600;font-size:0.85rem;line-height:1.25;">${esc(sel.name)}${learnedBadge}</div>
+        <div style="font-size:0.72rem;color:var(--ink-muted);margin-top:0.1rem;">${[esc(sel.brand), esc(sel.size), price, stock].filter(Boolean).join(' · ')}</div>
       </div>
       ${lockInBtn}
       <button class="btn btn-secondary btn-xs" onclick="toggleKrogerAlternatives(${i})" title="See alternatives">🔄 Swap</button>
@@ -5403,13 +5432,13 @@ function renderAlternatives(i, it) {
     ${alts.map(a => {
       const isSel = a.upc === it.selected_upc;
       const p = a.price ? `$${a.price.toFixed(2)}` : '';
-      return `<div onclick="selectKrogerAlt(${i},'${a.upc}')" style="cursor:pointer;padding:0.4rem;border-radius:6px;border:1.5px solid ${isSel ? 'var(--kroger-color)' : 'var(--border)'};background:${isSel ? 'var(--blue-light,#eff6ff)' : 'white'};display:flex;gap:0.4rem;align-items:center;">
+      return `<div onclick="selectKrogerAlt(${i},decodeURIComponent('${encJs(a.upc)}'))" style="cursor:pointer;padding:0.4rem;border-radius:6px;border:1.5px solid ${isSel ? 'var(--kroger-color)' : 'var(--border)'};background:${isSel ? 'var(--blue-light,#eff6ff)' : 'white'};display:flex;gap:0.4rem;align-items:center;">
         ${a.image_url
-          ? `<img src="${a.image_url}" style="width:36px;height:36px;object-fit:contain;background:white;border-radius:4px;" onerror="this.style.display='none'">`
+          ? `<img src="${escAttr(safeUrl(a.image_url))}" style="width:36px;height:36px;object-fit:contain;background:white;border-radius:4px;" onerror="this.style.display='none'">`
           : `<div style="width:36px;height:36px;background:var(--bg-warm);border-radius:4px;"></div>`}
         <div style="min-width:0;flex:1;">
-          <div style="font-size:0.72rem;font-weight:600;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${a.name}</div>
-          <div style="font-size:0.66rem;color:var(--ink-muted);">${[a.size, p].filter(Boolean).join(' · ')}</div>
+          <div style="font-size:0.72rem;font-weight:600;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${esc(a.name)}</div>
+          <div style="font-size:0.66rem;color:var(--ink-muted);">${esc([a.size, p].filter(Boolean).join(' · '))}</div>
         </div>
       </div>`;
     }).join('')}
@@ -5748,13 +5777,13 @@ async function searchKrogerProducts() {
     const data = await res.json();
 
     if (data.error) {
-      resultsDiv.innerHTML = `<div style="padding:1rem;color:var(--red);font-size:0.85rem;">Error: ${data.error}</div>`;
+      resultsDiv.innerHTML = `<div style="padding:1rem;color:var(--red);font-size:0.85rem;">Error: ${esc(data.error)}</div>`;
       return;
     }
 
     const results = data.results || [];
     if (!results.length) {
-      resultsDiv.innerHTML = `<div style="padding:1rem;color:var(--ink-muted);font-size:0.85rem;">No results for "${query}"</div>`;
+      resultsDiv.innerHTML = `<div style="padding:1rem;color:var(--ink-muted);font-size:0.85rem;">No results for "${esc(query)}"</div>`;
       return;
     }
 
@@ -5775,13 +5804,13 @@ async function searchKrogerProducts() {
       const addedUPCs = new Set(getKrogerPantry().map(p => p.upc));
       const isAdded = addedUPCs.has(r.upc);
       const imgHtml = r.image_url
-        ? `<img src="${r.image_url}" alt="" class="kroger-product-img" onerror="this.style.display='none'">`
+        ? `<img src="${escAttr(safeUrl(r.image_url))}" alt="" class="kroger-product-img" onerror="this.style.display='none'">`
         : `<div class="kroger-product-img-placeholder">🛒</div>`;
       return `<div class="kroger-product ${isAdded ? 'already-added' : ''}" id="kroger-result-${i}">
         ${imgHtml}
         <div class="kroger-product-info">
-          <div class="kroger-product-name" title="${r.name}">${r.name}</div>
-          <div class="kroger-product-detail">${details}</div>
+          <div class="kroger-product-name" title="${escAttr(r.name)}">${esc(r.name)}</div>
+          <div class="kroger-product-detail">${esc(details)}</div>
         </div>
         <div class="kroger-product-bottom">
           <div class="kroger-product-qty">
@@ -5946,13 +5975,13 @@ function runTonightSearch() {
 
   container.innerHTML = results.map(({ slug, recipe, matched, missing, percentage }) => {
     const barColor = percentage >= 75 ? 'var(--green)' : percentage >= 50 ? 'var(--gold)' : 'var(--accent)';
-    const matchedChips = matched.map(i => `<span class="tonight-ing-chip tonight-ing-have">${i}</span>`).join('');
-    const missingChips = missing.slice(0, 5).map(i => `<span class="tonight-ing-chip tonight-ing-need">${i}</span>`).join('');
+    const matchedChips = matched.map(i => `<span class="tonight-ing-chip tonight-ing-have">${esc(i)}</span>`).join('');
+    const missingChips = missing.slice(0, 5).map(i => `<span class="tonight-ing-chip tonight-ing-need">${esc(i)}</span>`).join('');
     const moreMissing = missing.length > 5 ? `<span style="font-size:0.68rem;color:var(--ink-muted);">+${missing.length-5} more</span>` : '';
 
-    return `<div class="tonight-card" onclick="showDetail('${slug}')">
+    return `<div class="tonight-card" onclick="showDetail('${escAttr(slug)}')">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">
-        <div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;">${recipe.name}</div>
+        <div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;">${esc(recipe.name)}</div>
         <span class="tonight-pct" style="color:${barColor}">${percentage}%</span>
       </div>
       <div class="tonight-match-bar"><div class="tonight-match-fill" style="width:${percentage}%;background:${barColor};"></div></div>
@@ -6295,7 +6324,7 @@ function rateRecipe(slug, stars) {
   const container = document.getElementById('detail-stars');
   if (container) {
     container.innerHTML = [1,2,3,4,5].map(s =>
-      `<span class="star ${s<=stars?'filled':''}" onclick="rateRecipe('${slug}',${s})" onmouseover="previewStars(${s})" onmouseout="resetStars('${slug}')">${s<=stars?'★':'☆'}</span>`
+      `<span class="star ${s<=stars?'filled':''}" onclick="rateRecipe('${escAttr(slug)}',${s})" onmouseover="previewStars(${s})" onmouseout="resetStars('${escAttr(slug)}')">${s<=stars?'★':'☆'}</span>`
     ).join('');
   }
   showToast(`Rated ${stars}/5 ★`, 'success');
@@ -6392,7 +6421,7 @@ function renderTimers() {
     const timeStr = `${m}:${s.toString().padStart(2,'0')}`;
     const pct = t.total > 0 ? Math.round((1 - t.remaining / t.total) * 100) : 100;
     return `<div class="timer-pill ${t.done ? 'timer-done' : ''}">
-      <span class="timer-name">${t.name}</span>
+      <span class="timer-name">${esc(t.name)}</span>
       <span>${t.done ? '✅ Done!' : timeStr}</span>
       <button onclick="removeTimer(${t.id})" title="Dismiss">✕</button>
     </div>`;
@@ -6529,7 +6558,7 @@ function renderMacros() {
   if (todayMacros.meals.length) {
     mealsList.innerHTML = todayMacros.meals.map(m =>
       `<div class="macro-meal-row">
-        <span class="macro-meal-name">${m.meal.charAt(0).toUpperCase()+m.meal.slice(1)}: ${m.name}</span>
+        <span class="macro-meal-name">${m.meal.charAt(0).toUpperCase()+m.meal.slice(1)}: ${esc(m.name)}</span>
         <div class="macro-meal-stats">
           <span class="macro-meal-stat" style="color:var(--accent);">${m.cal} cal</span>
           <span class="macro-meal-stat" style="color:var(--blue);">${m.protein}g P</span>

@@ -322,6 +322,12 @@ const LS = {
   set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
 };
 
+// XSS-escaping helpers: use esc() for any dynamic string interpolated into innerHTML,
+// safeUrl() for src/href values.
+function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function escAttr(s){ return esc(s); }
+function safeUrl(u){ u = String(u ?? '').trim(); return /^https?:\/\//i.test(u) ? u : ''; }
+
 const getVotes = () => LS.get('mp2_votes', {});
 const setVotes = v => LS.set('mp2_votes', v);
 const getRecipes = () => LS.get('mp2_recipes', {});
@@ -399,11 +405,11 @@ function renderCard() {
   if (!recipe) { currentIndex++; renderCard(); return; }
 
   const total = (recipe.prep_time || 0) + (recipe.cook_time || 0);
-  const tags = [...(recipe.meal_types || []).map(m => `<span class="tag tag-meal">${m}</span>`),
-    ...(recipe.tags || []).map(t => `<span class="tag">${t}</span>`)].join(' ');
+  const tags = [...(recipe.meal_types || []).map(m => `<span class="tag tag-meal">${esc(m)}</span>`),
+    ...(recipe.tags || []).map(t => `<span class="tag">${esc(t)}</span>`)].join(' ');
 
   const imgHtml = recipe.image_url
-    ? `<img class="vote-card-img" src="${recipe.image_url}" alt="${recipe.name}" onerror="this.outerHTML='<div class=vote-card-img-placeholder>🍲</div>'">`
+    ? `<img class="vote-card-img" src="${escAttr(safeUrl(recipe.image_url))}" alt="${escAttr(recipe.name)}" onerror="this.outerHTML='<div class=vote-card-img-placeholder>🍲</div>'">`
     : `<div class="vote-card-img-placeholder">🍲</div>`;
 
   const pct = Math.round(currentIndex / recipeQueue.length * 100);
@@ -416,13 +422,13 @@ function renderCard() {
     <div class="vote-card">
       ${imgHtml}
       <div class="vote-card-body">
-        <div class="vote-recipe-name">${recipe.name}</div>
+        <div class="vote-recipe-name">${esc(recipe.name)}</div>
         <div class="vote-meta">
           ${total ? `<span>⏱ ${total}min</span>` : ''}
           <span>🍽 ${recipe.servings || 4} servings</span>
         </div>
         <div class="vote-tags">${tags}</div>
-        ${recipe.notes ? `<div style="font-size:0.82rem;color:var(--ink-light);font-style:italic;">${recipe.notes}</div>` : ''}
+        ${recipe.notes ? `<div style="font-size:0.82rem;color:var(--ink-light);font-style:italic;">${esc(recipe.notes)}</div>` : ''}
       </div>
       <div class="vote-actions">
         <button class="vote-btn vote-no" onclick="castVote(false)" title="No thanks">👎</button>
@@ -482,7 +488,7 @@ function showResults() {
         ${yesRecipes.map((r, i) => `
           <div class="result-item">
             <div class="result-rank">${i === 0 ? '🏆' : i + 1}</div>
-            <div class="result-name">${r.recipe.name}</div>
+            <div class="result-name">${esc(r.recipe.name)}</div>
             <span class="result-yes">✓ YES</span>
           </div>
         `).join('')}
@@ -494,7 +500,7 @@ function showResults() {
         ${noRecipes.map(r => `
           <div class="result-item" style="opacity:0.6;">
             <div class="result-rank">✕</div>
-            <div class="result-name">${r.recipe.name}</div>
+            <div class="result-name">${esc(r.recipe.name)}</div>
             <span class="result-no">✗ NO</span>
           </div>
         `).join('')}
