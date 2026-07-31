@@ -365,7 +365,9 @@ async function cloudFetch(path, opts = {}) {
     },
   });
   if (!res.ok) throw new Error(`Cloud request failed (${res.status})`);
-  return res.status === 204 ? null : res.json();
+  // Inserts/deletes come back 201/204 with an empty body — don't JSON-parse that
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
 }
 
 function getVoter() { return LS.get('mp2_voter', ''); }

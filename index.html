@@ -4997,7 +4997,9 @@ async function cloudFetch(path, opts = {}) {
     },
   });
   if (!res.ok) throw new Error(`cloud ${res.status}`);
-  return res.status === 204 ? null : res.json();
+  // Inserts/deletes come back 201/204 with an empty body — don't JSON-parse that
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
 }
 
 function openCloudModal() {
