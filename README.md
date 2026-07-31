@@ -30,7 +30,7 @@ python api_server.py --zip YOUR_ZIP
 ```
 
 Then open http://localhost:8099/ in your browser. (The server now serves the
-app itself and injects a local access token — opening `index-pro.html`
+app itself and injects a local access token — opening `index.html`
 directly from the file system still works, but read-only unless you set the
 token shown at server startup.)
 

@@ -62,9 +62,10 @@ TOKEN_FILE = BASE_DIR / ".api_token"
 # Static files the server is allowed to serve (no path traversal possible —
 # anything not in this map is a 404)
 STATIC_FILES = {
-    "/": ("index-pro.html", "text/html; charset=utf-8"),
-    "/index.html": ("index-pro.html", "text/html; charset=utf-8"),
-    "/index-pro.html": ("index-pro.html", "text/html; charset=utf-8"),
+    "/": ("index.html", "text/html; charset=utf-8"),
+    "/index.html": ("index.html", "text/html; charset=utf-8"),
+    # Legacy path from before the v1 app was retired
+    "/index-pro.html": ("index.html", "text/html; charset=utf-8"),
     "/vote.html": ("vote.html", "text/html; charset=utf-8"),
     "/meal-planner.ico": ("meal-planner.ico", "image/x-icon"),
     "/favicon.ico": ("meal-planner.ico", "image/x-icon"),
