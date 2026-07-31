@@ -1582,6 +1582,9 @@ textarea { resize: vertical; min-height: 60px; }
       <span class="dot"></span>
       <span class="text" id="last-plan-text">Last plan: ?</span>
     </div>
+    <button class="theme-toggle" onclick="openCloudModal()" title="Cloud sync & family vote" aria-label="Cloud sync settings">
+      <span id="cloud-icon">☁️</span>
+    </button>
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
       <span id="theme-icon">🌙</span>
     </button>
@@ -2272,6 +2275,42 @@ textarea { resize: vertical; min-height: 60px; }
 <!-- ═══ COOKING TIMERS ═══ -->
 <div class="timer-container" id="timer-container"></div>
 
+<!-- ═══ CLOUD SYNC MODAL ═══ -->
+<div class="modal-overlay" id="cloud-modal" onclick="if(event.target===this)closeModal('cloud-modal')">
+  <div class="modal-content" style="max-width:480px;">
+    <div class="modal-header" style="padding:0 0 0.5rem;">
+      <h3>☁️ Cloud Sync & Family Vote</h3>
+      <button class="btn btn-ghost" onclick="closeModal('cloud-modal')">✕</button>
+    </div>
+    <p style="font-size:0.8rem;color:var(--ink-light);margin-bottom:0.75rem;">
+      Uses a free dedicated Supabase project (see README for the 3-minute
+      setup). Enables the shareable family vote link and phone/desktop
+      pantry sync.
+    </p>
+    <div class="form-group">
+      <label>Supabase project URL</label>
+      <input type="text" id="cloud-url" placeholder="https://xxxx.supabase.co">
+    </div>
+    <div class="form-group">
+      <label>Anon (public) key</label>
+      <input type="text" id="cloud-key" placeholder="eyJhbGciOi...">
+    </div>
+    <div id="cloud-status" style="font-size:0.8rem;margin:0.5rem 0;color:var(--ink-muted);"></div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;">
+      <button class="btn btn-secondary btn-sm" onclick="disconnectCloud()">Disconnect</button>
+      <button class="btn btn-secondary btn-sm" onclick="saveCloudConfig()">💾 Save & Test</button>
+    </div>
+    <div id="cloud-actions" style="display:none;border-top:1.5px solid var(--border);margin-top:0.75rem;padding-top:0.75rem;">
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button class="btn btn-secondary btn-sm" onclick="syncRecipesToCloud()">⬆️ Sync recipes to cloud</button>
+        <button class="btn btn-secondary btn-sm" onclick="copyVoteLink()">🔗 Copy family vote link</button>
+        <button class="btn btn-secondary btn-sm" onclick="pushPantryToCloud(true)">⬆️ Push pantry</button>
+        <button class="btn btn-secondary btn-sm" onclick="pullPantryFromCloud(true)">⬇️ Pull pantry</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ TIMER MODAL ═══ -->
 <div class="modal-overlay" id="timer-modal" onclick="if(event.target===this)closeModal('timer-modal')">
   <div class="modal-content" style="max-width:420px;">
@@ -2688,6 +2727,13 @@ function scoreRecipe(recipe, selectedRecipes, planUsage, favs, recentCategories)
     score += SMART_CONFIG.favoriteBonus;
   }
 
+  // Family vote weighting: crowd favorites climb, downvoted meals sink.
+  // Capped so votes influence but don't dominate overlap/recency logic.
+  const tally = (typeof cloudVoteTallies !== 'undefined' && cloudVoteTallies[slug]) || null;
+  if (tally) {
+    score += Math.max(-8, Math.min(8, tally.net * 3));
+  }
+
   return score;
 }
 
@@ -2848,6 +2894,11 @@ function renderRecipes() {
     const nutri = getRecipeNutrition(r);
     const nutriStr = nutri.cal > 0 ? `~${Math.round(nutri.cal/r.servings)} cal/svg` : '';
 
+    // Family vote tally (numbers only — no escaping needed)
+    const tally = (typeof cloudVoteTallies !== 'undefined' && cloudVoteTallies[slug]) || null;
+    const voteBadge = tally
+      ? `<span title="Family votes">🗳 👍${tally.up} 👎${tally.down}</span>` : '';
+
     // Star rating
     const cardRating = getRatings()[slug] || 0;
     const cardStars = cardRating ? `<span class="star-rating-display">${[1,2,3,4,5].map(s=>`<span class="star ${s<=cardRating?'filled':''}">${s<=cardRating?'★':'☆'}</span>`).join('')}</span>` : '';
@@ -2867,7 +2918,7 @@ function renderRecipes() {
       ${imgHtml}
       <div class="recipe-card-body">
         <div class="recipe-name">${esc(r.name)}</div>
-        <div class="recipe-meta">${total?`<span>⏱ ${total}min</span>`:''}  <span>🍽 ${r.servings} svg</span>${nutriStr?`<span>🔥 ${nutriStr}</span>`:''}${cardStars}</div>
+        <div class="recipe-meta">${total?`<span>⏱ ${total}min</span>`:''}  <span>🍽 ${r.servings} svg</span>${nutriStr?`<span>🔥 ${nutriStr}</span>`:''}${voteBadge}${cardStars}</div>
         ${costStr?`<div class="recipe-cost">💰 ${costStr}</div>`:''}
         <div class="recipe-tags-row">${tags}</div>
       </div>
@@ -3190,7 +3241,7 @@ function renderWeekCostSummary() {
   }).join('')}</div>`;
 }
 
-function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
+function autoFillWeek(useSmartPlanning = true, useLeftovers = true, opts = {}) {
   const recipes = getRecipes(), keys = Object.keys(recipes);
   if (!keys.length) { showToast('Add recipes first!'); return; }
 
@@ -3202,11 +3253,16 @@ function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
   const usedInPlan = new Set();
   const recentCategories = []; // Track categories of recent non-leftover meals
 
-  // Optional weekly budget cap from the Smart Fill input
+  // Optional weekly budget cap — explicit opts.budgetCap (Budget Fill) wins,
+  // otherwise the Smart Fill $ cap input. strictBudget leaves slots empty
+  // rather than ever exceeding the cap.
   const budgetInput = document.getElementById('smart-fill-budget');
-  const budgetCap = budgetInput && budgetInput.value ? parseFloat(budgetInput.value) : null;
+  const budgetCap = opts.budgetCap != null ? opts.budgetCap
+    : (budgetInput && budgetInput.value ? parseFloat(budgetInput.value) : null);
+  const strictBudget = !!opts.strictBudget;
   const store = (document.getElementById('grocery-store') || {}).value || 'kroger';
   let runningCost = 0;
+  let skippedSlots = 0;
 
   // Track leftover servings available: { recipeName: servingsRemaining }
   const leftovers = {};
@@ -3260,8 +3316,13 @@ function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
             .sort((a, b) => a.cost - b.cost);
           if (cheaper.length) {
             chosen = cheaper[0].r;
+          } else if (strictBudget) {
+            // Budget Fill: nothing fits under the cap — leave the slot empty
+            delete plan[`${dateStr}-${meal}`];
+            skippedSlots++;
+            continue;
           }
-          // If nothing fits, keep the original choice and accept the over-budget hit
+          // Otherwise keep the original choice and accept the over-budget hit
         }
       }
     } else {
@@ -3299,12 +3360,13 @@ function autoFillWeek(useSmartPlanning = true, useLeftovers = true) {
   const allIngredients = new Set();
   selectedRecipes.forEach(r => getIngredientSet(r).forEach(i => allIngredients.add(i)));
 
-  const leftoverMeals = mealSlots.length - selectedRecipes.length;
+  const leftoverMeals = mealSlots.length - selectedRecipes.length - skippedSlots;
 
   setPlan(plan);
   renderWeeklyPlan();
 
   let msg = `Week filled! ${selectedRecipes.length} recipes, ${leftoverMeals} leftover meals, ${allIngredients.size} grocery items`;
+  if (skippedSlots) msg += `, ${skippedSlots} slot${skippedSlots > 1 ? 's' : ''} left empty (over budget)`;
   if (budgetCap) {
     const overBudget = runningCost > budgetCap;
     msg += ` · Est. $${runningCost.toFixed(2)}`;
@@ -4610,7 +4672,11 @@ function quickAddPantry(item) {
 
 // Kroger pantry (loaded from pantry.json file)
 const getKrogerPantry = () => LS.get('mp2_kroger_pantry', []);
-const setKrogerPantry = v => LS.set('mp2_kroger_pantry', v);
+const setKrogerPantry = v => {
+  LS.set('mp2_kroger_pantry', v);
+  // Mirror to the cloud (debounced) so other devices see pantry changes
+  if (typeof schedulePantryPush === 'function') schedulePantryPush();
+};
 
 function importKrogerPantry() {
   const input = document.createElement('input');
@@ -4906,6 +4972,175 @@ window.fetch = (url, opts = {}) => {
   }
   return _origFetch(url, opts);
 };
+
+// ═══════════════════════════════════════════════════
+//  CLOUD SYNC (Supabase) — family vote + cross-device pantry.
+//  Config lives in localStorage 'mp2_cloud' {u: projectUrl, k: anonKey};
+//  set it via the ☁️ modal. vote.html shares the same config through the
+//  #s= hash on the family vote link.
+// ═══════════════════════════════════════════════════
+const getCloud = () => {
+  const cfg = LS.get('mp2_cloud', null);
+  return cfg && cfg.u && cfg.k ? cfg : null;
+};
+
+async function cloudFetch(path, opts = {}) {
+  const cfg = getCloud();
+  if (!cfg) throw new Error('Cloud not configured');
+  const res = await fetch(`${cfg.u.replace(/\/$/, '')}/rest/v1/${path}`, {
+    ...opts,
+    headers: {
+      'apikey': cfg.k,
+      'Authorization': `Bearer ${cfg.k}`,
+      'Content-Type': 'application/json',
+      ...(opts.headers || {}),
+    },
+  });
+  if (!res.ok) throw new Error(`cloud ${res.status}`);
+  return res.status === 204 ? null : res.json();
+}
+
+function openCloudModal() {
+  const cfg = LS.get('mp2_cloud', {}) || {};
+  // Default to the household's dedicated meal-planner Supabase project
+  document.getElementById('cloud-url').value = cfg.u || 'https://ghzpqrgzfrzvkiylqfrv.supabase.co';
+  document.getElementById('cloud-key').value = cfg.k || '';
+  document.getElementById('cloud-status').textContent = getCloud()
+    ? '✅ Connected' : 'Not configured yet.';
+  document.getElementById('cloud-actions').style.display = getCloud() ? 'block' : 'none';
+  openModal('cloud-modal');
+}
+
+async function saveCloudConfig() {
+  const u = document.getElementById('cloud-url').value.trim().replace(/\/$/, '');
+  const k = document.getElementById('cloud-key').value.trim();
+  const status = document.getElementById('cloud-status');
+  if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(u) || !k) {
+    status.textContent = '❌ Enter a valid https://xxxx.supabase.co URL and anon key';
+    return;
+  }
+  LS.set('mp2_cloud', { u, k });
+  status.textContent = 'Testing connection…';
+  try {
+    await cloudFetch('meal_recipes?select=slug&limit=1');
+    status.textContent = '✅ Connected — tables found';
+    document.getElementById('cloud-actions').style.display = 'block';
+    loadCloudVotes();
+  } catch (e) {
+    status.textContent = `❌ Connection failed (${e.message}). Did you run supabase/setup.sql in the SQL editor?`;
+  }
+}
+
+function disconnectCloud() {
+  localStorage.removeItem('mp2_cloud');
+  document.getElementById('cloud-url').value = '';
+  document.getElementById('cloud-key').value = '';
+  document.getElementById('cloud-status').textContent = 'Disconnected.';
+  document.getElementById('cloud-actions').style.display = 'none';
+}
+
+async function syncRecipesToCloud() {
+  if (!getCloud()) return;
+  const recipes = getRecipes();
+  const rows = Object.entries(recipes).map(([slug, r]) => ({
+    slug, name: r.name || slug, data: r,
+  }));
+  if (!rows.length) { showToast('No recipes to sync'); return; }
+  try {
+    await cloudFetch('meal_recipes?on_conflict=slug', {
+      method: 'POST',
+      headers: { 'Prefer': 'resolution=merge-duplicates' },
+      body: JSON.stringify(rows),
+    });
+    showToast(`☁️ ${rows.length} recipes synced to cloud`);
+  } catch (e) {
+    showToast(`⚠️ Sync failed (${e.message})`);
+  }
+}
+
+function copyVoteLink() {
+  const cfg = getCloud();
+  if (!cfg) return;
+  const packed = btoa(JSON.stringify(cfg)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  // Prefer the public GitHub Pages copy so family phones can open it;
+  // fall back to this page's own origin.
+  const base = location.protocol.startsWith('http')
+    ? `${location.origin}${location.pathname.replace(/[^/]*$/, '')}vote.html`
+    : 'vote.html';
+  const link = `${base}#s=${packed}`;
+  navigator.clipboard.writeText(link).then(
+    () => showToast('🔗 Vote link copied — text it to the family!'),
+    () => prompt('Copy this vote link:', link)
+  );
+}
+
+// Family vote tallies: {slug: {up, down, net}} cached for card badges +
+// Smart Fill scoring. Refreshed on app load and after config changes.
+let cloudVoteTallies = LS.get('mp2_cloud_votes', {});
+
+async function loadCloudVotes() {
+  if (!getCloud()) return;
+  try {
+    const votes = await cloudFetch('meal_votes?select=recipe_slug,vote');
+    const tallies = {};
+    votes.forEach(v => {
+      const t = tallies[v.recipe_slug] ||= { up: 0, down: 0, net: 0 };
+      if (v.vote > 0) t.up++; else t.down++;
+      t.net = t.up - t.down;
+    });
+    cloudVoteTallies = tallies;
+    LS.set('mp2_cloud_votes', tallies);
+    renderRecipes();
+  } catch (_) { /* offline is fine — keep cached tallies */ }
+}
+
+// ── Pantry sync: Kroger pantry items keyed by UPC (or slugified name) ──
+function pantryCloudKey(item) {
+  return String(item.upc || (item.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-') || '');
+}
+
+async function pushPantryToCloud(verbose) {
+  if (!getCloud()) return;
+  const items = getKrogerPantry();
+  const rows = items.map(it => ({ key: pantryCloudKey(it), data: it }))
+    .filter(r => r.key);
+  try {
+    // Full replace: the pushing device's pantry is the source of truth
+    await cloudFetch('meal_pantry?key=neq.__none__', { method: 'DELETE' });
+    if (rows.length) {
+      await cloudFetch('meal_pantry?on_conflict=key', {
+        method: 'POST',
+        headers: { 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify(rows),
+      });
+    }
+    LS.set('mp2_pantry_synced_at', new Date().toISOString());
+    if (verbose) showToast(`☁️ Pantry pushed (${rows.length} items)`);
+  } catch (e) {
+    if (verbose) showToast(`⚠️ Pantry push failed (${e.message})`);
+  }
+}
+
+async function pullPantryFromCloud(verbose) {
+  if (!getCloud()) return;
+  try {
+    const rows = await cloudFetch('meal_pantry?select=data');
+    setKrogerPantry(rows.map(r => r.data));
+    LS.set('mp2_pantry_synced_at', new Date().toISOString());
+    if (typeof renderPantry === 'function') renderPantry();
+    if (verbose) showToast(`☁️ Pantry pulled (${rows.length} items)`);
+  } catch (e) {
+    if (verbose) showToast(`⚠️ Pantry pull failed (${e.message})`);
+  }
+}
+
+// Debounced auto-push whenever the pantry changes on this device
+let _pantryPushTimer = null;
+function schedulePantryPush() {
+  if (!getCloud()) return;
+  clearTimeout(_pantryPushTimer);
+  _pantryPushTimer = setTimeout(() => pushPantryToCloud(false), 3000);
+}
 let krogerServerOnline = false;
 console.log('[API] Using base:', API_BASE);
 
@@ -6016,44 +6251,18 @@ function findMatchingRecipes(availableIngredients) {
 //  BUDGET FILL WEEK
 // ═══════════════════════════════════════════════════
 function budgetFillWeek() {
-  const budget = parseFloat(prompt('Weekly budget target ($):', '75'));
-  if (!budget || isNaN(budget)) return;
-
-  const recipes = getRecipes(), keys = Object.keys(recipes);
-  if (!keys.length) { showToast('Add recipes first!'); return; }
-
-  const blocked = getBlocked();
-  const store = document.getElementById('grocery-store')?.value || 'kroger';
-  const costed = keys
-    .filter(k => !blocked.includes(k))
-    .map(k => {
-      const r = recipes[k];
-      const cost = getRecipeCost(r, store);
-      return { slug: k, recipe: r, costPerServing: cost.total / (r.servings || 1), totalCost: cost.total };
-    }).sort((a, b) => a.costPerServing - b.costPerServing);
-
-  const plan = getPlan(), ws = currentWeekStart;
-  let totalSpent = 0;
-
-  for (let i = 0; i < 7; i++) {
-    const dateStr = formatDate(new Date(ws.getTime() + i * 86400000));
-    MEALS.forEach(meal => {
-      const suitable = costed.filter(c =>
-        (c.recipe.meal_types || ['dinner']).includes(meal) &&
-        (totalSpent + c.costPerServing) <= budget
-      );
-
-      if (suitable.length) {
-        const chosen = suitable[0];
-        plan[`${dateStr}-${meal}`] = chosen.recipe.name;
-        totalSpent += chosen.costPerServing;
-      }
-    });
+  // Prefer the existing $ cap input next to Smart Fill; prompt only if empty
+  const budgetInput = document.getElementById('smart-fill-budget');
+  let budget = budgetInput && budgetInput.value ? parseFloat(budgetInput.value) : NaN;
+  if (isNaN(budget) || budget <= 0) {
+    budget = parseFloat(prompt('Weekly budget target ($):', '75'));
   }
+  if (isNaN(budget) || budget <= 0) return;
 
-  setPlan(plan);
-  renderWeeklyPlan();
-  showToast(`Budget fill: $${totalSpent.toFixed(2)} of $${budget.toFixed(2)} budget`);
+  // Same variety/leftover engine as Smart Fill, but the cap is strict:
+  // over-cap picks swap to the cheapest recipe that fits, and slots where
+  // nothing fits are left empty (reported in the toast).
+  autoFillWeek(true, true, { budgetCap: budget, strictBudget: true });
 }
 
 // ═══════════════════════════════════════════════════
@@ -6175,8 +6384,41 @@ const NUTRITION_DB = {
   "green onion": { cal: 5, protein: 0.3, carb: 1.1, fat: 0, per: "each" },
 };
 
+// Unit families for nutrition scaling — factors convert to a base unit
+// per family (weight → oz, volume → fl oz, count → each)
+const NUTRI_UNIT_FAMILIES = {
+  weight: { oz: 1, lb: 16, lbs: 16, g: 0.0353, gram: 0.0353, grams: 0.0353, kg: 35.3 },
+  volume: { 'fl oz': 1, floz: 1, cup: 8, tbsp: 0.5, tsp: 1/6, ml: 0.0338, l: 33.8, liter: 33.8 },
+  count: { '': 1, each: 1, piece: 1, clove: 1, slice: 1, large: 1, medium: 1, small: 1, whole: 1, can: 1, package: 1 }
+};
+
+function nutriUnitInfo(unit) {
+  const u = normalizeUnit(unit);
+  for (const [family, table] of Object.entries(NUTRI_UNIT_FAMILIES)) {
+    if (table[u] !== undefined) return { family, toBase: table[u] };
+  }
+  return null;
+}
+
+// Parse a NUTRITION_DB "per" basis like "4oz", "cup", "each" → { qty, unit }
+function parseNutriBasis(per) {
+  const m = /^\s*([\d.]+)?\s*(.*)$/.exec(per || 'each');
+  return { qty: m[1] ? parseFloat(m[1]) : 1, unit: (m[2] || '').trim() };
+}
+
+// How many multiples of the DB entry's basis the recipe qty+unit represents.
+// Returns null when the units are in different families (caller falls back
+// to legacy qty × entry behavior so numbers never get worse than before).
+function nutriScaleFactor(qty, unit, per) {
+  const basis = parseNutriBasis(per);
+  const from = nutriUnitInfo(unit);
+  const to = nutriUnitInfo(basis.unit);
+  if (!from || !to || from.family !== to.family) return null;
+  return ((qty || 1) * from.toBase) / ((basis.qty || 1) * to.toBase);
+}
+
 function getRecipeNutrition(recipe) {
-  let totals = { cal: 0, protein: 0, carb: 0, fat: 0, matched: 0, total: 0 };
+  let totals = { cal: 0, protein: 0, carb: 0, fat: 0, matched: 0, total: 0, unitFallbacks: 0 };
   for (const ing of (recipe.ingredients || [])) {
     totals.total++;
     const itemLower = ing.item.toLowerCase().trim();
@@ -6188,7 +6430,8 @@ function getRecipeNutrition(recipe) {
     }
     if (nutri) {
       totals.matched++;
-      const scale = ing.qty || 1;
+      let scale = nutriScaleFactor(ing.qty, ing.unit, nutri.per);
+      if (scale === null) { scale = ing.qty || 1; totals.unitFallbacks++; }
       totals.cal += nutri.cal * scale;
       totals.protein += nutri.protein * scale;
       totals.carb += nutri.carb * scale;
@@ -6490,7 +6733,10 @@ function getDayMacros(dateStr) {
     const recipeName = plan[key];
     if (!recipeName) return;
 
-    const slug = Object.keys(recipes).find(k => recipes[k].name === recipeName);
+    // Leftover slots are stored as "Recipe Name (leftover)" — strip the
+    // suffix so they still resolve to a recipe and count their macros
+    const baseName = recipeName.replace(/\s*\(leftover\)$/, '');
+    const slug = Object.keys(recipes).find(k => recipes[k].name === baseName);
     if (!slug) return;
 
     const r = recipes[slug];
@@ -6797,6 +7043,10 @@ checkKrogerAccountStatus();
 maybePromptPantrySweep();
 // Warn about pickups still pending > 7 days
 maybePromptStalePending();
+// Cloud sync (no-ops when not configured): refresh family vote tallies,
+// and adopt the cloud pantry if this device's pantry is empty
+loadCloudVotes();
+if (getCloud() && !getKrogerPantry().length) pullPantryFromCloud(false);
 </script>
 </body>
 </html>

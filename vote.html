@@ -332,6 +332,45 @@ const getVotes = () => LS.get('mp2_votes', {});
 const setVotes = v => LS.set('mp2_votes', v);
 const getRecipes = () => LS.get('mp2_recipes', {});
 
+// ═══════════════════════════════════════════════════
+//  CLOUD (Supabase) — makes the vote link work on any device.
+//  Config arrives via the share link (#s=base64 {u:url,k:anonKey}) and is
+//  remembered in localStorage. Without it, falls back to this device's
+//  localStorage recipes/votes (original single-device behavior).
+// ═══════════════════════════════════════════════════
+const CLOUD = (() => {
+  const hash = new URLSearchParams(location.hash.replace(/^#/, ''));
+  const packed = hash.get('s');
+  if (packed) {
+    try {
+      const cfg = JSON.parse(atob(packed.replace(/-/g, '+').replace(/_/g, '/')));
+      if (cfg.u && cfg.k) {
+        LS.set('mp2_cloud', cfg);
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+    } catch (_) {}
+  }
+  const cfg = LS.get('mp2_cloud', null);
+  return cfg && cfg.u && cfg.k ? cfg : null;
+})();
+
+async function cloudFetch(path, opts = {}) {
+  const res = await fetch(`${CLOUD.u.replace(/\/$/, '')}/rest/v1/${path}`, {
+    ...opts,
+    headers: {
+      'apikey': CLOUD.k,
+      'Authorization': `Bearer ${CLOUD.k}`,
+      'Content-Type': 'application/json',
+      ...(opts.headers || {}),
+    },
+  });
+  if (!res.ok) throw new Error(`Cloud request failed (${res.status})`);
+  return res.status === 204 ? null : res.json();
+}
+
+function getVoter() { return LS.get('mp2_voter', ''); }
+function setVoter(name) { LS.set('mp2_voter', name); }
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -348,15 +387,40 @@ function formatQty(q) {
 // ═══════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════
-let recipeQueue = [];  // slugs to vote on
+let recipeQueue = [];   // slugs to vote on
 let currentIndex = 0;
 let sessionVotes = {};  // slug -> true/false/null(skip)
+let cloudRecipes = null;  // {slug: recipe} when cloud-loaded
+let myCloudVotes = {};    // slug -> 1|-1 (this voter's existing cloud votes)
 
-function init() {
-  // Get recipes from URL param or all from localStorage
+function activeRecipes() { return cloudRecipes || getRecipes(); }
+
+async function init() {
+  const app = document.getElementById('app');
+
+  if (CLOUD) {
+    if (!getVoter()) { renderNamePrompt(); return; }
+    app.innerHTML = `<div class="empty-state"><div class="empty-icon">☁️</div><p>Loading recipes…</p></div>`;
+    try {
+      const rows = await cloudFetch('meal_recipes?select=slug,data&order=name');
+      cloudRecipes = {};
+      rows.forEach(r => { cloudRecipes[r.slug] = r.data; });
+      const mine = await cloudFetch(
+        `meal_votes?select=recipe_slug,vote&voter=eq.${encodeURIComponent(getVoter())}`);
+      myCloudVotes = {};
+      mine.forEach(v => { myCloudVotes[v.recipe_slug] = v.vote; });
+    } catch (e) {
+      app.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div>
+        <p>Couldn't reach the cloud (${esc(e.message)}). Ask for a fresh vote link,
+        or check your connection.</p></div>`;
+      return;
+    }
+  }
+
+  // Optional ?recipes=slug,slug filter from the share link
   const params = new URLSearchParams(window.location.search);
   const recipesParam = params.get('recipes');
-  const allRecipes = getRecipes();
+  const allRecipes = activeRecipes();
 
   if (recipesParam) {
     recipeQueue = recipesParam.split(',').filter(s => allRecipes[s]);
@@ -365,37 +429,59 @@ function init() {
   }
 
   if (!recipeQueue.length) {
-    document.getElementById('app').innerHTML = `<div class="empty-state">
+    app.innerHTML = `<div class="empty-state">
       <div class="empty-icon">📖</div>
-      <p>No recipes found. Add some recipes in the Meal Planner first!</p>
+      <p>No recipes found${CLOUD ? ' in the cloud yet — sync from the planner first (☁️ Cloud Sync)' : '. Add some recipes in the Meal Planner first'}!</p>
       <a href="index.html" class="btn btn-primary" style="margin-top:1rem;display:inline-flex;">Go to Meal Planner</a>
     </div>`;
     return;
   }
 
-  // Check if already voted on all
-  const votes = getVotes();
-  const unvoted = recipeQueue.filter(s => votes[s] === undefined);
+  // Only show recipes this person hasn't voted on yet
+  const voted = CLOUD ? myCloudVotes : getVotes();
+  const unvoted = recipeQueue.filter(s => voted[s] === undefined);
   if (!unvoted.length) {
     showResults();
     return;
   }
 
   currentIndex = 0;
-  // Reset session to only unvoted
   recipeQueue = unvoted;
   renderCard();
 }
 
+function renderNamePrompt() {
+  document.getElementById('app').innerHTML = `
+    <div class="vote-card" style="padding:1.5rem;">
+      <div class="vote-recipe-name" style="margin-bottom:0.5rem;">Who's voting?</div>
+      <p style="font-size:0.85rem;color:var(--ink-light);margin-bottom:1rem;">
+        Your name keeps everyone's votes separate.</p>
+      <input id="voter-name" placeholder="e.g. Travis" maxlength="40"
+        style="width:100%;font-family:inherit;font-size:0.95rem;padding:0.6rem 0.8rem;border:1.5px solid var(--border);border-radius:var(--radius-sm);margin-bottom:1rem;">
+      <button class="btn btn-primary" onclick="submitName()">Start voting</button>
+    </div>`;
+  const input = document.getElementById('voter-name');
+  input.focus();
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
+}
+
+function submitName() {
+  const name = document.getElementById('voter-name').value.trim();
+  if (!name) { showToast('Please enter a name'); return; }
+  setVoter(name);
+  init();
+}
+
 function renderCard() {
   const app = document.getElementById('app');
-  const recipes = getRecipes();
+  const recipes = activeRecipes();
 
   if (currentIndex >= recipeQueue.length) {
-    // Save session votes to localStorage
-    const votes = getVotes();
-    Object.assign(votes, sessionVotes);
-    setVotes(votes);
+    if (!CLOUD) {
+      const votes = getVotes();
+      Object.assign(votes, sessionVotes);
+      setVotes(votes);
+    }
     showResults();
     return;
   }
@@ -446,76 +532,118 @@ function castVote(value) {
   const slug = recipeQueue[currentIndex];
   if (value !== null) {
     sessionVotes[slug] = value;
+    if (CLOUD) {
+      myCloudVotes[slug] = value ? 1 : -1;
+      cloudFetch('meal_votes?on_conflict=recipe_slug,voter', {
+        method: 'POST',
+        headers: { 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify([{
+          recipe_slug: slug, voter: getVoter(), vote: value ? 1 : -1,
+        }]),
+      }).catch(() => showToast('⚠️ Vote not saved — connection issue'));
+    }
   }
   currentIndex++;
   renderCard();
 }
 
 function finishEarly() {
-  const votes = getVotes();
-  Object.assign(votes, sessionVotes);
-  setVotes(votes);
+  if (!CLOUD) {
+    const votes = getVotes();
+    Object.assign(votes, sessionVotes);
+    setVotes(votes);
+  }
   showResults();
 }
 
-function showResults() {
+async function showResults() {
   const app = document.getElementById('app');
-  const votes = getVotes();
-  const recipes = getRecipes();
+  const recipes = activeRecipes();
 
-  // Count yes/no for each recipe
-  const results = Object.entries(votes).map(([slug, vote]) => {
-    const recipe = recipes[slug];
-    if (!recipe) return null;
-    return { slug, recipe, vote };
-  }).filter(Boolean);
+  let rows;  // [{slug, name, up, down, net, voters}]
+  if (CLOUD) {
+    app.innerHTML = `<div class="empty-state"><div class="empty-icon">☁️</div><p>Loading results…</p></div>`;
+    let allVotes;
+    try {
+      allVotes = await cloudFetch('meal_votes?select=recipe_slug,voter,vote');
+    } catch (e) {
+      app.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><p>Couldn't load results (${esc(e.message)}).</p></div>`;
+      return;
+    }
+    const bySlug = {};
+    allVotes.forEach(v => {
+      const t = bySlug[v.recipe_slug] ||= { up: 0, down: 0, voters: [] };
+      if (v.vote > 0) t.up++; else t.down++;
+      t.voters.push(v.voter);
+    });
+    rows = Object.entries(bySlug)
+      .filter(([slug]) => recipes[slug])
+      .map(([slug, t]) => ({
+        slug, name: recipes[slug].name,
+        up: t.up, down: t.down, net: t.up - t.down, voters: t.voters,
+      }));
+  } else {
+    const votes = getVotes();
+    rows = Object.entries(votes)
+      .filter(([slug]) => recipes[slug])
+      .map(([slug, vote]) => ({
+        slug, name: recipes[slug].name,
+        up: vote === true ? 1 : 0, down: vote === false ? 1 : 0,
+        net: vote === true ? 1 : -1, voters: [],
+      }));
+  }
 
-  const yesRecipes = results.filter(r => r.vote === true).sort((a, b) => a.recipe.name.localeCompare(b.recipe.name));
-  const noRecipes = results.filter(r => r.vote === false);
-
-  if (!results.length) {
+  if (!rows.length) {
     app.innerHTML = `<div class="empty-state"><div class="empty-icon">🗳️</div><p>No votes yet. Start voting!</p></div>`;
     return;
   }
 
+  rows.sort((a, b) => b.net - a.net || b.up - a.up || a.name.localeCompare(b.name));
+  const totalVoters = CLOUD ? new Set(rows.flatMap(r => r.voters)).size : 1;
+  const liked = rows.filter(r => r.net > 0);
+  const disliked = rows.filter(r => r.net <= 0);
+
+  const row = (r, i, faded) => `
+    <div class="result-item"${faded ? ' style="opacity:0.6;"' : ''}>
+      <div class="result-rank">${!faded && i === 0 ? '🏆' : faded ? '✕' : i + 1}</div>
+      <div class="result-name">${esc(r.name)}</div>
+      <span class="result-votes"><span class="result-yes">👍${r.up}</span> <span class="result-no">👎${r.down}</span></span>
+    </div>`;
+
   app.innerHTML = `
     <h3 style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.75rem;">
-      Voting Results <span style="font-size:0.82rem;font-weight:400;color:var(--ink-muted);">(${results.length} voted)</span>
+      ${CLOUD ? 'Family Results' : 'Voting Results'}
+      <span style="font-size:0.82rem;font-weight:400;color:var(--ink-muted);">
+        (${rows.length} recipes${CLOUD ? `, ${totalVoters} voter${totalVoters === 1 ? '' : 's'}` : ''})</span>
     </h3>
-    ${yesRecipes.length ? `
-      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);margin-bottom:0.4rem;">👍 Yes! (${yesRecipes.length})</div>
-      <div class="results-list">
-        ${yesRecipes.map((r, i) => `
-          <div class="result-item">
-            <div class="result-rank">${i === 0 ? '🏆' : i + 1}</div>
-            <div class="result-name">${esc(r.recipe.name)}</div>
-            <span class="result-yes">✓ YES</span>
-          </div>
-        `).join('')}
-      </div>
+    ${liked.length ? `
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);margin-bottom:0.4rem;">👍 Crowd favorites (${liked.length})</div>
+      <div class="results-list">${liked.map((r, i) => row(r, i, false)).join('')}</div>
     ` : ''}
-    ${noRecipes.length ? `
-      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);margin-top:1rem;margin-bottom:0.4rem;">👎 No thanks (${noRecipes.length})</div>
-      <div class="results-list">
-        ${noRecipes.map(r => `
-          <div class="result-item" style="opacity:0.6;">
-            <div class="result-rank">✕</div>
-            <div class="result-name">${esc(r.recipe.name)}</div>
-            <span class="result-no">✗ NO</span>
-          </div>
-        `).join('')}
-      </div>
+    ${disliked.length ? `
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);margin-top:1rem;margin-bottom:0.4rem;">👎 Not this week (${disliked.length})</div>
+      <div class="results-list">${disliked.map((r, i) => row(r, i, true)).join('')}</div>
     ` : ''}
     <div style="margin-top:1.5rem;display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
-      <button class="btn btn-secondary" onclick="resetVotes()">Reset Votes</button>
+      <button class="btn btn-secondary" onclick="resetVotes()">${CLOUD ? 'Redo my votes' : 'Reset Votes'}</button>
       <a href="index.html" class="btn btn-primary">Back to Planner</a>
     </div>
   `;
 }
 
-function resetVotes() {
-  if (!confirm('Reset all votes?')) return;
-  setVotes({});
+async function resetVotes() {
+  if (CLOUD) {
+    if (!confirm(`Clear ${getVoter()}'s votes and vote again?`)) return;
+    try {
+      await cloudFetch(`meal_votes?voter=eq.${encodeURIComponent(getVoter())}`, { method: 'DELETE' });
+    } catch (e) {
+      showToast('⚠️ Could not clear votes'); return;
+    }
+    myCloudVotes = {};
+  } else {
+    if (!confirm('Reset all votes?')) return;
+    setVotes({});
+  }
   sessionVotes = {};
   currentIndex = 0;
   init();

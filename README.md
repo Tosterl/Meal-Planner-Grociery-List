@@ -75,6 +75,26 @@ Each calendar event includes: recipe name, prep/cook time, nutrition, cost estim
 | 🗳️ Family Vote | Let family members vote on recipes |
 | 🍳 What Can I Make | Finds recipes matching your pantry items |
 
+## Cloud Sync & Family Vote (optional)
+
+Family Vote and cross-device sync are backed by a free Supabase project
+dedicated to the meal planner (keep it separate from any other database
+you run — the tables are open to anyone holding the project's anon key,
+which is what makes account-free family vote links possible).
+
+One-time setup (~3 minutes):
+
+1. Create a free project at [supabase.com](https://supabase.com) (any name, e.g. `meal-planner`)
+2. In the project: **SQL Editor → paste the contents of `supabase/setup.sql` → Run**
+3. In the project: **Settings → API** — copy the *Project URL* and the *anon public* key
+4. In the meal planner app: **☁️ Cloud Sync** (header) → paste both → Save
+5. Click **Sync recipes to cloud**, then **Copy family vote link** and text it to your family
+
+Family members open the link on their phones, enter their name once, and
+swipe. Tallies show on your recipe cards, and Smart Fill favors crowd
+favorites and avoids downvoted meals. Pantry changes also sync through the
+same project, so phone and desktop stay consistent.
+
 ## Recipe Scraper (`scraper.py`)
 
 Scrapes recipes from any site using Schema.org JSON-LD (most major recipe sites).
