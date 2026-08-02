@@ -1,0 +1,18 @@
+{
+  "name": "Meal Planner Pro",
+  "short_name": "Meals",
+  "description": "Family meal planning, grocery lists, pantry, and Kroger ordering",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf8f4",
+  "theme_color": "#1b1710",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

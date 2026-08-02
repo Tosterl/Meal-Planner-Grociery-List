@@ -95,6 +95,21 @@ swipe. Tallies show on your recipe cards, and Smart Fill favors crowd
 favorites and avoids downvoted meals. Pantry changes also sync through the
 same project, so phone and desktop stay consistent.
 
+Recipes and the current meal plan sync both ways: another device pulls
+your recipes and plan from the cloud on open (existing local copies win),
+and plan changes push automatically. If you set the project up before the
+`meal_plan` table existed, re-run `supabase/setup.sql` once — it's
+idempotent and only adds what's missing.
+
+## Install on your phone (PWA)
+
+Open https://tosterl.github.io/Meal-Planner-Grociery-List/ on your phone
+and choose **Add to Home Screen** (Share menu on iPhone, ⋮ menu on
+Android). It installs like an app, works offline in the store, and syncs
+recipes/plan/pantry/votes through the cloud project. Kroger search and
+cart push still need the API server (see DEPLOY.md for phone access to
+those).
+
 ## Recipe Scraper (`scraper.py`)
 
 Scrapes recipes from any site using Schema.org JSON-LD (most major recipe sites).

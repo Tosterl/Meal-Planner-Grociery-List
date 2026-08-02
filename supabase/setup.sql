@@ -27,9 +27,17 @@ create table if not exists meal_pantry (
   updated_at  timestamptz not null default now()
 );
 
+-- The household's current meal plan (single row, key = 'household')
+create table if not exists meal_plan (
+  key         text primary key,
+  data        jsonb not null,
+  updated_at  timestamptz not null default now()
+);
+
 alter table meal_recipes enable row level security;
 alter table meal_votes   enable row level security;
 alter table meal_pantry  enable row level security;
+alter table meal_plan    enable row level security;
 
 -- Anyone with the anon key may read and write. Household-scoped by
 -- obscurity of the project URL + key, which is the deliberate tradeoff
@@ -44,4 +52,8 @@ create policy meal_votes_all on meal_votes
 
 drop policy if exists meal_pantry_all on meal_pantry;
 create policy meal_pantry_all on meal_pantry
+  for all to anon using (true) with check (true);
+
+drop policy if exists meal_plan_all on meal_plan;
+create policy meal_plan_all on meal_plan
   for all to anon using (true) with check (true);

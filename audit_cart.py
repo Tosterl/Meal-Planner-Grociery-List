@@ -30,6 +30,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent
 sys.path.insert(0, str(BASE_DIR))
 
+import recipe_calculator as rc
 from mealplanner import (
     categorize,
     list_recipes,
@@ -172,6 +173,35 @@ def covered_by_pantry(item: str, pantry: list[dict]) -> dict | None:
     return None
 
 
+_BASE_UNIT_LABEL = {"weight": "oz", "volume": "fl oz", "count": "ct"}
+
+
+def pantry_quantity_covers(units: dict[str, float], pantry_item: dict) -> tuple[bool, str]:
+    """Does the pantry item's amount actually cover the needed quantity?
+
+    Returns (covers, shortfall_note). Owning 1 tbsp of olive oil should not
+    zero out a recipe needing a cup. When the pantry size is unparseable or
+    the units live in different families (e.g. "2 cloves" vs a 3-oz jar),
+    we can't compare — fall back to the legacy assume-covered behavior.
+    """
+    p_qty, p_unit = rc.parse_amount(str(pantry_item.get("size") or ""))
+    if p_qty is None or p_qty <= 0:
+        return True, ""
+    count = float(pantry_item.get("qty") or 1)
+    p_base, p_family = rc.to_base(p_qty * max(count, 1), p_unit)
+    if p_base is None:
+        return True, ""
+
+    for unit, qty in units.items():
+        n_base, n_family = rc.to_base(qty, unit)
+        if n_base is None or n_family != p_family:
+            continue  # not comparable — don't block coverage on it
+        if n_base > p_base + 1e-9:
+            label = _BASE_UNIT_LABEL[p_family]
+            return False, f"have ~{p_base:g} {label}, need ~{n_base:g} {label}"
+    return True, ""
+
+
 def format_needed(units: dict[str, float]) -> str:
     parts = []
     for unit, qty in units.items():
@@ -227,18 +257,23 @@ def build_audit(days: int, live: bool, zip_code: str | None) -> dict:
         in_pantry = covered_by_pantry(item, pantry)
         needed = format_needed(units)
 
+        pantry_shortfall = ""
         if in_pantry:
-            pantry_skipped.append({
-                "item": item,
-                "needed": needed,
-                "covered_by": in_pantry.get("name", ""),
-                "have_qty": in_pantry.get("qty", 1),
-            })
-            continue
+            covers, pantry_shortfall = pantry_quantity_covers(units, in_pantry)
+            if covers:
+                pantry_skipped.append({
+                    "item": item,
+                    "needed": needed,
+                    "covered_by": in_pantry.get("name", ""),
+                    "have_qty": in_pantry.get("qty", 1),
+                })
+                continue
+            # Partial coverage: still needs buying — flag it in the report
 
         entry = {
             "item": item,
             "needed": needed,
+            "pantry_partial": pantry_shortfall or None,
             "category": categorize(item),
             "package_qty": 1,  # default
             "match": None,
@@ -314,6 +349,8 @@ def render_text(audit: dict) -> str:
                              f"@ {price_str} = ${line_total:.2f}")
             else:
                 lines.append(f"    [{item['package_qty']}x] {item['item']:<25} need {need}")
+            if item.get("pantry_partial"):
+                lines.append(f"          ⚠️  pantry has some, not enough ({item['pantry_partial']})")
 
     if audit["pantry_skipped"]:
         lines.append("")

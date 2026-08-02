@@ -347,6 +347,8 @@ def parse_schema_recipe(data: dict) -> dict:
     """Parse a Schema.org Recipe into our format."""
     data = unescape_strings(data)
     name = data.get("name", "Untitled Recipe")
+    # Page titles often end in a redundant " Recipe" ("Beef Stew Recipe")
+    name = re.sub(r"\s+recipe$", "", name, flags=re.IGNORECASE) or name
 
     # Parse times
     prep_time = parse_duration(data.get("prepTime"))

@@ -19,3 +19,8 @@ __pycache__/
 # OS junk
 nul
 Thumbs.db
+
+# Local logs & scratch
+server.log
+server.err.log
+_c.js

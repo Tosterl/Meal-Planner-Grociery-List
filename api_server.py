@@ -70,6 +70,9 @@ STATIC_FILES = {
     "/meal-planner.ico": ("meal-planner.ico", "image/x-icon"),
     "/favicon.ico": ("meal-planner.ico", "image/x-icon"),
     "/meal-plan.ics": ("meal-plan.ics", "text/calendar; charset=utf-8"),
+    "/manifest.webmanifest": ("manifest.webmanifest", "application/manifest+json"),
+    "/sw.js": ("sw.js", "text/javascript; charset=utf-8"),
+    "/icon.svg": ("icon.svg", "image/svg+xml"),
 }
 
 

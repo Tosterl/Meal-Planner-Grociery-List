@@ -1562,6 +1562,8 @@ textarea { resize: vertical; min-height: 60px; }
   }
 }
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1b1710">
 </head>
 <body>
 
@@ -2306,6 +2308,8 @@ textarea { resize: vertical; min-height: 60px; }
         <button class="btn btn-secondary btn-sm" onclick="copyVoteLink()">🔗 Copy family vote link</button>
         <button class="btn btn-secondary btn-sm" onclick="pushPantryToCloud(true)">⬆️ Push pantry</button>
         <button class="btn btn-secondary btn-sm" onclick="pullPantryFromCloud(true)">⬇️ Pull pantry</button>
+        <button class="btn btn-secondary btn-sm" onclick="pushPlanToCloud(true)">⬆️ Push plan</button>
+        <button class="btn btn-secondary btn-sm" onclick="pullPlanFromCloud(true)">⬇️ Pull plan</button>
       </div>
     </div>
   </div>
@@ -2570,7 +2574,20 @@ function encJs(s){ return encodeURIComponent(String(s ?? '')).replace(/'/g,'%27'
 const getRecipes = () => LS.get('mp2_recipes', {});
 const setRecipes = v => LS.set('mp2_recipes', v);
 const getPlan = () => LS.get('mp2_plan', {});
-const setPlan = v => LS.set('mp2_plan', v);
+// Central plan write point — every plan mutation goes through here, so the
+// debounced cloud auto-push hooks in once (typeof guard: defined later in script).
+const setPlan = v => { LS.set('mp2_plan', v); if (typeof schedulePlanPush === 'function') schedulePlanPush(); };
+
+// ── Deleted-recipe tombstones: keeps deleted bundled recipes deleted across
+// reloads (loadBundledRecipes re-seeds on every load). Intentional re-adds
+// (manual save, imports, server/cloud restore) clear the tombstone.
+const getDeletedRecipes = () => LS.get('mp2_deleted_recipes', []);
+const setDeletedRecipes = v => LS.set('mp2_deleted_recipes', v);
+function untombstoneRecipe(slug) {
+  const d = getDeletedRecipes();
+  const i = d.indexOf(slug);
+  if (i >= 0) { d.splice(i, 1); setDeletedRecipes(d); }
+}
 const getFavs = () => LS.get('mp2_favs', []);
 const setFavs = v => LS.set('mp2_favs', v);
 const getPrices = () => LS.get('mp2_prices', DEFAULT_PRICES);
@@ -3028,7 +3045,10 @@ function toggleFav(slug) {
 function deleteRecipe(slug) {
   const r=getRecipes(); if(!r[slug])return;
   if(!confirm(`Delete "${r[slug].name}"?`))return;
-  delete r[slug]; setRecipes(r); renderRecipes(); showToast('Deleted');
+  delete r[slug]; setRecipes(r);
+  const d = getDeletedRecipes();
+  if (!d.includes(slug)) { d.push(slug); setDeletedRecipes(d); }
+  renderRecipes(); showToast('Deleted');
 }
 
 // ═══════════════════════════════════════════════════
@@ -3112,6 +3132,7 @@ function saveRecipe() {
   if(oldSlug&&oldSlug!==newSlug)delete recipes[oldSlug];
   recipes[newSlug]=recipe;
   setRecipes(recipes);
+  untombstoneRecipe(newSlug);
 
   // Auto-fetch image from Unsplash if none provided and key exists
   if(!imageUrl && UNSPLASH_KEY) {
@@ -3698,6 +3719,65 @@ const CATEGORIES = {
   '🧂 Spices':['salt','pepper','cumin','paprika','oregano','thyme','cinnamon','chili powder','cayenne','turmeric','curry','garlic powder','onion powder','red pepper flakes']
 };
 
+// ── Pantry matching helpers (word-boundary, shared with Kroger send) ──
+
+// Does `phrase` appear as consecutive whole words inside `words`?
+// ("flour" in ["small","flour","tortillas"] → true; never substring
+// matches, so "cauliflower" does not contain "flour".)
+function phraseInWords(words, phraseWords) {
+  if (!phraseWords.length || phraseWords.length > words.length) return -1;
+  for (let i = 0; i <= words.length - phraseWords.length; i++) {
+    if (phraseWords.every((w, j) => words[i + j] === w)) return i;
+  }
+  return -1;
+}
+
+// Manual-pantry key vs grocery item: match on whole words in either
+// direction ("olive oil" pantry covers "extra virgin olive oil" item).
+function pantryKeyMatchesItem(key, item) {
+  if (key === item) return true;
+  const itemWords = item.split(/\s+/).filter(Boolean);
+  const keyWords = key.split(/\s+/).filter(Boolean);
+  return phraseInWords(itemWords, keyWords) >= 0 || phraseInWords(keyWords, itemWords) >= 0;
+}
+
+// Kroger-pantry product vs ingredient: require the ingredient to appear
+// as consecutive whole words in the product name, and reject products
+// whose trailing words are a different food ("honey" ≠ "honey chicken").
+const PANTRY_FOOD_NOUNS = /^(chicken|beef|pork|fish|salmon|shrimp|cake|cookie|cookies|cereal|pasta|noodle|noodles|chips|crisps|bar|bars|sauce|salsa|dressing|paste|stir-in|soda|drink|drinks|water|juice|tea|coffee|conditioner|shampoo|lotion|spray|cream|scrub|powder|seed)$/;
+function krogerPantryMatchesIngredient(productName, ingredient) {
+  const productWords = productName.toLowerCase().split(/[\s,()]+/).filter(Boolean);
+  const ingredientWords = ingredient.split(/\s+/).filter(Boolean);
+  const at = phraseInWords(productWords, ingredientWords);
+  if (at < 0) return false;
+  const tailWords = productWords.slice(at + ingredientWords.length);
+  return !tailWords.some(w => PANTRY_FOOD_NOUNS.test(w));
+}
+
+// Unit-aware pantry coverage. `pantryUnit` may carry a leading count
+// ("12 oz" Kroger sizes). When have + all needed units convert into the
+// same family (weight/volume/count), compare in base units; returns
+// { covered } or { covered:false, unit, remaining } with the remainder
+// in the recipe's unit. Returns null when units are cross-family or
+// unparseable — caller keeps the legacy raw-number comparison.
+function pantryCoverage(pantryQty, pantryUnit, neededByUnit) {
+  const basis = parseNutriBasis(pantryUnit);
+  const haveInfo = nutriUnitInfo(basis.unit);
+  if (!haveInfo) return null;
+  const units = Object.keys(neededByUnit);
+  let neededBase = 0;
+  for (const u of units) {
+    const info = nutriUnitInfo(u);
+    if (!info || info.family !== haveInfo.family) return null;
+    neededBase += (neededByUnit[u] || 0) * info.toBase;
+  }
+  if (neededBase <= 0) return null;
+  const haveBase = (pantryQty || 0) * (basis.qty || 1) * haveInfo.toBase;
+  if (haveBase >= neededBase) return { covered: true };
+  const unit = units[0];
+  return { covered: false, unit, remaining: (neededBase - haveBase) / nutriUnitInfo(unit).toBase };
+}
+
 function generateGroceryList() {
   const plan=getPlan(), recipes=getRecipes(), scale=parseFloat(document.getElementById('grocery-scale').value)||1;
   const store = document.getElementById('grocery-store').value;
@@ -3735,16 +3815,13 @@ function generateGroceryList() {
   const krogerPantry = getKrogerPantry();
   const pantryStatus = {};  // item -> { have, need, covered, kroger? }
   for (const item of Object.keys(grocery)) {
-    // Check manual pantry first
-    let pantryMatch = pantry[item] || Object.entries(pantry).find(([k]) => item.includes(k) || k.includes(item))?.[1];
+    // Check manual pantry first (word-boundary match, not substring)
+    let pantryMatch = pantry[item] || Object.entries(pantry).find(([k]) => pantryKeyMatchesItem(k, item))?.[1];
     let isKroger = false;
 
     // Check Kroger pantry if no manual match
     if (!pantryMatch) {
-      const krogerMatch = krogerPantry.find(kp => {
-        const kpName = kp.name.toLowerCase();
-        return kpName.includes(item) || item.includes(kpName.split(' ').slice(0,3).join(' '));
-      });
+      const krogerMatch = krogerPantry.find(kp => krogerPantryMatchesIngredient(kp.name, item));
       if (krogerMatch) {
         pantryMatch = { qty: krogerMatch.qty || 1, unit: krogerMatch.size || '' };
         isKroger = true;
@@ -3752,16 +3829,33 @@ function generateGroceryList() {
     }
 
     if (pantryMatch && pantryMatch.qty > 0) {
-      const units = Object.keys(grocery[item]);
-      const firstUnit = units[0] || '';
-      const needed = grocery[item][firstUnit] || 0;
-      const have = pantryMatch.qty;
-      if (have >= needed) {
-        pantryStatus[item] = { have, needed, covered: true, kroger: isKroger };
-        delete grocery[item];  // fully covered
+      const pantryUnit = normalizeUnit(pantryMatch.unit || '');
+      const haveStr = pantryUnit ? `${formatQty(pantryMatch.qty)} ${pantryUnit}` : formatQty(pantryMatch.qty);
+      const needStr = Object.entries(grocery[item])
+        .map(([u, q]) => u ? `${formatQty(q)} ${u}` : formatQty(q)).join(' + ');
+      const cov = pantryCoverage(pantryMatch.qty, pantryUnit, grocery[item]);
+      if (cov) {
+        // Units convert to the same family — compare in base units
+        if (cov.covered) {
+          pantryStatus[item] = { haveStr, needStr, covered: true, kroger: isKroger };
+          delete grocery[item];  // fully covered
+        } else {
+          pantryStatus[item] = { haveStr, needStr, covered: false, kroger: isKroger };
+          grocery[item] = { [cov.unit]: cov.remaining };
+        }
       } else {
-        pantryStatus[item] = { have, needed, covered: false, kroger: isKroger };
-        grocery[item][firstUnit] = Math.max(0, needed - have);
+        // Cross-family or unparseable units — legacy raw-number compare
+        const units = Object.keys(grocery[item]);
+        const firstUnit = units[0] || '';
+        const needed = grocery[item][firstUnit] || 0;
+        const have = pantryMatch.qty;
+        if (have >= needed) {
+          pantryStatus[item] = { haveStr, needStr, covered: true, kroger: isKroger };
+          delete grocery[item];  // fully covered
+        } else {
+          pantryStatus[item] = { haveStr, needStr, covered: false, kroger: isKroger };
+          grocery[item][firstUnit] = Math.max(0, needed - have);
+        }
       }
     }
   }
@@ -3786,7 +3880,7 @@ function generateGroceryList() {
     const items=sections[section].sort().map(item=>{
       const parts=Object.entries(grocery[item]).map(([u,q])=>{const qs=formatQty(q);return u?`${qs} ${u}`:qs;});
       const ps = pantryStatus[item];
-      const pantryNote = ps && !ps.covered ? `<span style="font-size:0.7rem;color:var(--green);margin-left:0.35rem;">(have ${formatQty(ps.have)}, need ${formatQty(ps.needed)})</span>` : '';
+      const pantryNote = ps && !ps.covered ? `<span style="font-size:0.7rem;color:var(--green);margin-left:0.35rem;">(have ${esc(ps.haveStr)}, need ${esc(ps.needStr)})</span>` : '';
 
       // Calculate price for this item
       let price = 0;
@@ -3928,7 +4022,9 @@ function handleImport(e){
         const arr = Array.isArray(data) ? data : [data];
         arr.forEach(r => {
           if (r.name) {
-            recipes[slugify(r.name)] = r;
+            const s = slugify(r.name);
+            recipes[s] = r;
+            untombstoneRecipe(s);
             count++;
           }
         });
@@ -4258,6 +4354,7 @@ async function doScrapeRecipe() {
     const slug = slugify(recipe.name);
     recipes[slug] = recipe;
     setRecipes(recipes);
+    untombstoneRecipe(slug);
     closeModal('url-import-modal');
     renderRecipes();
     showToast(`Imported: ${recipe.name}`, 'success');
@@ -5142,6 +5239,79 @@ function schedulePantryPush() {
   clearTimeout(_pantryPushTimer);
   _pantryPushTimer = setTimeout(() => pushPantryToCloud(false), 3000);
 }
+
+// ── Recipe pull: lets a phone opening the public copy receive the custom
+// recipes authored on the desktop. Cloud fills gaps only — the local copy
+// wins when both have a slug, and tombstoned (deleted) slugs stay gone.
+async function pullRecipesFromCloud() {
+  if (!getCloud()) return;
+  try {
+    const rows = await cloudFetch('meal_recipes?select=slug,data');
+    const local = getRecipes();
+    const deleted = getDeletedRecipes();
+    let added = 0;
+    (rows || []).forEach(r => {
+      if (!r.slug || !r.data) return;
+      if (local[r.slug] || deleted.includes(r.slug)) return;
+      local[r.slug] = r.data;
+      added++;
+    });
+    if (added) { setRecipes(local); renderRecipes(); }
+  } catch (_) { /* offline / not configured is fine */ }
+}
+
+// ── Plan sync: single meal_plan row {key:'household', data:<mp2_plan>}.
+// The meal_plan table may not exist yet (one SQL statement in setup.sql),
+// so automatic paths fail silently and manual buttons explain the fix.
+const hasPlanEntries = p => Object.keys(p || {}).some(k => p[k]);
+
+function showPlanCloudError(e) {
+  showToast(/^cloud (404|400)$/.test(e.message)
+    ? 'Run the meal_plan statement from supabase/setup.sql in your Supabase SQL editor'
+    : `⚠️ Plan sync failed (${e.message})`);
+}
+
+async function pushPlanToCloud(verbose) {
+  if (!getCloud()) return;
+  try {
+    await cloudFetch('meal_plan?on_conflict=key', {
+      method: 'POST',
+      headers: { 'Prefer': 'resolution=merge-duplicates' },
+      body: JSON.stringify([{ key: 'household', data: getPlan() }]),
+    });
+    if (verbose) showToast('☁️ Plan pushed to cloud');
+  } catch (e) {
+    if (verbose) showPlanCloudError(e);
+  }
+}
+
+async function pullPlanFromCloud(verbose) {
+  if (!getCloud()) return;
+  try {
+    const rows = await cloudFetch('meal_plan?key=eq.household&select=data');
+    if (!rows || !rows.length || !rows[0].data) {
+      if (verbose) showToast('☁️ No plan in the cloud yet');
+      return;
+    }
+    // Automatic pulls only adopt the cloud plan while the local plan is
+    // still empty — never clobber a plan the user or server sync filled in.
+    if (!verbose && hasPlanEntries(getPlan())) return;
+    setPlan(rows[0].data);
+    renderWeeklyPlan();
+    renderCalendar();
+    if (verbose) showToast('☁️ Plan pulled from cloud');
+  } catch (e) {
+    if (verbose) showPlanCloudError(e);
+  }
+}
+
+// Debounced auto-push whenever the plan changes on this device (hooked in setPlan)
+let _planPushTimer = null;
+function schedulePlanPush() {
+  if (!getCloud()) return;
+  clearTimeout(_planPushTimer);
+  _planPushTimer = setTimeout(() => pushPlanToCloud(false), 3000);
+}
 let krogerServerOnline = false;
 console.log('[API] Using base:', API_BASE);
 
@@ -5496,28 +5666,13 @@ async function sendGroceryToKroger() {
   const krogerPantry = getKrogerPantry();
   const items = [];
   for (const [item, units] of Object.entries(grocery)) {
-    const inManual = pantry[item] || Object.entries(pantry).find(([k]) => item.includes(k) || k.includes(item));
+    const inManual = pantry[item] || Object.entries(pantry).find(([k]) => pantryKeyMatchesItem(k, item));
     if (inManual) continue;
 
     // Stricter pantry-pin: require the pantry product's name to contain the
-    // ingredient as a whole word AND the product name not to contain other
-    // distinct food words (avoids "honey" → "honey chicken" mismatch)
-    const inKroger = krogerPantry.find(kp => {
-      const productWords = kp.name.toLowerCase().split(/[\s,()]+/).filter(Boolean);
-      const ingredientWords = item.split(/\s+/).filter(Boolean);
-      // Check if ingredient appears as consecutive whole words
-      for (let i = 0; i <= productWords.length - ingredientWords.length; i++) {
-        if (productWords.slice(i, i + ingredientWords.length).join(' ') === ingredientWords.join(' ')) {
-          // Reject if product has other non-modifier words after the match
-          // (e.g., "honey chicken" — "chicken" is a different food)
-          const tailWords = productWords.slice(i + ingredientWords.length);
-          const FOOD_NOUNS = /^(chicken|beef|pork|fish|salmon|shrimp|cake|cookie|cookies|cereal|pasta|noodle|noodles|chips|crisps|bar|bars|sauce|salsa|dressing|paste|stir-in|soda|drink|drinks|water|juice|tea|coffee|conditioner|shampoo|lotion|spray|cream|scrub|powder|seed)$/;
-          if (tailWords.some(w => FOOD_NOUNS.test(w))) return false;
-          return true;
-        }
-      }
-      return false;
-    });
+    // ingredient as consecutive whole words AND not to be a different food
+    // ("honey" ≠ "honey chicken") — shared helper near generateGroceryList.
+    const inKroger = krogerPantry.find(kp => krogerPantryMatchesIngredient(kp.name, item));
 
     const needed = formatNeeded(units);
 
@@ -5581,7 +5736,24 @@ function renderKrogerReview() {
   });
   summary.textContent = `${matched} matched · ${unmatched} need attention`;
 
-  list.innerHTML = state.items.map((it, i) => {
+  // Sort display by aisle number so the list follows a walk through the
+  // store. Items without aisle info (pinned, skipped, unmatched, or no
+  // aisle data) come last in their current order. Original indices are
+  // kept so the row action handlers still target the right state item.
+  const selectedAisle = (it) => {
+    if (it.skipped || it.pinned || !it.selected_upc) return null;
+    const sel = (it.alternatives || []).find(a => a.upc === it.selected_upc) || (it.alternatives || [])[0];
+    return (sel && sel.aisle) || null;
+  };
+  const aisleSortKey = (aisle) => {
+    if (!aisle) return Infinity;
+    const n = parseInt(aisle.number, 10);
+    return isNaN(n) ? Infinity - 1 : n;  // aisle info without a number: before no-aisle
+  };
+  const ordered = state.items.map((it, i) => ({ it, i, key: aisleSortKey(selectedAisle(it)) }));
+  ordered.sort((a, b) => a.key - b.key);  // stable: ties keep current order
+
+  list.innerHTML = ordered.map(({ it, i }) => {
     if (it.skipped) {
       return `<div style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);opacity:0.4;display:flex;justify-content:space-between;align-items:center;">
         <span style="text-decoration:line-through;font-size:0.85rem;">${esc(it.raw)}</span>
@@ -5629,6 +5801,13 @@ function renderKrogerReview() {
       ? '<span style="color:var(--green);font-size:0.7rem;">✅ In stock</span>'
       : '';
 
+    const aisleLabel = sel.aisle
+      ? (sel.aisle.description || (sel.aisle.number != null ? `Aisle ${sel.aisle.number}` : ''))
+      : '';
+    const aisleBadge = aisleLabel
+      ? `<span style="background:var(--bg-warm);border:1px solid var(--border);border-radius:4px;padding:0.05rem 0.35rem;font-size:0.68rem;color:var(--ink-light);white-space:nowrap;">📍 ${esc(aisleLabel)}</span>`
+      : '';
+
     const learnedBadge = it.learned
       ? `<span style="background:#7c3aed;color:white;font-size:0.62rem;font-weight:700;padding:0.1rem 0.35rem;border-radius:3px;margin-left:0.4rem;letter-spacing:0.04em;cursor:pointer;" onclick="forgetKrogerMatch(${i})" title="Click to forget this saved match">🧠 LEARNED</span>`
       : '';
@@ -5643,7 +5822,7 @@ function renderKrogerReview() {
       <div style="flex:1;min-width:0;">
         <div style="font-size:0.72rem;color:var(--ink-muted);">For: ${esc(it.raw)}${needHint}</div>
         <div style="font-weight:600;font-size:0.85rem;line-height:1.25;">${esc(sel.name)}${learnedBadge}</div>
-        <div style="font-size:0.72rem;color:var(--ink-muted);margin-top:0.1rem;">${[esc(sel.brand), esc(sel.size), price, stock].filter(Boolean).join(' · ')}</div>
+        <div style="font-size:0.72rem;color:var(--ink-muted);margin-top:0.1rem;">${[esc(sel.brand), esc(sel.size), price, stock, aisleBadge].filter(Boolean).join(' · ')}</div>
       </div>
       ${lockInBtn}
       <button class="btn btn-secondary btn-xs" onclick="toggleKrogerAlternatives(${i})" title="See alternatives">🔄 Swap</button>
@@ -6418,17 +6597,43 @@ function nutriScaleFactor(qty, unit, per) {
   return ((qty || 1) * from.toBase) / ((basis.qty || 1) * to.toBase);
 }
 
+// Tokenize an ingredient/DB-key name into normalized words: lowercase,
+// punctuation stripped, simple plurals folded ("tortillas" → "tortilla")
+// so matching happens on whole words, never raw substrings.
+function nutriWords(text) {
+  return text.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean)
+    .map(w => (w.length > 3 && w.endsWith('s')) ? w.slice(0, -1) : w);
+}
+
+// Find the best NUTRITION_DB entry for an ingredient name.
+// Word-boundary matching only ("cauliflower" never matches "flour";
+// "flour tortillas" matches a tortilla entry, not "flour"), preferring
+// the longest (most specific) key. If no key's words are contained in
+// the ingredient, fall back to keys that contain ALL the ingredient's
+// words ("onion" → "onion yellow"), preferring the shortest such key.
+function findNutritionEntry(itemLower) {
+  const exact = NUTRITION_DB[itemLower];
+  if (exact) return exact;
+  const itemWords = nutriWords(itemLower);
+  if (!itemWords.length) return null;
+  let best = null, bestLen = 0;
+  let superBest = null, superLen = Infinity;
+  for (const [key, val] of Object.entries(NUTRITION_DB)) {
+    const keyWords = nutriWords(key);
+    if (keyWords.every(kw => itemWords.includes(kw))) {
+      if (key.length > bestLen) { best = val; bestLen = key.length; }
+    } else if (itemWords.every(iw => keyWords.includes(iw))) {
+      if (key.length < superLen) { superBest = val; superLen = key.length; }
+    }
+  }
+  return best || superBest;
+}
+
 function getRecipeNutrition(recipe) {
   let totals = { cal: 0, protein: 0, carb: 0, fat: 0, matched: 0, total: 0, unitFallbacks: 0 };
   for (const ing of (recipe.ingredients || [])) {
     totals.total++;
-    const itemLower = ing.item.toLowerCase().trim();
-    let nutri = NUTRITION_DB[itemLower];
-    if (!nutri) {
-      for (const [key, val] of Object.entries(NUTRITION_DB)) {
-        if (itemLower.includes(key) || key.includes(itemLower)) { nutri = val; break; }
-      }
-    }
+    const nutri = findNutritionEntry(ing.item.toLowerCase().trim());
     if (nutri) {
       totals.matched++;
       let scale = nutriScaleFactor(ing.qty, ing.unit, nutri.per);
@@ -6503,9 +6708,10 @@ function loadBundledRecipes(){
 {"name":"One Pot Chili Mac","servings":6,"prep_time":5,"cook_time":30,"tags":["dinner","main course","american","chili mac","hamburger helper","dairy-free"],"meal_types":["dinner"],"ingredients":[{"qty":1,"unit":"","item":"yellow onion"},{"qty":2,"unit":"clove","item":"garlic"},{"qty":1,"unit":"tbsp","item":"olive oil"},{"qty":1,"unit":"lb","item":"ground beef"},{"qty":2,"unit":"tbsp","item":"all-purpose flour"},{"qty":1,"unit":"tbsp","item":"chili powder"},{"qty":0.5,"unit":"tsp","item":"smoked paprika"},{"qty":0.5,"unit":"tsp","item":"garlic powder"},{"qty":0.5,"unit":"tsp","item":"dried oregano"},{"qty":8,"unit":"oz","item":"tomato sauce"},{"qty":3,"unit":"cup","item":"beef broth"},{"qty":0.5,"unit":"lb","item":"uncooked macaroni"},{"qty":1,"unit":"cup","item":"dairy-free alternative"}],"steps":["Saut\u00e9 onion and garlic in olive oil. Add beef, cook through.","Add flour and spices, cook 2 min.","Add tomato sauce and broth, scrape up browned bits.","Add macaroni, boil with lid, then simmer 10 min stirring often.","Stir in half the cheese, sprinkle rest on top, melt with lid."],"notes":"Dairy-free: uses dairy-free cheese. Comfort food classic from scratch.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2024/01/Chili-Mac-Bowl.jpg","source_url":"https://www.budgetbytes.com/chili-cheese-beef-n-mac/"},
 {"name":"Kimchi Fried Rice","servings":4,"prep_time":10,"cook_time":20,"tags":["dinner","lunch","side dish","asian","fried rice","kimchi","dairy-free"],"meal_types":["lunch","dinner"],"ingredients":[{"qty":6,"unit":"","item":"inch broccoli stem"},{"qty":1,"unit":"","item":"carrot"},{"qty":4,"unit":"","item":"green onions"},{"qty":1,"unit":"cup","item":"kimchi plus 2-4 Tbsp kimchi juice"},{"qty":2,"unit":"large","item":"eggs"},{"qty":2,"unit":"tbsp","item":"light cooking oil"},{"qty":4,"unit":"cup","item":"cooked, day-old rice"},{"qty":1,"unit":"tbsp","item":"soy sauce"},{"qty":1,"unit":"tsp","item":"toasted sesame oil"}],"steps":["Shred broccoli stem and carrot. Slice green onions. Chop kimchi.","Saut\u00e9 white parts of green onion in oil 1 min.","Add broccoli, carrots 1 min. Add kimchi and juice, cook until dry.","Add rice, fold together. Push aside, scramble eggs in center, fold in.","Season with soy sauce and sesame oil. Top with green onion tops."],"notes":"Tangy, spicy \u2014 perfect for using up leftover ingredients.","image_url":"https://www.budgetbytes.com/wp-content/uploads/2017/12/Kimchi-Fried-Rice-dressed.jpg","source_url":"https://www.budgetbytes.com/kimchi-fried-rice/"}
   ];
-  // Start with bundled recipes as the base
+  // Start with bundled recipes as the base — skipping any the user deleted
   const merged={};
-  BUNDLED.forEach(s=>{merged[slugify(s.name)]=s;});
+  const deleted=getDeletedRecipes();
+  BUNDLED.forEach(s=>{const slug=slugify(s.name); if(!deleted.includes(slug)) merged[slug]=s;});
   // Overlay any user-saved recipes from localStorage (user edits win)
   const saved=getRecipes();
   Object.keys(saved).forEach(k=>{merged[k]=saved[k];});
@@ -6899,6 +7105,7 @@ async function syncFromServer(attempt = 1) {
         for (const [slug, recipe] of Object.entries(server)) {
           if (!local[slug]) {
             local[slug] = recipe;
+            untombstoneRecipe(slug);
             added++;
           }
         }
@@ -7048,6 +7255,19 @@ maybePromptStalePending();
 // and adopt the cloud pantry if this device's pantry is empty
 loadCloudVotes();
 if (getCloud() && !getKrogerPantry().length) pullPantryFromCloud(false);
+// Pull custom recipes from the cloud, then adopt the cloud plan — but only
+// if the local plan is still empty by then (the "[Sync]" server sync above
+// may have filled it, and it wins). All failures here are silent.
+if (getCloud()) {
+  (async () => {
+    await pullRecipesFromCloud();
+    await pullPlanFromCloud(false);
+  })();
+}
+// PWA: register the service worker (http/https only — never file://)
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>
