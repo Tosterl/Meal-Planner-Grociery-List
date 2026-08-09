@@ -25,134 +25,93 @@ RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:mealplan-20260803-breakfast-1@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260803T080000
-DTEND;TZID=America/New_York:20260803T090000
-SUMMARY:🍳 Breakfast: Savory Oatmeal
-DESCRIPTION:Recipe: Savory Oatmeal\nServings: 1\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\n--- Ingredients ---\n• 1.0 clove garlic, minced\n• 0.5 tsp grated fresh ginger\n• 4.0 mushrooms\n• 1.0 tsp vegan butter (Earth Balance)\n• 1.0 cup vegetable broth\n• 0.5 cup old-fashioned rolled oats\n• 0.5 cup spinach\n• 0.5 tsp toasted sesame oil\n\n--- Steps ---\n1. Mince the garlic, grate the ginger, and slice the mushrooms.\n2. Add the butter, garlic, and ginger to a small saucepot. Sauté over medium heat for 1-2 minutes.\n3. Add the mushrooms and continue to sauté for a few minutes more, or until the mushrooms have wilted a bit.\n4. Add the vegetable broth to the saucepot, turn the heat up to medium-high, and bring the broth up to a boil.\n5. When the broth reaches a boil, add the rolled oats and stir to combine. Allow it to return to a boil, then reduce the heat to medium low. Let the oats simmer for about 5 minutes, or until thickened.\n6. While the oats are simmering, roughly chop the spinach. Stir the spinach into the thickened oats, along with the toasted sesame oil.\n7. Taste and add salt to your liking, if needed, then top it off with your favorite toppings. Serve hot!\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). Savory oatmeal is a delicious, hearty, and inexpensive meal that can be customized to use ingredients you have on hand.\n\nSource: https://www.budgetbytes.com/savory-oatmeal/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2021/09/Savory-Oatmeal-above.jpg
-URL:https://www.budgetbytes.com/savory-oatmeal/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260803-lunch-2@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260803T120000
-DTEND;TZID=America/New_York:20260803T130000
-SUMMARY:🥗 Lunch: Chicken Stir Fry Recipe
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\n--- Ingredients ---\n• 0.33 cup soy sauce\n• 3.0 tbsp brown sugar\n• 2.0 tsp toasted sesame oil\n• 2.0 clove garlic, minced\n• 2.0 tsp grated fresh ginger\n• 1.0 ½ Tbsp cornstarch\n• 0.33 cup water\n• 1.0 tsp sriracha\n• 0.75 lb broccoli\n• 2.0 carrots\n• 1.0 red bell pepper\n• 1.0 small onion\n• 2.0 green onions\n• 2.0 boneless, skinless chicken breasts\n• 3.0 tbsp cooking oil, divided\n\n--- Steps ---\n1. Start by making the stir fry sauce. Combine the soy sauce, brown sugar, toasted sesame oil, garlic, ginger, sriracha, cornstarch and water in a small bowl. Set the sauce aside.\n2. Chop the broccoli into small florets. Slice the red bell pepper, onion, and carrots into similar sized pieces. Slice the green onions. Set all the vegetables aside.\n3. Next, cut the chicken breasts into small ½ inch sized pieces.\n4. Heat a very large skillet or wok over medium-high heat. Once hot add 2 Tbsp of cooking oil and swirl to coat the surface of the skillet. Add the chicken and cook until browned on all sides. Be careful not to overcook the chicken. Once the chicken is browned, remove it from the skillet onto a separate plate and set aside.\n5. In the same skillet, add the remaining 1 Tbsp of cooking oil along with the carrots and broccoli. Cook and stir for one minute, or just until the broccoli begins to turn bright green.\n6. Next, add the red bell pepper and onion to the skillet. Continue to cook and stir for 1-2 more minutes.\n7. Give the stir fry sauce another brief stir. Now add the cooked chicken back to the skillet, then pour the stir fry sauce over the chicken and vegetables. Give everything a stir and allow the sauce to come up to a simmer, at which point it will start to thicken and turn glossy. Continue to cook for 1-2 more minutes or until it has reached your desired doneness.\n8. Remove it from the heat, top with green onions and sesame seeds (optional) and serve!\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260803-dinner-3@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260803T183000
-DTEND;TZID=America/New_York:20260803T193000
-SUMMARY:🍽️ Dinner: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260804-breakfast-4@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260804T080000
-DTEND;TZID=America/New_York:20260804T090000
-SUMMARY:🍳 Breakfast: Overnight Oats
-DESCRIPTION:Recipe: Overnight Oats\nServings: 2\nPrep: 5 min | Total: 5 min\n\n--- Ingredients ---\n• 1 cup rolled oats\n• 1 cup milk\n• 0.5 cup greek yogurt\n• 2 tbsp honey\n• 0.5 cup blueberries\n• 2 tbsp chia seeds\n\n--- Steps ---\n1. Combine oats, milk, yogurt, honey, and chia seeds in a jar or container.\n2. Stir well, cover, and refrigerate overnight (or at least 4 hours).\n3. Top with blueberries before serving. Eat cold or microwave 1-2 min.\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260804-lunch-5@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260804T120000
-DTEND;TZID=America/New_York:20260804T130000
-SUMMARY:🥗 Lunch: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260804-dinner-6@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260804T183000
-DTEND;TZID=America/New_York:20260804T193000
-SUMMARY:🍽️ Dinner: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260805-breakfast-7@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260805T080000
-DTEND;TZID=America/New_York:20260805T090000
-SUMMARY:🍳 Breakfast: Overnight Oats (leftover)
-DESCRIPTION:Recipe: Overnight Oats\n(Leftover - no cooking needed!)\nServings: 2\nPrep: 5 min | Total: 5 min\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260805-lunch-8@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260805T120000
-DTEND;TZID=America/New_York:20260805T130000
-SUMMARY:🥗 Lunch: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260805-dinner-9@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260805T183000
-DTEND;TZID=America/New_York:20260805T193000
-SUMMARY:🍽️ Dinner: Chicken Stir Fry Recipe (leftover)
-DESCRIPTION:Recipe: Chicken Stir Fry Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 20 min | Total: 35 min\n\nTip: This Chicken Stir Fry recipe is perfect for a quick &amp; easy dinner meal. It has lots of chicken and veggies and a super delicious stir fry sauce!\n\nSource: https://www.budgetbytes.com/chicken-stir-fry/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chicken-Stir-Fry-Pan.jpg
-URL:https://www.budgetbytes.com/chicken-stir-fry/
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:mealplan-20260806-breakfast-10@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260806T080000
-DTEND;TZID=America/New_York:20260806T090000
+UID:mealplan-20260810-breakfast-1@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260810T080000
+DTEND;TZID=America/New_York:20260810T090000
 SUMMARY:🍳 Breakfast: Breakfast Burrito
 DESCRIPTION:Recipe: Breakfast Burrito\nServings: 2\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\n--- Ingredients ---\n• 4 eggs\n• 2 large flour tortillas\n• 4 slice bacon\n• 0.5 cup shredded cheddar cheese\n• 0.25 cup salsa\n• 1 tbsp butter\n• 1 avocado\n\n--- Steps ---\n1. Cook bacon in a skillet until crispy. Remove and chop.\n2. Whisk eggs, melt butter in the same skillet, and scramble eggs over medium heat.\n3. Warm tortillas in microwave for 15 seconds.\n4. Fill each tortilla with eggs, bacon, cheese, sliced avocado, and salsa.\n5. Fold and roll into burritos. Optional: toast seam-side down in a dry pan for 1 minute.\n\nTip: Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260806-lunch-11@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260806T120000
-DTEND;TZID=America/New_York:20260806T130000
+UID:mealplan-20260810-lunch-2@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260810T120000
+DTEND;TZID=America/New_York:20260810T130000
 SUMMARY:🥗 Lunch: Breakfast Burrito (leftover)
 DESCRIPTION:Recipe: Breakfast Burrito\n(Leftover - no cooking needed!)\nServings: 2\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\nTip: Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260806-dinner-12@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260806T183000
-DTEND;TZID=America/New_York:20260806T193000
-SUMMARY:🍽️ Dinner: Instant Pot Beef Stew Recipe
-DESCRIPTION:Recipe: Instant Pot Beef Stew Recipe\nServings: 6\nPrep: 15 min | Cook: 60 min | Total: 75 min\n\n--- Ingredients ---\n• 1.0 lb beef stew meat, cubed\n• 1 salt and pepper ($0.10)\n• 2.0 tbsp all-purpose flour\n• 2.0 tbsp vegan butter (Earth Balance)\n• 2.0 cup beef broth*\n• 1.0 tbsp Worcestershire sauce\n• 1.0 tbsp soy sauce\n• 0.5 tbsp brown sugar\n• 2.0 clove garlic, minced\n• 2.0 tbsp tomato paste\n• 1.0 tsp dried rosemary\n• 1.0 tsp dried thyme\n• 14.0 oz bag frozen pearl onions**\n• 8.0 oz mushrooms\n• 1.0 lb carrots\n• 0.75 lb potatoes\n\n--- Steps ---\n1. Place the stew meat in a bowl and season lightly with salt and pepper. Add the flour and stir to coat.\n2. Place the butter*** in the Instant Pot and turn on the sauté function. Heat the butter until it is melted and sizzling, then add the stew meat. Brown the meat on all sides. Don&#39;t stir too often as this will prevent the meat from achieving a nice brown, crispy exterior. The flour may coat the bottom of the pot and that is okay, just don&#39;t let it burn.\n3. Pour the beef broth into the pot and stir to dissolve the browned bits from the bottom of the pot. Once dissolved, add the Worcestershire sauce, soy sauce, brown sugar, minced garlic, tomato paste, rosemary, and thyme.\n4. Wash and quarter the mushrooms. Peel and slice the carrots into one-inch sections. Wash the potatoes well, peel if desired, then chop into one-inch cubes. Add the pearl onions (no need to thaw), mushrooms, carrots, and potatoes to the Instant Pot. Give all the ingredients in the pot a good stir.\n5. Close the lid on the Instant Pot and close the steam valve. Press the "meat/stew" button, or set the cooker to 35 minutes of high pressure. After 35 minutes of high pressure, allow the cooker to naturally cool and release pressure.\n6. Once the pressure has released, open the steam valve then carefully open the lid. Give the stew a good stir, taste, and adjust the salt if needed. Serve hot with crusty bread.\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This Instant Pot Beef Stew recipe is incredibly fast and easy, but is packed with slow-cooked flavor. Perfect for those busy weeknights!\n\nSource: https://www.budgetbytes.com/instant-pot-beef-stew/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2017/01/Instant-Pot-Beef-Stew-Close.jpg
-URL:https://www.budgetbytes.com/instant-pot-beef-stew/
+UID:mealplan-20260810-dinner-3@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260810T183000
+DTEND;TZID=America/New_York:20260810T193000
+SUMMARY:🍽️ Dinner: Ground Beef Tacos
+DESCRIPTION:Recipe: Ground Beef Tacos\nServings: 4\nPrep: 10 min | Cook: 15 min | Total: 25 min\n\n--- Ingredients ---\n• 1 lb ground beef\n• 8 small flour tortillas\n• 1 tbsp chili powder\n• 1 tsp cumin\n• 0.5 tsp garlic powder\n• 0.5 tsp onion powder\n• 0.25 cup water\n• 1 cup shredded cheddar cheese\n• 1 cup lettuce\n• 2 tomato\n• 0.5 cup sour cream\n• 1 lime\n\n--- Steps ---\n1. Brown ground beef in a skillet over medium-high heat, breaking it up as it cooks.\n2. Drain excess fat. Add chili powder, cumin, garlic powder, onion powder, and water.\n3. Simmer 5 minutes until sauce thickens.\n4. Warm tortillas in a dry skillet or microwave.\n5. Assemble tacos with beef, cheese, lettuce, diced tomato, sour cream, and lime juice.\n\nTip: Works great with ground turkey too. Add jalapeño for heat.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260807-breakfast-13@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260807T080000
-DTEND;TZID=America/New_York:20260807T090000
+UID:mealplan-20260811-breakfast-4@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260811T080000
+DTEND;TZID=America/New_York:20260811T090000
+SUMMARY:🍳 Breakfast: Overnight Oats
+DESCRIPTION:Recipe: Overnight Oats\nServings: 2\nPrep: 5 min | Total: 5 min\n\n--- Ingredients ---\n• 1 cup rolled oats\n• 1 cup milk\n• 0.5 cup greek yogurt\n• 2 tbsp honey\n• 0.5 cup blueberries\n• 2 tbsp chia seeds\n\n--- Steps ---\n1. Combine oats, milk, yogurt, honey, and chia seeds in a jar or container.\n2. Stir well, cover, and refrigerate overnight (or at least 4 hours).\n3. Top with blueberries before serving. Eat cold or microwave 1-2 min.\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260811-lunch-5@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260811T120000
+DTEND;TZID=America/New_York:20260811T130000
+SUMMARY:🥗 Lunch: Ground Beef Tacos (leftover)
+DESCRIPTION:Recipe: Ground Beef Tacos\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 15 min | Total: 25 min\n\nTip: Works great with ground turkey too. Add jalapeño for heat.
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260811-dinner-6@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260811T183000
+DTEND;TZID=America/New_York:20260811T193000
+SUMMARY:🍽️ Dinner: Ground Beef Tacos (leftover)
+DESCRIPTION:Recipe: Ground Beef Tacos\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 15 min | Total: 25 min\n\nTip: Works great with ground turkey too. Add jalapeño for heat.
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260812-breakfast-7@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260812T080000
+DTEND;TZID=America/New_York:20260812T090000
+SUMMARY:🍳 Breakfast: Overnight Oats (leftover)
+DESCRIPTION:Recipe: Overnight Oats\n(Leftover - no cooking needed!)\nServings: 2\nPrep: 5 min | Total: 5 min\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260812-lunch-8@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260812T120000
+DTEND;TZID=America/New_York:20260812T130000
+SUMMARY:🥗 Lunch: Ground Beef Tacos (leftover)
+DESCRIPTION:Recipe: Ground Beef Tacos\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 15 min | Total: 25 min\n\nTip: Works great with ground turkey too. Add jalapeño for heat.
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260812-dinner-9@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260812T183000
+DTEND;TZID=America/New_York:20260812T193000
+SUMMARY:🍽️ Dinner: One Pot Chili Mac
+DESCRIPTION:Recipe: One Pot Chili Mac\nServings: 6\nPrep: 5 min | Cook: 30 min | Total: 35 min\n\n--- Ingredients ---\n• 1.0 yellow onion\n• 2.0 clove garlic\n• 1.0 tbsp olive oil\n• 1.0 lb ground beef\n• 2.0 tbsp all-purpose flour\n• 1.0 tbsp chili powder\n• 0.5 tsp smoked paprika\n• 0.5 tsp garlic powder\n• 0.5 tsp dried oregano\n• 8.0 oz tomato sauce\n• 3.0 cup beef broth\n• 0.5 lb uncooked macaroni\n• 1.0 cup dairy-free alternative\n\n--- Steps ---\n1. Dice the yellow onion and mince the garlic. Add the onion and garlic to a large deep skillet or Dutch oven with the olive oil and sauté over medium heat until the onions are soft and translucent (about 5 minutes).\n2. Add the ground beef to the skillet and continue to stir and cook until the beef is cooked through. If using a higher fat content ground beef, you may want to drain off the excess fat at this point.\n3. Add the flour, chili powder, smoked paprika, garlic powder, and oregano to the skillet with the beef and onions. Continue to cook and stir for about two minutes, allowing the flour and spices to coat the bottom of the skillet, but not burn.\n4. Add the tomato sauce and beef broth to the skillet and stir well to combine, making sure to scrape and dissolve any browned bits off the bottom of the skillet.\n5. Add the uncooked macaroni and stir to combine. Place a lid on the skillet and turn the heat up to medium-high. Allow the broth to come up to a full boil. Once boiling, give the pasta a quick stir to loosen any that is stuck to the bottom, turn the heat down to medium-low, and place the lid back on top.\n6. Allow the macaroni to simmer, stirring every few minutes and always replacing the lid, until the macaroni is tender and the broth has reduced to a rich red gravy (about 10 minutes).\n7. Stir half of the shredded cheese into the sauce until melted, and sprinkle the remainder on top. Place a lid on the pot, turn the heat off, and allow the residual heat to melt the cheese on top. Serve hot and enjoy!\n\nTip: 🥛 DAIRY-FREE SWAPS: shredded cheddar → dairy-free alternative. This super filling comfort food classic, One Pot Chili Mac, is like the hamburger helper of your childhood but all grown up and 100% from scratch!\n\nSource: https://www.budgetbytes.com/chili-cheese-beef-n-mac/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chili-Mac-Bowl.jpg
+URL:https://www.budgetbytes.com/chili-cheese-beef-n-mac/
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260813-breakfast-10@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260813T080000
+DTEND;TZID=America/New_York:20260813T090000
 SUMMARY:🍳 Breakfast: Savory Oatmeal
 DESCRIPTION:Recipe: Savory Oatmeal\nServings: 1\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\n--- Ingredients ---\n• 1.0 clove garlic, minced\n• 0.5 tsp grated fresh ginger\n• 4.0 mushrooms\n• 1.0 tsp vegan butter (Earth Balance)\n• 1.0 cup vegetable broth\n• 0.5 cup old-fashioned rolled oats\n• 0.5 cup spinach\n• 0.5 tsp toasted sesame oil\n\n--- Steps ---\n1. Mince the garlic, grate the ginger, and slice the mushrooms.\n2. Add the butter, garlic, and ginger to a small saucepot. Sauté over medium heat for 1-2 minutes.\n3. Add the mushrooms and continue to sauté for a few minutes more, or until the mushrooms have wilted a bit.\n4. Add the vegetable broth to the saucepot, turn the heat up to medium-high, and bring the broth up to a boil.\n5. When the broth reaches a boil, add the rolled oats and stir to combine. Allow it to return to a boil, then reduce the heat to medium low. Let the oats simmer for about 5 minutes, or until thickened.\n6. While the oats are simmering, roughly chop the spinach. Stir the spinach into the thickened oats, along with the toasted sesame oil.\n7. Taste and add salt to your liking, if needed, then top it off with your favorite toppings. Serve hot!\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). Savory oatmeal is a delicious, hearty, and inexpensive meal that can be customized to use ingredients you have on hand.\n\nSource: https://www.budgetbytes.com/savory-oatmeal/
 IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2021/09/Savory-Oatmeal-above.jpg
@@ -160,94 +119,123 @@ URL:https://www.budgetbytes.com/savory-oatmeal/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260807-lunch-14@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260807T120000
-DTEND;TZID=America/New_York:20260807T130000
-SUMMARY:🥗 Lunch: Peanut Noodles with Chicken
-DESCRIPTION:Recipe: Peanut Noodles with Chicken\nServings: 4\nPrep: 10 min | Cook: 15 min | Total: 25 min\n\n--- Ingredients ---\n• 0.333 cup smooth natural-style peanut butter\n• 2.0 tbsp sriracha\n• 2.0 tbsp brown sugar\n• 1.0 fresh lime\n• 1.0 tbsp soy sauce\n• 1.0 clove garlic, minced\n• 1.0 tsp grated fresh ginger\n• 1.0 13.5 oz. can coconut milk\n• 1.0 boneless, skinless chicken breast\n• 1.0 tbsp cooking oil\n• 8.0 oz noodles*\n• 0.25 cup chopped peanuts\n• 0.25 cup chopped cilantro\n\n--- Steps ---\n1. Prepare the peanut sauce first. In a medium bowl, whisk together the peanut butter, sriracha, brown sugar, soy sauce, 2 Tbsp lime juice, minced garlic, and grated ginger.\n2. Add the coconut milk to the peanut sauce and whisk until smooth again.\n3. Cut the chicken breast into small ½ to 1-inch sized pieces.\n4. Heat a large skillet over medium-high. Once hot, add the cooking oil and swirl to coat the surface of the skillet. Add the chicken and cook until browned on all sides. Be careful not to overcook the chicken.\n5. Add the prepared peanut sauce into the skillet, turn the heat down to medium-low, and stir to dissolve any browned bits off the bottom of the skillet. Let the chicken simmer in the sauce over low, stirring occasionally, while you cook the noodles.\n6. Cook your noodles according to the package directions, then drain in a colander.\n7. Add the cooked and drained noodles to the skillet with the peanut sauce and chicken. Toss until everything is evenly mixed and coated in sauce.\n8. Top the noodles with chopped peanuts and cilantro, then enjoy!\n\nTip: These Peanut Noodles with Chicken are an easy meal with a rich, creamy, sweet, and savory flavor that is completely addictive.\n\nSource: https://www.budgetbytes.com/peanut-noodles-with-chicken/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2023/03/Peanut-Noodles-with-Chicken-close.jpg
-URL:https://www.budgetbytes.com/peanut-noodles-with-chicken/
+UID:mealplan-20260813-lunch-11@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260813T120000
+DTEND;TZID=America/New_York:20260813T130000
+SUMMARY:🥗 Lunch: Honey Garlic Chicken
+DESCRIPTION:Recipe: Honey Garlic Chicken\nServings: 4\nPrep: 10 min | Cook: 18 min | Total: 28 min\n\n--- Ingredients ---\n• 0.333 cup honey\n• 2.0 tbsp soy sauce\n• 1.0 tbsp rice vinegar\n• 1.0 tsp sriracha\n• 2.0 tsp toasted sesame oil\n• 1.0 tbsp cornstarch\n• 2.0 boneless, skinless chicken breasts\n• 1.0 tsp salt\n• 0.5 tsp black pepper\n• 0.5 tsp garlic powder\n• 2.0 tbsp all-purpose flour\n• 3.0 tbsp olive oil\n• 2.0 tbsp vegan butter (Earth Balance)\n• 4.0 clove of garlic, minced\n• 2.0 green onions, sliced\n\n--- Steps ---\n1. Start by making the sauce. Combine the honey, soy sauce, rice vinegar, sriracha, toasted sesame oil, and cornstarch together in a small bowl. Set the sauce aside.\n2. Cut the chicken breasts into small 1/2 inch sized pieces. Season with salt, black pepper and garlic powder. Then toss the chicken pieces in the flour until each piece is evenly coated.\n3. Heat a large skillet over medium-high heat and add 2 Tbsp of oil. Swirl to coat the surface of the skillet. Once the skillet is hot, add half of the chicken and cook until browned on all sides and cooked through. Remove the chicken from the skillet onto a separate plate and set aside. Add the remaining 1 Tbsp of oil and repeat with cooking the 2nd batch of chicken until cooked through. Set all of the chicken aside.\n4. In the same skillet add the butter and lower the heat down to medium-low heat. Add the minced garlic cloves and saute for 30-60 seconds until fragrant.\n5. Next give the sauce another brief stir, then pour the sauce into the skillet with the garlic. Stir the sauce and scrape up any browned bits that are stuck at the bottom of the skillet. Let the sauce simmer for about 2 minutes to allow the cornstarch to activate and thicken the sauce.\n6. Now add the cooked chicken back to the skillet and stir with the sauce until all of the pieces are evenly coated. Continue to cook for 1-2 more minutes to allow the chicken to heat through.\n7. Remove the skillet from the heat, top with sliced green onions, and enjoy!\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This saucy Honey Garlic Chicken is a quick &amp; easy recipe with lots of chicken and an irresistible sweet &amp; tangy honey garlic sauce.\n\nSource: https://www.budgetbytes.com/honey-garlic-chicken/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg
+URL:https://www.budgetbytes.com/honey-garlic-chicken/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260807-dinner-15@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260807T183000
-DTEND;TZID=America/New_York:20260807T193000
-SUMMARY:🍽️ Dinner: Instant Pot Beef Stew Recipe (leftover)
-DESCRIPTION:Recipe: Instant Pot Beef Stew Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 60 min | Total: 75 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This Instant Pot Beef Stew recipe is incredibly fast and easy, but is packed with slow-cooked flavor. Perfect for those busy weeknights!\n\nSource: https://www.budgetbytes.com/instant-pot-beef-stew/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2017/01/Instant-Pot-Beef-Stew-Close.jpg
-URL:https://www.budgetbytes.com/instant-pot-beef-stew/
+UID:mealplan-20260813-dinner-12@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260813T183000
+DTEND;TZID=America/New_York:20260813T193000
+SUMMARY:🍽️ Dinner: One Pot Chili Mac (leftover)
+DESCRIPTION:Recipe: One Pot Chili Mac\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 5 min | Cook: 30 min | Total: 35 min\n\nTip: 🥛 DAIRY-FREE SWAPS: shredded cheddar → dairy-free alternative. This super filling comfort food classic, One Pot Chili Mac, is like the hamburger helper of your childhood but all grown up and 100% from scratch!\n\nSource: https://www.budgetbytes.com/chili-cheese-beef-n-mac/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chili-Mac-Bowl.jpg
+URL:https://www.budgetbytes.com/chili-cheese-beef-n-mac/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260808-breakfast-16@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260808T080000
-DTEND;TZID=America/New_York:20260808T090000
+UID:mealplan-20260814-breakfast-13@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260814T080000
+DTEND;TZID=America/New_York:20260814T090000
 SUMMARY:🍳 Breakfast: Overnight Oats
 DESCRIPTION:Recipe: Overnight Oats\nServings: 2\nPrep: 5 min | Total: 5 min\n\n--- Ingredients ---\n• 1 cup rolled oats\n• 1 cup milk\n• 0.5 cup greek yogurt\n• 2 tbsp honey\n• 0.5 cup blueberries\n• 2 tbsp chia seeds\n\n--- Steps ---\n1. Combine oats, milk, yogurt, honey, and chia seeds in a jar or container.\n2. Stir well, cover, and refrigerate overnight (or at least 4 hours).\n3. Top with blueberries before serving. Eat cold or microwave 1-2 min.\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260808-lunch-17@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260808T120000
-DTEND;TZID=America/New_York:20260808T130000
-SUMMARY:🥗 Lunch: Peanut Noodles with Chicken (leftover)
-DESCRIPTION:Recipe: Peanut Noodles with Chicken\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 15 min | Total: 25 min\n\nTip: These Peanut Noodles with Chicken are an easy meal with a rich, creamy, sweet, and savory flavor that is completely addictive.\n\nSource: https://www.budgetbytes.com/peanut-noodles-with-chicken/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2023/03/Peanut-Noodles-with-Chicken-close.jpg
-URL:https://www.budgetbytes.com/peanut-noodles-with-chicken/
+UID:mealplan-20260814-lunch-14@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260814T120000
+DTEND;TZID=America/New_York:20260814T130000
+SUMMARY:🥗 Lunch: Honey Garlic Chicken (leftover)
+DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 18 min | Total: 28 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This saucy Honey Garlic Chicken is a quick &amp; easy recipe with lots of chicken and an irresistible sweet &amp; tangy honey garlic sauce.\n\nSource: https://www.budgetbytes.com/honey-garlic-chicken/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg
+URL:https://www.budgetbytes.com/honey-garlic-chicken/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260808-dinner-18@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260808T183000
-DTEND;TZID=America/New_York:20260808T193000
-SUMMARY:🍽️ Dinner: Instant Pot Beef Stew Recipe (leftover)
-DESCRIPTION:Recipe: Instant Pot Beef Stew Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 60 min | Total: 75 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This Instant Pot Beef Stew recipe is incredibly fast and easy, but is packed with slow-cooked flavor. Perfect for those busy weeknights!\n\nSource: https://www.budgetbytes.com/instant-pot-beef-stew/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2017/01/Instant-Pot-Beef-Stew-Close.jpg
-URL:https://www.budgetbytes.com/instant-pot-beef-stew/
+UID:mealplan-20260814-dinner-15@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260814T183000
+DTEND;TZID=America/New_York:20260814T193000
+SUMMARY:🍽️ Dinner: One Pot Chili Mac (leftover)
+DESCRIPTION:Recipe: One Pot Chili Mac\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 5 min | Cook: 30 min | Total: 35 min\n\nTip: 🥛 DAIRY-FREE SWAPS: shredded cheddar → dairy-free alternative. This super filling comfort food classic, One Pot Chili Mac, is like the hamburger helper of your childhood but all grown up and 100% from scratch!\n\nSource: https://www.budgetbytes.com/chili-cheese-beef-n-mac/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chili-Mac-Bowl.jpg
+URL:https://www.budgetbytes.com/chili-cheese-beef-n-mac/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260809-breakfast-19@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260809T080000
-DTEND;TZID=America/New_York:20260809T090000
+UID:mealplan-20260815-breakfast-16@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260815T080000
+DTEND;TZID=America/New_York:20260815T090000
 SUMMARY:🍳 Breakfast: Overnight Oats (leftover)
 DESCRIPTION:Recipe: Overnight Oats\n(Leftover - no cooking needed!)\nServings: 2\nPrep: 5 min | Total: 5 min\n\nTip: Swap blueberries for banana, strawberries, or any fruit. Add peanut butter for extra protein.
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260809-lunch-20@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260809T120000
-DTEND;TZID=America/New_York:20260809T130000
-SUMMARY:🥗 Lunch: Peanut Noodles with Chicken (leftover)
-DESCRIPTION:Recipe: Peanut Noodles with Chicken\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 15 min | Total: 25 min\n\nTip: These Peanut Noodles with Chicken are an easy meal with a rich, creamy, sweet, and savory flavor that is completely addictive.\n\nSource: https://www.budgetbytes.com/peanut-noodles-with-chicken/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2023/03/Peanut-Noodles-with-Chicken-close.jpg
-URL:https://www.budgetbytes.com/peanut-noodles-with-chicken/
+UID:mealplan-20260815-lunch-17@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260815T120000
+DTEND;TZID=America/New_York:20260815T130000
+SUMMARY:🥗 Lunch: Honey Garlic Chicken (leftover)
+DESCRIPTION:Recipe: Honey Garlic Chicken\n(Leftover - no cooking needed!)\nServings: 4\nPrep: 10 min | Cook: 18 min | Total: 28 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This saucy Honey Garlic Chicken is a quick &amp; easy recipe with lots of chicken and an irresistible sweet &amp; tangy honey garlic sauce.\n\nSource: https://www.budgetbytes.com/honey-garlic-chicken/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/08/Honey-Garlic-Chicken-Fork.jpg
+URL:https://www.budgetbytes.com/honey-garlic-chicken/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-20260809-dinner-21@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260809T183000
-DTEND;TZID=America/New_York:20260809T193000
-SUMMARY:🍽️ Dinner: Instant Pot Beef Stew Recipe (leftover)
-DESCRIPTION:Recipe: Instant Pot Beef Stew Recipe\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 15 min | Cook: 60 min | Total: 75 min\n\nTip: 🥛 DAIRY-FREE SWAPS: butter → vegan butter (Earth Balance). This Instant Pot Beef Stew recipe is incredibly fast and easy, but is packed with slow-cooked flavor. Perfect for those busy weeknights!\n\nSource: https://www.budgetbytes.com/instant-pot-beef-stew/
-IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2017/01/Instant-Pot-Beef-Stew-Close.jpg
-URL:https://www.budgetbytes.com/instant-pot-beef-stew/
+UID:mealplan-20260815-dinner-18@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260815T183000
+DTEND;TZID=America/New_York:20260815T193000
+SUMMARY:🍽️ Dinner: One Pot Chili Mac (leftover)
+DESCRIPTION:Recipe: One Pot Chili Mac\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 5 min | Cook: 30 min | Total: 35 min\n\nTip: 🥛 DAIRY-FREE SWAPS: shredded cheddar → dairy-free alternative. This super filling comfort food classic, One Pot Chili Mac, is like the hamburger helper of your childhood but all grown up and 100% from scratch!\n\nSource: https://www.budgetbytes.com/chili-cheese-beef-n-mac/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chili-Mac-Bowl.jpg
+URL:https://www.budgetbytes.com/chili-cheese-beef-n-mac/
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-review-20260802@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260802T090000
-DTEND;TZID=America/New_York:20260802T091500
+UID:mealplan-20260816-breakfast-19@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260816T080000
+DTEND;TZID=America/New_York:20260816T090000
+SUMMARY:🍳 Breakfast: Breakfast Burrito
+DESCRIPTION:Recipe: Breakfast Burrito\nServings: 2\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\n--- Ingredients ---\n• 4 eggs\n• 2 large flour tortillas\n• 4 slice bacon\n• 0.5 cup shredded cheddar cheese\n• 0.25 cup salsa\n• 1 tbsp butter\n• 1 avocado\n\n--- Steps ---\n1. Cook bacon in a skillet until crispy. Remove and chop.\n2. Whisk eggs, melt butter in the same skillet, and scramble eggs over medium heat.\n3. Warm tortillas in microwave for 15 seconds.\n4. Fill each tortilla with eggs, bacon, cheese, sliced avocado, and salsa.\n5. Fold and roll into burritos. Optional: toast seam-side down in a dry pan for 1 minute.\n\nTip: Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260816-lunch-20@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260816T120000
+DTEND;TZID=America/New_York:20260816T130000
+SUMMARY:🥗 Lunch: Breakfast Burrito (leftover)
+DESCRIPTION:Recipe: Breakfast Burrito\n(Leftover - no cooking needed!)\nServings: 2\nPrep: 5 min | Cook: 10 min | Total: 15 min\n\nTip: Meal prep: wrap in foil and freeze. Reheat in microwave 2-3 min.
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-20260816-dinner-21@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260816T183000
+DTEND;TZID=America/New_York:20260816T193000
+SUMMARY:🍽️ Dinner: One Pot Chili Mac (leftover)
+DESCRIPTION:Recipe: One Pot Chili Mac\n(Leftover - no cooking needed!)\nServings: 6\nPrep: 5 min | Cook: 30 min | Total: 35 min\n\nTip: 🥛 DAIRY-FREE SWAPS: shredded cheddar → dairy-free alternative. This super filling comfort food classic, One Pot Chili Mac, is like the hamburger helper of your childhood but all grown up and 100% from scratch!\n\nSource: https://www.budgetbytes.com/chili-cheese-beef-n-mac/
+IMAGE;VALUE=URI:https://www.budgetbytes.com/wp-content/uploads/2024/01/Chili-Mac-Bowl.jpg
+URL:https://www.budgetbytes.com/chili-cheese-beef-n-mac/
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:mealplan-review-20260809@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260809T090000
+DTEND;TZID=America/New_York:20260809T091500
 SUMMARY:📋 Review this week's meal plan
 DESCRIPTION:A fresh meal plan was just generated. Open the meal planner to review, swap any recipes, and approve before shopping.\n\nApp: https://tosterl.github.io/Meal-Planner-Grociery-List/
 URL:https://tosterl.github.io/Meal-Planner-Grociery-List/
@@ -259,10 +247,10 @@ TRIGGER:-PT5M
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:mealplan-kroger-20260802@mealplanner
-DTSTAMP:20260802T120407Z
-DTSTART;TZID=America/New_York:20260802T110000
-DTEND;TZID=America/New_York:20260802T111500
+UID:mealplan-kroger-20260809@mealplanner
+DTSTAMP:20260809T113040Z
+DTSTART;TZID=America/New_York:20260809T110000
+DTEND;TZID=America/New_York:20260809T111500
 SUMMARY:🛒 Send grocery list to Kroger pickup
 DESCRIPTION:Open the meal planner → Grocery tab → click 'Send to Kroger'. Review the matched products, then submit for pickup.\n\nApp: https://tosterl.github.io/Meal-Planner-Grociery-List/
 URL:https://tosterl.github.io/Meal-Planner-Grociery-List/
