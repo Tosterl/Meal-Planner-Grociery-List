@@ -1,0 +1,144 @@
+{
+  "created": "2026-09-27T15:32:42.825946",
+  "days": [
+    {
+      "day": "Monday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Garlic Butter Pasta",
+          "servings": 4
+        }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Garlic Butter Pasta (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Garlic Butter Pasta (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Wednesday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Garlic Butter Pasta (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Instant Pot Beef Stew Recipe",
+          "servings": 6
+        }
+      }
+    },
+    {
+      "day": "Thursday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "lunch": {
+          "name": "Chicken Stir Fry Recipe",
+          "servings": 6
+        },
+        "dinner": {
+          "name": "Instant Pot Beef Stew Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Friday",
+      "meals": {
+        "breakfast": {
+          "name": "Breakfast Burrito",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Breakfast Burrito (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Instant Pot Beef Stew Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Saturday",
+      "meals": {
+        "breakfast": {
+          "name": "Savory Oatmeal",
+          "servings": 1
+        },
+        "lunch": {
+          "name": "Chicken Stir Fry Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Instant Pot Beef Stew Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    },
+    {
+      "day": "Sunday",
+      "meals": {
+        "breakfast": {
+          "name": "Overnight Oats",
+          "servings": 2
+        },
+        "lunch": {
+          "name": "Chicken Stir Fry Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        },
+        "dinner": {
+          "name": "Instant Pot Beef Stew Recipe (leftover)",
+          "servings": 1,
+          "is_leftover": true
+        }
+      }
+    }
+  ],
+  "strategy": "smart",
+  "stats": {
+    "unique_ingredients": 50,
+    "unique_recipes": 9,
+    "leftover_meals": 12,
+    "total_meals": 21,
+    "avg_ingredients_per_recipe": 9.0
+  }
+}
