@@ -216,6 +216,8 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             self._handle_store(params)
         elif path == "/api/health":
             self._handle_health()
+        elif path == "/api/grocery-list":
+            self._handle_grocery_list()
         elif path == "/api/kroger/login":
             self._handle_kroger_login()
         elif path == "/api/kroger/callback":
@@ -839,6 +841,32 @@ class KrogerAPIHandler(BaseHTTPRequestHandler):
             "store": CACHED_STORE_NAME,
             "last_plan_at": last_plan_iso,
             "last_plan_file": last_plan_file,
+        })
+
+    def _handle_grocery_list(self):
+        """The latest plan's grocery list as plain data, for other programs.
+
+        Home Assistant reads this to fill its shopping list. "items" is the
+        flat list it adds ("Bacon (48 slice)"); "sections" is the same list
+        grouped by store section. Read-only, so it needs no access token.
+        """
+        plans_dir = BASE_DIR / "plans"
+        plans = sorted(plans_dir.glob("plan_*.json"), reverse=True) if plans_dir.exists() else []
+        if not plans:
+            self._json_response({"plan_file": None, "created": None, "count": 0, "items": [], "sections": []})
+            return
+        with open(plans[0], encoding="utf-8") as f:
+            plan = json.load(f)
+        from planner import grocery_sections
+        sections = grocery_sections(plan)
+        items = [f"{item['name']} ({item['amount']})" if item["amount"] else item["name"]
+                 for section in sections for item in section["items"]]
+        self._json_response({
+            "plan_file": plans[0].name,
+            "created": plan.get("created"),
+            "count": len(items),
+            "items": items,
+            "sections": sections,
         })
 
     def _handle_match_overrides_get(self):

@@ -363,6 +363,55 @@ def print_plan(plan: dict):
 
 # ─── Grocery List ─────────────────────────────────────────────────────────────
 
+def collect_grocery(plan: dict, scale: float = 1.0):
+    """Add up every ingredient a plan needs.
+
+    Returns ({item: {unit: qty}}, [names of recipes that could not be found]).
+    Leftover meals name a recipe that does not exist ("X (leftover)"), so they
+    add nothing: their ingredients were already counted with the meal itself.
+    """
+    grocery = defaultdict(lambda: defaultdict(float))
+    missing = []
+    for day in plan.get("days", []):
+        for _meal, recipe_ref in day.get("meals", {}).items():
+            recipe_name = recipe_ref["name"] if isinstance(recipe_ref, dict) else recipe_ref
+            recipe = load_recipe(recipe_name)
+            if not recipe:
+                missing.append(recipe_name)
+                continue
+            for ing in recipe.get("ingredients", []):
+                item = ing["item"].lower().strip()
+                unit = normalize_unit(ing.get("unit", ""))
+                grocery[item][unit] += ing.get("qty", 0) * scale
+    return grocery, missing
+
+
+def grocery_amount(units: dict) -> str:
+    """'2 cup + 3 tbsp' for one item's {unit: qty}."""
+    parts = []
+    for unit, qty in units.items():
+        qty_str = format_qty(qty)
+        parts.append(f"{qty_str} {unit}" if unit else qty_str)
+    return " + ".join(parts)
+
+
+def grocery_sections(plan: dict, scale: float = 1.0) -> list:
+    """The grocery list as plain data, for other programs (no printing, no files).
+
+    Returns [{"section": "Meat & Protein", "items": [{"name": "Bacon", "amount": "48 slice"}, ...]}, ...]
+    with sections and items in alphabetical order. Section names carry no emoji.
+    """
+    grocery, _missing = collect_grocery(plan, scale)
+    result = []
+    for section, items in sorted(categorize_groceries(grocery).items()):
+        plain_name = section.split(" ", 1)[1] if " " in section else section     # drop the leading emoji
+        result.append({
+            "section": plain_name,
+            "items": [{"name": item.title(), "amount": grocery_amount(grocery[item])} for item in sorted(items)],
+        })
+    return sorted(result, key=lambda entry: entry["section"])
+
+
 def generate_grocery_list(plan: dict = None, scale: float = 1.0) -> dict:
     """Generate a consolidated grocery list from a meal plan."""
     if plan is None:
@@ -371,22 +420,9 @@ def generate_grocery_list(plan: dict = None, scale: float = 1.0) -> dict:
             print("❌ No meal plan found. Generate one first with: planner.py plan")
             return {}
 
-    # Collect all ingredients
-    grocery = defaultdict(lambda: defaultdict(float))  # {item: {unit: qty}}
-
-    for day in plan["days"]:
-        for meal, recipe_ref in day["meals"].items():
-            recipe_name = recipe_ref["name"] if isinstance(recipe_ref, dict) else recipe_ref
-            recipe = load_recipe(recipe_name)
-            if not recipe:
-                print(f"  ⚠️  Recipe not found: {recipe_name}")
-                continue
-
-            for ing in recipe.get("ingredients", []):
-                item = ing["item"].lower().strip()
-                unit = normalize_unit(ing.get("unit", ""))
-                qty = ing.get("qty", 0) * scale
-                grocery[item][unit] += qty
+    grocery, missing = collect_grocery(plan, scale)
+    for recipe_name in missing:
+        print(f"  ⚠️  Recipe not found: {recipe_name}")
 
     # Print and return
     print(f"\n{'=' * 50}")
@@ -402,14 +438,7 @@ def generate_grocery_list(plan: dict = None, scale: float = 1.0) -> dict:
     for section, items in sorted(sections.items()):
         print(f"\n  📦 {section}")
         for item in sorted(items):
-            parts = []
-            for unit, qty in grocery[item].items():
-                qty_str = format_qty(qty)
-                if unit:
-                    parts.append(f"{qty_str} {unit}")
-                else:
-                    parts.append(qty_str)
-            amount = " + ".join(parts)
+            amount = grocery_amount(grocery[item])
             display_name = item.title()
             print(f"     ☐ {display_name} — {amount}")
             sorted_grocery[item] = dict(grocery[item])
@@ -639,15 +668,7 @@ def export_grocery_markdown(grocery: dict, sections: dict, filepath: Path, scale
     for section, items in sorted(sections.items()):
         lines.append(f"## {section}")
         for item in sorted(items):
-            parts = []
-            for unit, qty in grocery[item].items():
-                qty_str = format_qty(qty)
-                if unit:
-                    parts.append(f"{qty_str} {unit}")
-                else:
-                    parts.append(qty_str)
-            amount = " + ".join(parts)
-            lines.append(f"- [ ] {item.title()} — {amount}")
+            lines.append(f"- [ ] {item.title()} — {grocery_amount(grocery[item])}")
         lines.append("")
 
     with open(filepath, "w", encoding="utf-8") as f:
